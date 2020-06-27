@@ -1,0 +1,241 @@
+@font-face {
+    font-family: "ChaletComprime";
+    src: url("../fonts/ChaletComprimeCologneSixty.ttf");
+}
+
+body {
+    margin: 0;
+}
+
+.xp {
+    font-family: "ChaletComprime";
+    width: 100vw;
+    position: absolute;
+    top: 20px;
+    display: -webkit-box;
+    display: flex;
+    -webkit-box-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    justify-content: center;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    flex-direction: column;
+    opacity: 0;
+    -webkit-transition: opacity 1000ms;
+    transition: opacity 1000ms;
+}
+
+.xp.active {
+    opacity: 1;
+    -webkit-transition: opacity 1000ms;
+    transition: opacity 1000ms;
+}
+
+.xp .xp-inner {
+    width: 600px;
+    display: -webkit-box;
+    display: flex;
+    -webkit-box-align: center;
+    align-items: center;
+    -webkit-box-pack: justify;
+    justify-content: space-between;
+}
+
+.xp .xp-inner .xp-progress {
+    width: 80%;
+    height: 10px;
+    position: relative;
+    display: -webkit-box;
+    display: flex;
+    justify-content: space-around;
+}
+
+.xp .xp-inner .xp-progress .xp-segment {
+    height: 100%;
+    background-color: #1c2b43;
+    margin-right: 2px;
+    width: 100%;
+    position: relative;
+}
+
+.xp .xp-inner .xp-progress .xp-segment .xp-indicator--bar {
+    position: absolute;
+    height: 100%;
+    width: 0%;
+    background-color: white;
+}
+
+.xp .xp-inner .xp-progress .xp-segment .xp-progress--bar {
+    position: absolute;
+    z-index: 1;
+    height: 100%;
+    width: 0%;
+    background-color: #2e6eb8;
+}
+
+.xp .xp-inner .xp-progress.xp-remove .xp-progress--bar {
+    background-color: #df3232;
+}
+
+.xp .xp-inner .xp-level {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-color: #000;
+    display: -webkit-box;
+    display: flex;
+    -webkit-box-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    justify-content: center;
+    color: #fff;
+    position: relative;
+}
+
+.xp .xp-inner .xp-level div {
+    position: absolute;
+    font-size: 50px;
+    z-index: 10;
+}
+
+.xp .xp-inner .xp-level svg {
+    position: absolute;
+    top: 1px;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.xp .xp-inner .xp-level path {
+    fill: #2e6eb8;
+}
+
+.xp .xp-inner .xp-level.spin {
+    -webkit-animation: fade 500ms linear 0ms forwards;
+    animation: fade 500ms linear 0ms forwards;
+}
+
+.xp .xp-inner .xp-level.spin div {
+    -webkit-animation: spin 500ms linear 0ms forwards;
+    animation: spin 500ms linear 0ms forwards;
+}
+
+.xp .xp-inner .xp-level.pulse {
+    -webkit-animation: pulse 500ms linear 0ms forwards;
+    animation: pulse 500ms linear 0ms forwards;
+}
+
+.xp .xp-inner .xp-level.pulse div {
+    color: #2e6eb8;
+}
+
+.xp .xp-inner .xp-level.pulse path {
+    fill: #fff;
+}
+
+.xp .xp-data {
+    width: 600px;
+    font-size: 24px;
+    color: #fff;
+    display: -webkit-box;
+    display: flex;
+    justify-content: space-around;
+}
+
+.xp .xp-data span {
+    width: 48%;
+    display: inline-block;
+    position: relative;
+}
+
+.xp .xp-data span:first-child {
+    text-align: right;
+}
+
+.xp .xp-data span:first-child::after {
+    position: absolute;
+    right: -10px;
+    content: "/";
+}
+
+.xp .xp-data span:last-child {
+    -webkit-box-pack: start;
+    justify-content: start;
+}
+
+@-webkit-keyframes spin {
+    from {
+        -webkit-transform: rotateY(180deg);
+        transform: rotateY(180deg);
+    }
+
+    to {
+        -webkit-transform: rotateY(360deg);
+        transform: rotateY(360deg);
+    }
+}
+
+@keyframes spin {
+    from {
+        -webkit-transform: rotateY(180deg);
+        transform: rotateY(180deg);
+    }
+
+    to {
+        -webkit-transform: rotateY(360deg);
+        transform: rotateY(360deg);
+    }
+}
+
+@-webkit-keyframes pulse {
+    0% {
+        -webkit-transform: scale(1.25);
+        transform: scale(1.25);
+    }
+
+    100% {
+        -webkit-transform: scale(1);
+        transform: scale(1);
+    }
+}
+
+@keyframes pulse {
+    0% {
+        -webkit-transform: scale(1.25);
+        transform: scale(1.25);
+    }
+
+    100% {
+        -webkit-transform: scale(1);
+        transform: scale(1);
+    }
+}
+
+@-webkit-keyframes fade {
+    0% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+@keyframes fade {
+    0% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}

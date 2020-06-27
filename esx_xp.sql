@@ -1,0 +1,1 @@
+ALTER TABLE `users` ADD `rp_xp` INT(11) NOT NULL DEFAULT '0', ADD `rp_level` INT(11) NOT NULL DEFAULT '1';
