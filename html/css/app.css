@@ -11,7 +11,7 @@ body {
     font-family: "ChaletComprime";
     width: 100vw;
     position: absolute;
-    top: 20px;
+    top: 16px;
     display: -webkit-box;
     display: flex;
     -webkit-box-align: center;
@@ -33,7 +33,7 @@ body {
 }
 
 .xp .xp-inner {
-    width: 600px;
+    width: 532px;
     display: -webkit-box;
     display: flex;
     -webkit-box-align: center;
@@ -43,18 +43,19 @@ body {
 }
 
 .xp .xp-inner .xp-progress {
-    width: 80%;
-    height: 10px;
+    width: 76%;
+    height: 7px;
     position: relative;
     display: -webkit-box;
     display: flex;
     justify-content: space-around;
+    margin-top: 1px;
 }
 
 .xp .xp-inner .xp-progress .xp-segment {
     height: 100%;
     background-color: #1c2b43;
-    margin-right: 2px;
+    margin-right: 4px;
     width: 100%;
     position: relative;
 }
@@ -79,8 +80,8 @@ body {
 }
 
 .xp .xp-inner .xp-level {
-    width: 50px;
-    height: 50px;
+    width: 47px;
+    height: 47px;
     border-radius: 50%;
     background-color: #000;
     display: -webkit-box;
@@ -135,18 +136,21 @@ body {
 }
 
 .xp .xp-data {
-    width: 600px;
-    font-size: 24px;
+    width: 532px;
+    font-size: 28px;
     color: #fff;
     display: -webkit-box;
     display: flex;
     justify-content: space-around;
+    position: absolute;
+    top: 31px;
 }
 
 .xp .xp-data span {
     width: 48%;
     display: inline-block;
     position: relative;
+    text-shadow: -1px -1px 2px #000, 1px -1px 2px #000, -1px 1px 2px #000, 1px 1px 2px #000;
 }
 
 .xp .xp-data span:first-child {

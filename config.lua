@@ -2,6 +2,8 @@ Config = {}
 
 Config.Enabled = true
 
+Config.UseXNLRankBar = true
+
 Config.Levels = {
     0,
     800,
