@@ -213,6 +213,7 @@ const barA = container.querySelector(".xp-indicator--bar");
 const bar = container.querySelector(".xp-progress--bar");
 const counter = container.querySelector(".xp-data");
 let timer = false;
+let initialised = false;
 
 // Create XP bar segments
 const segments = 10;
@@ -253,7 +254,7 @@ function fillSegments(pr, child) {
 
 window.onData = function (data) {
     
-    if (data.init) {
+    if (data.init && !initialised) {
         const levels = {};
 
         for ( let i = 0; i < data.levels.length; i++ ) {
@@ -280,6 +281,8 @@ window.onData = function (data) {
                 // Update XP counter
                 counter.children[0].textContent = this.currentXP;
                 counter.children[1].textContent = this.config.levels[this.nextLevel];
+
+                initialised = true;
             },
 	
             onStart: function(add) {
@@ -338,17 +341,32 @@ window.onData = function (data) {
         });
     }
 
-    if (data.set) {
+
+    // Set XP
+    if (data.set && initialised) {
         instance.setXP(data.xp);
     }
 
-    if (data.add) {
+    // Add XP
+    if (data.add && initialised) {
         instance.addXP(data.xp);
     }
 
-    if (data.remove) {
+    // Remove XP
+    if (data.remove && initialised) {
         instance.removeXP(data.xp);
-    }     
+    }    
+    
+    // Show XP bar
+    if (data.display && initialised) {
+        container.classList.add("active");
+
+        this.clearTimeout(this.xpTimer);
+
+        this.xpTimer = this.setTimeout(() => {
+            container.classList.remove("active");
+        }, 5000);
+    }    
 };
 
 window.onload = function (e) {

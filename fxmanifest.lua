@@ -6,7 +6,7 @@ description 'XP Leveling System'
 
 author 'Karl Saunders'
 
-version '0.0.2'
+version '0.0.3'
 
 server_scripts {
     '@async/async.lua',
@@ -36,3 +36,7 @@ files {
     'html/css/app.css',
     'html/js/app.js'
 }
+
+export "XP_SetInitial"
+export "XP_Add"
+export "XP_Remove"

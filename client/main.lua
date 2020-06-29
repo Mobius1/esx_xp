@@ -20,48 +20,67 @@ Citizen.CreateThread(function()
 
     ESX.TriggerServerCallback("esx_xp:ready", function(xPlayer, _xp)
         XP = tonumber(_xp)
-
-        if Config.UseXNLRankBar then
-            exports.XNLRankBar:Exp_XNL_SetInitialXPLevels(XP, true, true)
-        else
-            SendNUIMessage({
-                init = true,
-                xp = XP,
-                levels = Config.Levels
-            });
-        end
+        SendNUIMessage({
+            init = true,
+            xp = XP,
+            levels = Config.Levels
+        });
     end)
 end)
 
-function UpdateXP(_xp)
+function UpdateXP(_xp, init)
     _xp = tonumber(_xp)
+
+    local _XP = XP + _xp;
+
+    if init then
+        _XP = _xp
+    end
 
     Citizen.CreateThread(function()
         ESX.TriggerServerCallback("esx_xp:setXP", function(xPlayer, points)
             XP = tonumber(points)
-            if Config.UseXNLRankBar then
-                if _xp > 0 then
-                    exports.XNLRankBar:Exp_XNL_AddPlayerXP(_xp)
-                elseif _xp < 0 then
-                    exports.XNLRankBar:Exp_XNL_RemovePlayerXP(_xp * -1)
-                end
-            else
-                SendNUIMessage({
-                    set = true,
-                    xp = XP
-                })
-            end
-        end, XP + _xp)
+            SendNUIMessage({
+                set = true,
+                xp = XP
+            })
+        end, _XP)
     end)
 end
 
-AddEventHandler("esx_xp:addXP", function(_xp)
-    UpdateXP(tonumber(_xp))
+RegisterCommand('initXP', function(source, args)
+    UpdateXP(tonumber(args[1]), true)
 end)
 
 RegisterCommand('addXP', function(source, args)
     UpdateXP(tonumber(args[1]))
 end)
+
 RegisterCommand('removeXP', function(source, args)
     UpdateXP(-(tonumber(args[1])))
+end)
+
+-- Show XP bar on keypress
+Citizen.CreateThread(function()
+    while true do
+        if IsControlJustReleased(0, 20) then
+            SendNUIMessage({
+                display = true
+            })
+        end
+        Citizen.Wait(1)
+    end
+end)
+
+-- EXPORTS
+exports('XP_SetInitial', function(XPInit)
+    UpdateXP(tonumber(XPAdd), true)
+end)
+
+exports('XP_Add', function(XPAdd)
+    UpdateXP(tonumber(XPAdd))
+end)
+
+exports('XP_Remove', function(XPAdd)
+    UpdateXP(-(tonumber(XPAdd)))
 end)
