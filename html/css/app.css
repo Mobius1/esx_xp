@@ -112,17 +112,13 @@ body {
     fill: #2e6eb8;
 }
 
-.xp .xp-inner .xp-level.spin {
-    -webkit-animation: fade 500ms linear 0ms forwards;
-    animation: fade 500ms linear 0ms forwards;
-}
-
 .xp .xp-inner .xp-level.spin div {
     -webkit-animation: spin 500ms linear 0ms forwards;
     animation: spin 500ms linear 0ms forwards;
 }
 
 .xp .xp-inner .xp-level.pulse {
+    background-color: transparent;
     -webkit-animation: pulse 500ms linear 0ms forwards;
     animation: pulse 500ms linear 0ms forwards;
 }
@@ -132,6 +128,18 @@ body {
 }
 
 .xp .xp-inner .xp-level.pulse path {
+    fill: #fff;
+}
+
+.xp .xp-inner .xp-level.highlight {
+    background-color: transparent;
+}
+
+.xp .xp-inner .xp-level.highlight div {
+    color: #2e6eb8;
+}
+
+.xp .xp-inner .xp-level.highlight path {
     fill: #fff;
 }
 
@@ -213,33 +221,5 @@ body {
     100% {
         -webkit-transform: scale(1);
         transform: scale(1);
-    }
-}
-
-@-webkit-keyframes fade {
-    0% {
-        opacity: 1;
-    }
-
-    50% {
-        opacity: 0;
-    }
-
-    100% {
-        opacity: 1;
-    }
-}
-
-@keyframes fade {
-    0% {
-        opacity: 1;
-    }
-
-    50% {
-        opacity: 0;
-    }
-
-    100% {
-        opacity: 1;
     }
 }
