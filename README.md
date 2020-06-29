@@ -6,6 +6,14 @@ Adds an XP leveling system like the one found in GTA:O
 * Add / remove XP from your own script or job
 * Allows you to set perks for levels
 
+## Demo
+Increasing XP
+![Demo Image 1](https://i.imgur.com/wOT5bqg.gif)
+
+Level Up
+![Demo Image 2](https://i.imgur.com/ehxGWsd.gif)
+
+
 ## Requirements
 
 * [es_extended](https://github.com/ESX-Org/es_extended)

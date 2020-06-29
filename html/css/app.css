@@ -28,8 +28,8 @@ body {
 
 .xp.active {
     opacity: 1;
-    -webkit-transition: opacity 1000ms;
-    transition: opacity 1000ms;
+    -webkit-transition: opacity 250ms;
+    transition: opacity 250ms;
 }
 
 .xp .xp-inner {
