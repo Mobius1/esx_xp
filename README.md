@@ -21,8 +21,39 @@ Adds an XP leveling system like the one found in GTA:O
 
 ## Usage
 
+### Setters
 
+Setting initial XP level
+```lua
+exports.esx_xp:XP_SetInitial(xp)
+```
 
+Adding XP
+```lua
+exports.esx_xp:XP_Add(xp)
+```
+
+Removing XP
+```lua
+exports.esx_xp:XP_Remove(xp)
+```
+
+### Getters
+
+Getting current XP
+```lua
+exports.esx_xp:XP_GetXP()
+```
+
+Getting current level
+```lua
+exports.esx_xp:XP_GetLevel()
+```
+
+Getting XP needed to level-up
+```lua
+exports.esx_xp:XP_GetXPToNextLevel()
+```
 ## Videos
 
 * Coming soon...

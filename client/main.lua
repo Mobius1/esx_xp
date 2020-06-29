@@ -48,6 +48,26 @@ function UpdateXP(_xp, init)
     end)
 end
 
+function GetLevelFromXP()
+    local len = #Config.Levels
+
+    for level = 1, len do
+        if level < len then
+            if Config.Levels[level + 1] >= tonumber(XP) then
+                return level
+            end
+        else
+            return level
+        end
+    end
+end	
+
+function GetXPToNextLevel()
+    local currentLevel = GetLevelFromXP()
+
+    return Config.Levels[currentLevel + 1] - tonumber(XP)   
+end
+
 RegisterCommand('initXP', function(source, args)
     UpdateXP(tonumber(args[1]), true)
 end)
@@ -58,6 +78,14 @@ end)
 
 RegisterCommand('removeXP', function(source, args)
     UpdateXP(-(tonumber(args[1])))
+end)
+
+RegisterCommand('getLevel', function(source, args)
+    print(GetLevelFromXP())
+end)
+
+RegisterCommand('getXPToNextLevel', function(source, args)
+    print(GetXPToNextLevel())
 end)
 
 -- Show XP bar on keypress
@@ -84,3 +112,11 @@ end)
 exports('XP_Remove', function(XPAdd)
     UpdateXP(-(tonumber(XPAdd)))
 end)
+
+exports('XP_GetXP', function()
+    return tonumber(XP)
+end)
+
+exports('XP_GetLevel', GetLevelFromXP)
+
+exports('XP_GetXPToNextLevel', GetXPToNextLevel)

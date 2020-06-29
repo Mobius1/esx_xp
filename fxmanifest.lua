@@ -6,7 +6,7 @@ description 'XP Leveling System'
 
 author 'Karl Saunders'
 
-version '0.0.3'
+version '0.0.4'
 
 server_scripts {
     '@async/async.lua',
@@ -40,3 +40,6 @@ files {
 export "XP_SetInitial"
 export "XP_Add"
 export "XP_Remove"
+export "XP_GetXP"
+export "XP_GetLevel"
+export "XP_GetXPToNextLevel"
