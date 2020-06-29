@@ -7,10 +7,12 @@ Adds an XP leveling system like the one found in GTA:O
 * Allows you to set perks for levels
 
 ## Demo
-Increasing XP
+##### Increasing XP
+
 ![Demo Image 1](https://i.imgur.com/wOT5bqg.gif)
 
-Level Up
+##### Level Up
+
 ![Demo Image 2](https://i.imgur.com/ehxGWsd.gif)
 
 
