@@ -91,17 +91,6 @@ function GetXPToNextLevel()
 end
 
 ------------------------------------------------------------
---                         EVENTS                         --
-------------------------------------------------------------
-
-AddEventHandler("esx_xp:levelUp", function(level, old)
-    ESX.ShowNotification("~g~LEVEL UP!")
-end)
-AddEventHandler("esx_xp:levelDown", function(level, old)
-    ESX.ShowNotification("~r~LEVEL DOWN!")
-end)
-
-------------------------------------------------------------
 --                        COMMANDS                        --
 ------------------------------------------------------------
 
@@ -116,7 +105,7 @@ RegisterCommand('XP', function(source, args)
             if args[1] == 'level' then
                 TriggerEvent("chatMessage", "Your current XP level is ^2".. currentLevel)
             elseif args[1] == 'xp' then
-                TriggerEvent("chatMessage", "Your currently have ^2".. XP .. " XP")
+                TriggerEvent("chatMessage", "You currently have ^2".. XP .. " XP")
             elseif args[1] == 'next' then
                 TriggerEvent("chatMessage", "You require ^2".. GetXPToNextLevel() .. " XP ^7to advance to level ^2" .. currentLevel + 1)
             end
