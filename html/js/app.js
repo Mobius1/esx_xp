@@ -334,7 +334,7 @@ window.onData = function (data) {
                 // hide the xp bar
                 timer = setTimeout(() => {
                     container.classList.remove("active");
-                }, 5000);
+                }, data.timeout);
 
                 xpBar.classList.remove("xp-remove");
             }

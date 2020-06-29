@@ -29,41 +29,83 @@ Adds an XP leveling system like the one found in GTA:O
 * Edit `config.lua` to your liking
 * Start your server and rejoice!
 
-## Usage
+## Functions
 
 ### Setters
 
-Setting initial XP level
+Set initial XP level
 ```lua
 exports.esx_xp:XP_SetInitial(xp)
 ```
 
-Adding XP
+Add XP
 ```lua
 exports.esx_xp:XP_Add(xp)
 ```
 
-Removing XP
+Remove XP
 ```lua
 exports.esx_xp:XP_Remove(xp)
 ```
 
 ### Getters
 
-Getting current XP
+Get current XP
 ```lua
 exports.esx_xp:XP_GetXP()
 ```
 
-Getting current level
+Get current level
 ```lua
 exports.esx_xp:XP_GetLevel()
 ```
 
-Getting XP needed to level-up
+Get XP required to level-up
 ```lua
 exports.esx_xp:XP_GetXPToNextLevel()
 ```
+
+## Events
+
+These can be used to reward / remove perks
+
+Listen for level-up event
+```lua
+AddEventHandler("esx_xp:levelUp", newLevel, previousLevel)
+```
+Listen for level-down event
+```lua
+AddEventHandler("esx_xp:levelDown", newLevel, previousLevel)
+```
+
+## Commands
+Get current XP
+```lua
+/XP xp
+```
+output
+```lua
+You currently have xxxx XP
+```
+
+Get current level
+```lua
+/XP level
+```
+output
+```lua
+Your current XP level is xxxx
+```
+
+Get XP required to level-up
+```lua
+/XP next
+```
+output
+```lua
+You require xxxx XP to advance to level yyyy
+```
+
 ## Videos
 
 * Coming soon...

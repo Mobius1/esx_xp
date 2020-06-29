@@ -6,7 +6,7 @@ description 'XP Leveling System'
 
 author 'Karl Saunders'
 
-version '0.0.4'
+version '0.0.5'
 
 server_scripts {
     '@async/async.lua',
