@@ -334,16 +334,20 @@ window.onData = function (data) {
                 setTimeout(() => {
                     levelB.classList.remove("pulse");
                     levelA.classList.add("spin");
+                    levelA.classList.add("highlight");
                     levelB.classList.add("spin");
+                    levelB.classList.add("highlight");
 			
                     levelA.firstElementChild.textContent = current;
                     levelB.firstElementChild.textContent = next;		
 			
                     setTimeout(() => {
                         levelA.classList.remove("spin");
+                        levelA.classList.remove("highlight");
                         levelB.classList.remove("spin");
+                        levelB.classList.remove("highlight");
                     }, 500);			
-                }, 500);		
+                }, 500);			
             },
 	
             onEnd: function (add) {
