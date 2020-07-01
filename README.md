@@ -109,7 +109,7 @@ You require xxxx XP to advance to level yyyy
 ```
 
 ## To Do
-* Allow globel / level colour change based on level
+* Allow globe / level colour change based on level
 * Make non-ESX (platform agnostic) version available
 
 ## Contributing
