@@ -2,19 +2,20 @@
 Adds an XP leveling system like the one found in GTA:O
 
 ## Features
+* Designed to emulate the native GTA:O system
 * Saves and loads players XP / level
-* Add / remove XP from your own script or job
-* Allows you to set perks for levels
+* Add / remove XP from your own script / job
+* Allows you listen for level changes to reward players
 * Fully customisable UI
 
 ## Demo
 ##### Increasing XP
 
-![Demo Image 1](https://i.imgur.com/wOT5bqg.gif)
+![Demo Image 1](https://i.imgur.com/b3T7e5C.gif)
 
 ##### Level Up
 
-![Demo Image 2](https://i.imgur.com/ehxGWsd.gif)
+![Demo Image 2](https://i.imgur.com/0wI0Via.gif)
 
 
 ## Requirements
@@ -68,7 +69,7 @@ exports.esx_xp:XP_GetXPToNextLevel()
 
 ## Events
 
-These can be used to reward / remove perks
+Listen for level change events. These can be used to reward / punish the player for changing level.
 
 Listen for level-up event
 ```lua
@@ -107,9 +108,9 @@ output
 You require xxxx XP to advance to level yyyy
 ```
 
-## Videos
-
-* Coming soon...
+## To Do
+* Allow globel / level colour change based on level
+* Make non-ESX (platform agnostic) version available
 
 ## Contributing
 Pull requests welcome.
