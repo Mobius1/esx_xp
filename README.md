@@ -5,6 +5,7 @@ Adds an XP leveling system like the one found in GTA:O
 * Saves and loads players XP / level
 * Add / remove XP from your own script or job
 * Allows you to set perks for levels
+* Fully customisable UI
 
 ## Demo
 ##### Increasing XP

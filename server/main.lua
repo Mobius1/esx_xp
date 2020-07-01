@@ -30,37 +30,14 @@ ESX.RegisterServerCallback('esx_xp:setXP', function (source, cb, _xp)
     end
 end)
 
-RegisterNetEvent("esx_xp:update")
+RegisterCommand('XP_SetInitial', function(source, args)
+    TriggerClientEvent("esx_xp:setInitialXP", source, tonumber(args[1]))
+end, true)
 
-function SetXP(xPlayer, _xp)
-    if Config.Enabled then
-        MySQL.Async.execute('UPDATE users SET rp_xp = @xp WHERE identifier = @identifier', {
-            ['@identifier'] = xPlayer.identifier,
-            ['@xp'] = _xp
-        }, function(result)
-            XP = tonumber(_xp)
+RegisterCommand('XP_Add', function(source, args)
+    TriggerClientEvent("esx_xp:addXP", source, tonumber(args[1]))
+end, true)
 
-            TriggerClientEvent("esx_xp:update", source, XP)
-        end)
-    end    
-end
-
-RegisterNetEvent("esx_xp:addXP")
-
-AddEventHandler("esx_xp:addXP", function(_xp)
-    local xPlayer = ESX.GetPlayerFromId(source)
-    if Config.Enabled then
-        XP = XP + tonumber(_xp)
-        SetXP(xPlayer, XP)
-    end
-end)
-
-RegisterNetEvent("esx_xp:removeXP")
-
-AddEventHandler("esx_xp:removeXP", function(_xp)
-    local xPlayer = ESX.GetPlayerFromId(source)
-    if Config.Enabled then
-        XP = XP - tonumber(_xp)
-        SetXP(xPlayer, XP)
-    end
-end)
+RegisterCommand('XP_Remove', function(source, args)
+    TriggerClientEvent("esx_xp:removeXP", source, tonumber(args[1]))
+end, true)

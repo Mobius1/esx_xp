@@ -23,8 +23,7 @@ Citizen.CreateThread(function()
         SendNUIMessage({
             init = true,
             xp = XP,
-            timeout = Config.Timeout,
-            levels = Config.Levels
+            config = Config
         });
     end)
 end)
@@ -43,9 +42,13 @@ function UpdateXP(_xp, init)
         points = _xp
     end
 
+    if points < 0 then
+        points = 0
+    end
+
     Citizen.CreateThread(function()
-        local currentLevel = GetLevelFromXP()
-        local endLevel = GetLevelFromXP(points)
+        local currentLevel = XP_GetLevel()
+        local endLevel = XP_GetLevel(points)
         ESX.TriggerServerCallback("esx_xp:setXP", function(xPlayer, points)
             XP = tonumber(points)
             SendNUIMessage({
@@ -66,7 +69,7 @@ function UpdateXP(_xp, init)
     end)
 end
 
-function GetLevelFromXP(_xp)
+function XP_GetLevel(_xp)
     local len = #Config.Levels
     local points = XP
     if _xp then
@@ -84,34 +87,28 @@ function GetLevelFromXP(_xp)
     end
 end	
 
-function GetXPToNextLevel()
-    local currentLevel = GetLevelFromXP()
+function XP_GetXPToNextLevel()
+    local currentLevel = XP_GetLevel()
 
     return Config.Levels[currentLevel + 1] - tonumber(XP)   
 end
 
-------------------------------------------------------------
---                        COMMANDS                        --
-------------------------------------------------------------
+function XP_SetInitial(XPInit)
+    UpdateXP(tonumber(XPInit), true)
+end
 
-TriggerEvent('chat:addSuggestion', '/XP', 'help text', {
-    { name="type", help="level | xp | next" }
-}) 
+function XP_Add(XPAdd)
+    UpdateXP(tonumber(XPAdd))
+end
 
-RegisterCommand('XP', function(source, args)
-    Citizen.CreateThread(function()
-        local currentLevel = GetLevelFromXP()
-        if args ~= nil then
-            if args[1] == 'level' then
-                TriggerEvent("chatMessage", "Your current XP level is ^2".. currentLevel)
-            elseif args[1] == 'xp' then
-                TriggerEvent("chatMessage", "You currently have ^2".. XP .. " XP")
-            elseif args[1] == 'next' then
-                TriggerEvent("chatMessage", "You require ^2".. GetXPToNextLevel() .. " XP ^7to advance to level ^2" .. currentLevel + 1)
-            end
-        end  
-    end)
-end)
+function XP_Remove(XPRemove)
+    UpdateXP(-(tonumber(XPRemove)))
+end
+
+function XP_GetXP()
+    return tonumber(XP)
+end
+
 
 ------------------------------------------------------------
 --                        CONTROLS                        --
@@ -128,26 +125,49 @@ Citizen.CreateThread(function()
     end
 end)
 
+
 ------------------------------------------------------------
 --                        EXPORTS                         --
 ------------------------------------------------------------
 
-exports('XP_SetInitial', function(XPInit)
-    UpdateXP(tonumber(XPAdd), true)
+-- SET INTITIAL XP
+exports('XP_SetInitial', XP_SetInitial)
+
+-- ADD XP
+exports('XP_Add', XP_Add)
+
+-- REMOVE XP
+exports('XP_Remove', XP_Remove)
+
+-- GET CURRENT XP
+exports('XP_GetXP', XP_GetXP)
+
+-- GET CURRENT LEVEL
+exports('XP_GetLevel', XP_GetLevel)
+
+-- GET XP REQUIRED TO LEVEL-UP
+exports('XP_GetXPToNextLevel', XP_GetXPToNextLevel)
+
+
+------------------------------------------------------------
+--                        COMMANDS                        --
+------------------------------------------------------------
+
+TriggerEvent('chat:addSuggestion', '/XP', 'help text', {
+    { name="type", help="level | xp | next" }
+}) 
+
+RegisterCommand('XP', function(source, args)
+    Citizen.CreateThread(function()
+        local currentLevel = XP_GetLevel()
+        if args ~= nil then
+            if args[1] == 'level' then
+                TriggerEvent("chatMessage", "Your current XP level is ^2".. currentLevel)
+            elseif args[1] == 'xp' then
+                TriggerEvent("chatMessage", "You currently have ^2".. XP .. " XP")
+            elseif args[1] == 'next' then
+                TriggerEvent("chatMessage", "You require ^2".. XP_GetXPToNextLevel() .. " XP ^7to advance to level ^2" .. currentLevel + 1)
+            end
+        end  
+    end)
 end)
-
-exports('XP_Add', function(XPAdd)
-    UpdateXP(tonumber(XPAdd))
-end)
-
-exports('XP_Remove', function(XPAdd)
-    UpdateXP(-(tonumber(XPAdd)))
-end)
-
-exports('XP_GetXP', function()
-    return tonumber(XP)
-end)
-
-exports('XP_GetLevel', GetLevelFromXP)
-
-exports('XP_GetXPToNextLevel', GetXPToNextLevel)

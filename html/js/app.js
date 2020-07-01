@@ -207,6 +207,7 @@ class XPLeveler {
 
 // Markup
 const container = document.querySelector(".xp");
+const inner = document.querySelector(".xp-inner");
 const [ levelA, levelB ] = [...container.querySelectorAll(".xp-level")];
 const xpBar = container.querySelector(".xp-progress");
 const barA = container.querySelector(".xp-indicator--bar");
@@ -216,7 +217,7 @@ let timer = false;
 let initialised = false;
 
 // Create XP bar segments
-const segments = 10;
+let segments = 10;
 let instance = false;
 
 // HELPER FUNCTIONS
@@ -255,10 +256,11 @@ function fillSegments(pr, child) {
 window.onData = function (data) {
     
     if (data.init && !initialised) {
+
         const levels = {};
 
-        for ( let i = 0; i < data.levels.length; i++ ) {
-            levels[i+1] = data.levels[i];
+        for ( let i = 0; i < data.config.Levels.length; i++ ) {
+            levels[i+1] = data.config.Levels[i];
         }
 
         // Class instance
@@ -268,8 +270,22 @@ window.onData = function (data) {
 
             // set initial XP / level
             onInit: function (progress) {
+
+                segments = data.config.BarSegments
+
                 // create segmented progress bar
                 renderBar();
+
+                inner.style.width = `${data.config.Width}px`;
+
+                clearTimeout(timer);
+                // show the xp bar
+                container.classList.add("active");     
+                
+                // hide the xp bar
+                timer = setTimeout(() => {
+                    container.classList.remove("active");
+                }, data.config.Timeout);                
 
                 // fill to starting XP / level
                 fillSegments(progress, "lastElementChild");
@@ -334,7 +350,7 @@ window.onData = function (data) {
                 // hide the xp bar
                 timer = setTimeout(() => {
                     container.classList.remove("active");
-                }, data.timeout);
+                }, data.config.Timeout);
 
                 xpBar.classList.remove("xp-remove");
             }
