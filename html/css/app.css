@@ -43,7 +43,7 @@ body {
 }
 
 .xp .xp-inner .xp-progress {
-    width: 76%;
+    width: calc(100% - 130px);
     height: 7px;
     position: relative;
     display: -webkit-box;
@@ -58,6 +58,10 @@ body {
     margin-right: 4px;
     width: 100%;
     position: relative;
+}
+
+.xp .xp-inner .xp-progress .xp-segment:last-child {
+    margin-right: 0;
 }
 
 .xp .xp-inner .xp-progress .xp-segment .xp-indicator--bar {
@@ -163,7 +167,7 @@ body {
 
 .xp .xp-data span:first-child {
     text-align: right;
-    padding-right: 2px
+    padding-right: 2px;
 }
 
 .xp .xp-data span:first-child::after {
