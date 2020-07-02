@@ -48,19 +48,25 @@ Config.Levels = {}          -- XP levels. Must be a table of integers with the f
 
 ### Setters
 
-Set initial XP level
+Set initial XP level for player
 ```lua
 -- @param xp <int>
 exports.esx_xp:XP_SetInitial(xp)
 ```
 
-Add XP
+Set Level for player. This will add the required XP to advance the player to the given level.
+```lua
+-- @param level <int>
+exports.esx_xp:XP_SetLevel(level)
+```
+
+Give player XP
 ```lua
 -- @param xp <int>
 exports.esx_xp:XP_Add(xp)
 ```
 
-Remove XP
+Remove XP from player
 ```lua
 -- @param xp <int>
 exports.esx_xp:XP_Remove(xp)
@@ -68,33 +74,33 @@ exports.esx_xp:XP_Remove(xp)
 
 ### Getters
 
-Get current XP
+Get player's current XP
 ```lua
 exports.esx_xp:XP_GetXP()
 ```
 
-Get current level
+Get player's current level
 ```lua
 exports.esx_xp:XP_GetLevel()
 ```
 
-Get XP required to level-up
+Get XP required to advance the player to the next level
 ```lua
 exports.esx_xp:XP_GetXPToNextLevel()
 ```
 
-Get XP required to advance to given level
+Get XP required to advance the player to the given level
 ```lua
 -- @param level <int>
 exports.esx_xp:XP_GetXPToLevel(level)
 ```
 
-Get max XP attainable
+Get max attainable XP
 ```lua
 exports.esx_xp:XP_GetMaxXP()
 ```
 
-Get max level attainable
+Get max attainable level
 ```lua
 exports.esx_xp:XP_GetMaxLevel()
 ```
