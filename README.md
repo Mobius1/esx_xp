@@ -50,6 +50,7 @@ Config.Levels = {}          -- XP levels. Must be a table of integers with the f
 
 Set initial XP level
 ```lua
+-- @param xp <int>
 exports.esx_xp:XP_SetInitial(xp)
 ```
 
