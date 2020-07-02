@@ -9,6 +9,8 @@ Adds an XP leveling system like the one found in GTA:O
 * Fully customisable UI
 
 ## Demo
+You can find an interactive demo [here](https://codepen.io/Mobius1/full/yLeMwzO).
+
 ##### Increasing XP
 
 ![Demo Image 1](https://i.imgur.com/b3T7e5C.gif)
