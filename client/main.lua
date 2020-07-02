@@ -74,6 +74,47 @@ function UpdateXP(_xp, init)
     end)
 end
 
+function XP_SetInitial(XPInit)
+    XPInit = tonumber(XPInit)
+    -- Check for valid XP
+    if not XPInit or (XPInit < 0 or XPInit > XP_GetMaxXP()) then
+        print(("esx_xp: Invalid XP (%s) passed to '%s'"):format(XPInit, "XP_SetInitial"))
+        return
+    end    
+    UpdateXP(tonumber(XPInit), true)
+end
+
+function XP_SetLevel(Level)
+    local GoalLevel = tonumber(Level)
+
+    if not GoalLevel then
+        print(("esx_xp: Invalid level (%s) passed to '%s'"):format(Level, "XP_SetLevel"))
+        return
+    end
+
+    local XPAdd = tonumber(Config.Levels[GoalLevel]) - XP
+
+    XP_Add(XPAdd)
+end
+
+function XP_Add(XPAdd)
+    -- Check for valid XP
+    if not tonumber(XPAdd) then
+        print(("esx_xp: Invalid XP (%s) passed to '%s'"):format(XPAdd, "XP_Add"))
+        return
+    end       
+    UpdateXP(tonumber(XPAdd))
+end
+
+function XP_Remove(XPRemove)
+    -- Check for valid XP
+    if not tonumber(XPRemove) then
+        print(("esx_xp: Invalid XP (%s) passed to '%s'"):format(XPRemove, "XP_Remove"))
+        return
+    end       
+    UpdateXP(-(tonumber(XPRemove)))
+end
+
 function XP_GetLevel(_xp)
     local len = #Config.Levels
     local points = XP
@@ -109,34 +150,6 @@ function XP_GetXPToLevel(Level)
     local goalXP = tonumber(Config.Levels[Level])
 
     return goalXP - XP
-end
-
-function XP_SetInitial(XPInit)
-    XPInit = tonumber(XPInit)
-    -- Check for valid XP
-    if not XPInit or (XPInit < 0 or XPInit > XP_GetMaxXP()) then
-        print(("esx_xp: Invalid XP (%s) passed to '%s'"):format(XPInit, "XP_SetInitial"))
-        return
-    end    
-    UpdateXP(tonumber(XPInit), true)
-end
-
-function XP_Add(XPAdd)
-    -- Check for valid XP
-    if not tonumber(XPAdd) then
-        print(("esx_xp: Invalid XP (%s) passed to '%s'"):format(XPAdd, "XP_Add"))
-        return
-    end       
-    UpdateXP(tonumber(XPAdd))
-end
-
-function XP_Remove(XPRemove)
-    -- Check for valid XP
-    if not tonumber(XPRemove) then
-        print(("esx_xp: Invalid XP (%s) passed to '%s'"):format(XPRemove, "XP_Remove"))
-        return
-    end       
-    UpdateXP(-(tonumber(XPRemove)))
 end
 
 function XP_GetXP()
