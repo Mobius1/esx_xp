@@ -75,13 +75,13 @@ function UpdateXP(_xp, init)
 end
 
 function XP_SetInitial(XPInit)
-    XPInit = tonumber(XPInit)
+    local GoalXP = tonumber(XPInit)
     -- Check for valid XP
-    if not XPInit or (XPInit < 0 or XPInit > XP_GetMaxXP()) then
+    if not GoalXP or (GoalXP < 0 or GoalXP > XP_GetMaxXP()) then
         print(("esx_xp: Invalid XP (%s) passed to '%s'"):format(XPInit, "XP_SetInitial"))
         return
     end    
-    UpdateXP(tonumber(XPInit), true)
+    UpdateXP(tonumber(GoalXP), true)
 end
 
 function XP_SetLevel(Level)
@@ -140,14 +140,14 @@ function XP_GetXPToNextLevel()
 end
 
 function XP_GetXPToLevel(Level)
-    Level = tonumber(Level)
+    local GoalLevel = tonumber(Level)
     -- Check for valid level
-    if not Level or (Level < 1 or Level > #Config.Levels) then
+    if not GoalLevel or (GoalLevel < 1 or GoalLevel > #Config.Levels) then
         print(("esx_xp: Invalid level (%s) passed to '%s'"):format(Level, "XP_GetXPToLevel"))
         return
     end
 
-    local goalXP = tonumber(Config.Levels[Level])
+    local goalXP = tonumber(Config.Levels[GoalLevell])
 
     return goalXP - XP
 end
