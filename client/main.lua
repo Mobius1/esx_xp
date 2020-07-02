@@ -99,8 +99,9 @@ function XP_GetXPToNextLevel()
 end
 
 function XP_GetXPToLevel(Level)
+    Level = tonumber(Level)
     -- Check for valid level
-    if Level < 1 or Level > #Config.Levels then
+    if not Level or (Level < 1 or Level > #Config.Levels) then
         print(("esx_xp: Invalid level (%s) passed to '%s'"):format(Level, "XP_GetXPToLevel"))
         return
     end
@@ -111,8 +112,9 @@ function XP_GetXPToLevel(Level)
 end
 
 function XP_SetInitial(XPInit)
+    XPInit = tonumber(XPInit)
     -- Check for valid XP
-    if XPInit < 0 or XPInit > XP_GetMaxXP() then
+    if not XPInit or (XPInit < 0 or XPInit > XP_GetMaxXP()) then
         print(("esx_xp: Invalid XP (%s) passed to '%s'"):format(XPInit, "XP_SetInitial"))
         return
     end    
