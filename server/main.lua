@@ -11,6 +11,7 @@ ESX.RegisterServerCallback('esx_xp:ready', function(source, cb)
         }, function(result)
             if #result > 0 then
                 XP = tonumber(result[1]["rp_xp"])
+                xPlayer.set('xp', XP)
                 cb(xPlayer, XP)
             end
         end)
@@ -25,6 +26,7 @@ ESX.RegisterServerCallback('esx_xp:setXP', function (source, cb, _xp)
             ['@xp'] = _xp
         }, function(result)
             XP = tonumber(_xp)
+            xPlayer.set('xp', XP)
             cb(xPlayer, _xp)
         end)
     end
