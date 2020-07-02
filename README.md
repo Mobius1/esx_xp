@@ -81,30 +81,14 @@ AddEventHandler("esx_xp:levelDown", newLevel, previousLevel)
 ```
 
 ## Commands
-Get current XP
+Get current XP stats
 ```lua
-/XP xp
+/XP
 ```
 output
 ```lua
 You currently have xxxx XP
-```
-
-Get current level
-```lua
-/XP level
-```
-output
-```lua
-Your current XP level is xxxx
-```
-
-Get XP required to level-up
-```lua
-/XP next
-```
-output
-```lua
+Your current level is xxxx
 You require xxxx XP to advance to level yyyy
 ```
 

@@ -153,21 +153,28 @@ exports('XP_GetXPToNextLevel', XP_GetXPToNextLevel)
 --                        COMMANDS                        --
 ------------------------------------------------------------
 
-TriggerEvent('chat:addSuggestion', '/XP', 'help text', {
-    { name="type", help="level | xp | next" }
-}) 
+TriggerEvent('chat:addSuggestion', '/XP', 'Display your XP stats') 
 
 RegisterCommand('XP', function(source, args)
     Citizen.CreateThread(function()
         local currentLevel = XP_GetLevel()
-        if args ~= nil then
-            if args[1] == 'level' then
-                TriggerEvent("chatMessage", "Your current XP level is ^2".. currentLevel)
-            elseif args[1] == 'xp' then
-                TriggerEvent("chatMessage", "You currently have ^2".. XP .. " XP")
-            elseif args[1] == 'next' then
-                TriggerEvent("chatMessage", "You require ^2".. XP_GetXPToNextLevel() .. " XP ^7to advance to level ^2" .. currentLevel + 1)
-            end
-        end  
+        local xpToNext = XP_GetXPToNextLevel()
+
+        TriggerEvent('chat:addMessage', {
+            color = { 255, 0, 0},
+            multiline = true,
+            args = {"SYSTEM", "You currently have ^*^2".. XP .. " XP"}
+        })
+        TriggerEvent('chat:addMessage', {
+            color = { 255, 0, 0},
+            multiline = true,
+            args = {"SYSTEM", "Your current level is ^*^2".. currentLevel}
+        })
+        TriggerEvent('chat:addMessage', {
+            color = { 255, 0, 0},
+            multiline = true,
+            args = {"SYSTEM", "You require ^*^2".. xpToNext .. " XP ^*^7to advance to level ^*^2" .. currentLevel + 1}
+        })                
+        
     end)
 end)
