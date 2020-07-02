@@ -37,6 +37,7 @@ The `config.lua` file is set to emulate GTA:O as close as possible, but can be c
 
 ```lua
 Config.Enabled = true       -- enable / disable the resource
+Config.Locale = 'en'        -- Current language
 Config.Width = 532          -- Sets the width of the XP bar in px
 Config.Timeout = 5000       -- Sets the interval in ms that the XP bar is shown after updating
 Config.BarSegments = 10     -- Sets the number of segments the XP bar has. Native GTA:O is 10

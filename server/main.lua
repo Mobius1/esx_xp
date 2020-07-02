@@ -29,15 +29,3 @@ ESX.RegisterServerCallback('esx_xp:setXP', function (source, cb, _xp)
         end)
     end
 end)
-
-RegisterCommand('XP_SetInitial', function(source, args)
-    TriggerClientEvent("esx_xp:setInitialXP", source, tonumber(args[1]))
-end, true)
-
-RegisterCommand('XP_Add', function(source, args)
-    TriggerClientEvent("esx_xp:addXP", source, tonumber(args[1]))
-end, true)
-
-RegisterCommand('XP_Remove', function(source, args)
-    TriggerClientEvent("esx_xp:removeXP", source, tonumber(args[1]))
-end, true)

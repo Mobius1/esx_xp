@@ -214,17 +214,17 @@ RegisterCommand('XP', function(source, args)
         TriggerEvent('chat:addMessage', {
             color = { 255, 0, 0},
             multiline = true,
-            args = {"SYSTEM", "You currently have ^*^2".. XP .. " XP"}
+            args = {"SYSTEM", _U('cmd_current_xp', XP)}
         })
         TriggerEvent('chat:addMessage', {
             color = { 255, 0, 0},
             multiline = true,
-            args = {"SYSTEM", "Your current level is ^*^2".. currentLevel}
+            args = {"SYSTEM", _U('cmd_current_lvl', currentLevel)}
         })
         TriggerEvent('chat:addMessage', {
             color = { 255, 0, 0},
             multiline = true,
-            args = {"SYSTEM", "You require ^*^2".. xpToNext .. " XP ^*^7to advance to level ^*^2" .. currentLevel + 1}
+            args = {"SYSTEM", _U('cmd_next_lvl', xpToNext, currentLevel + 1)}
         })                
         
     end)

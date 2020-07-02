@@ -1,5 +1,7 @@
 Config = {}
 
+Config.Locale = 'en'
+
 Config.Enabled = true -- enable the resource
 
 Config.Width = 532
