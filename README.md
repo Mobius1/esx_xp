@@ -31,6 +31,18 @@ Adds an XP leveling system like the one found in GTA:O
 * Edit `config.lua` to your liking
 * Start your server and rejoice!
 
+## Configuration
+
+The `config.lua` file is set to emulate GTA:O as close as possible, but can be changed to fit your own needs.
+
+```lua
+Config.Enabled = true       -- enable / disable the resource
+Config.Width = 532          -- Sets the width of the XP bar in px
+Config.Timeout = 5000       -- Sets the interval in ms that the XP bar is shown after updating
+Config.BarSegments = 10     -- Sets the number of segments the XP bar has. Native GTA:O is 10
+Config.Levels = {}          -- XP levels. Must be a table of integers with the first element being 0.
+```
+
 ## Functions
 
 ### Setters
@@ -42,11 +54,13 @@ exports.esx_xp:XP_SetInitial(xp)
 
 Add XP
 ```lua
+-- @param xp <int>
 exports.esx_xp:XP_Add(xp)
 ```
 
 Remove XP
 ```lua
+-- @param xp <int>
 exports.esx_xp:XP_Remove(xp)
 ```
 
@@ -65,6 +79,22 @@ exports.esx_xp:XP_GetLevel()
 Get XP required to level-up
 ```lua
 exports.esx_xp:XP_GetXPToNextLevel()
+```
+
+Get XP required to advance to given level
+```lua
+-- @param level <int>
+exports.esx_xp:XP_GetXPToLevel(level)
+```
+
+Get max XP attainable
+```lua
+exports.esx_xp:XP_GetMaxXP()
+```
+
+Get max level attainable
+```lua
+exports.esx_xp:XP_GetMaxLevel()
 ```
 
 ## Events

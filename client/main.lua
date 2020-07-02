@@ -37,6 +37,7 @@ function UpdateXP(_xp, init)
     _xp = tonumber(_xp)
 
     local points = XP + _xp;
+    local max = XP_GetMaxXP()
 
     if init then
         points = _xp
@@ -44,6 +45,10 @@ function UpdateXP(_xp, init)
 
     if points < 0 then
         points = 0
+    end
+
+    if points > max then
+        points = max
     end
 
     Citizen.CreateThread(function()
@@ -93,20 +98,55 @@ function XP_GetXPToNextLevel()
     return Config.Levels[currentLevel + 1] - tonumber(XP)   
 end
 
+function XP_GetXPToLevel(Level)
+    -- Check for valid level
+    if Level < 1 or Level > #Config.Levels then
+        print(("esx_xp: Invalid level (%s) passed to '%s'"):format(Level, "XP_GetXPToLevel")
+        return
+    end
+
+    local goalXP = tonumber(Config.Levels[Level])
+
+    return goalXP - XP
+end
+
 function XP_SetInitial(XPInit)
+    -- Check for valid XP
+    if XPInit < 0 or XPInit > XP_GetMaxXP() then
+        print(("esx_xp: Invalid XP (%s) passed to '%s'"):format(XPInit, "XP_SetInitial")
+        return
+    end    
     UpdateXP(tonumber(XPInit), true)
 end
 
 function XP_Add(XPAdd)
+    -- Check for valid XP
+    if not tonumber(XPAdd) then
+        print(("esx_xp: Invalid XP (%s) passed to '%s'"):format(XPAdd, "XP_Add")
+        return
+    end       
     UpdateXP(tonumber(XPAdd))
 end
 
 function XP_Remove(XPRemove)
+    -- Check for valid XP
+    if not tonumber(XPRemove) then
+        print(("esx_xp: Invalid XP (%s) passed to '%s'"):format(XPRemove, "XP_Remove")
+        return
+    end       
     UpdateXP(-(tonumber(XPRemove)))
 end
 
 function XP_GetXP()
     return tonumber(XP)
+end
+
+function XP_GetMaxXP()
+    return Config.Levels[#Config.Levels]
+end
+
+function XP_GetMaxLevel()
+    return #Config.Levels
 end
 
 
@@ -147,6 +187,15 @@ exports('XP_GetLevel', XP_GetLevel)
 
 -- GET XP REQUIRED TO LEVEL-UP
 exports('XP_GetXPToNextLevel', XP_GetXPToNextLevel)
+
+-- GET XP REQUIRED TO LEVEL-UP
+exports('XP_GetXPToLevel', XP_GetXPToLevel)
+
+-- GET MAX XP
+exports('XP_GetMaxXP', XP_GetMaxXP)
+
+-- GET MAX LEVEL
+exports('XP_GetMaxLevel', XP_GetMaxLevel)
 
 
 ------------------------------------------------------------
