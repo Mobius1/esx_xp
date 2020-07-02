@@ -163,17 +163,17 @@ body {
 
 .xp .xp-data span:first-child {
     text-align: right;
+    padding-right: 2px
 }
 
 .xp .xp-data span:first-child::after {
     position: absolute;
-    right: -10px;
+    right: -8px;
     content: "/";
 }
 
 .xp .xp-data span:last-child {
-    -webkit-box-pack: start;
-    justify-content: start;
+    padding-left: 2px;
 }
 
 @-webkit-keyframes spin {
