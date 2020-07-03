@@ -182,6 +182,21 @@ end)
 
 
 ------------------------------------------------------------
+--                         EVENTS                         --
+------------------------------------------------------------
+
+RegisterNetEvent("esx_xp:updateUI")
+AddEventHandler("esx_xp:updateUI", function(_xp)
+    XP = tonumber(_xp)
+
+    SendNUIMessage({
+        set = true,
+        xp = XP
+    });
+end)
+
+
+------------------------------------------------------------
 --                        EXPORTS                         --
 ------------------------------------------------------------
 
@@ -239,6 +254,5 @@ RegisterCommand('XP', function(source, args)
             multiline = true,
             args = {"SYSTEM", _U('cmd_next_lvl', xpToNext, currentLevel + 1)}
         })                
-        
     end)
 end)

@@ -52,26 +52,22 @@ Config.Levels = {}          -- XP levels. Must be a table of integers with the f
 
 Set initial XP level for player
 ```lua
--- @param xp <int>
-exports.esx_xp:XP_SetInitial(xp)
+exports.esx_xp:XP_SetInitial(xp --[[ integer ]])
 ```
 
 Set Level for player. This will add the required XP to advance the player to the given level.
 ```lua
--- @param level <int>
-exports.esx_xp:XP_SetLevel(level)
+exports.esx_xp:XP_SetLevel(level --[[ integer ]])
 ```
 
 Give player XP
 ```lua
--- @param xp <int>
-exports.esx_xp:XP_Add(xp)
+exports.esx_xp:XP_Add(xp --[[ integer ]])
 ```
 
 Remove XP from player
 ```lua
--- @param xp <int>
-exports.esx_xp:XP_Remove(xp)
+exports.esx_xp:XP_Remove(xp --[[ integer ]])
 ```
 
 ### Getters
@@ -93,8 +89,7 @@ exports.esx_xp:XP_GetXPToNextLevel()
 
 Get XP required to advance the player to the given level
 ```lua
--- @param level <int>
-exports.esx_xp:XP_GetXPToLevel(level)
+exports.esx_xp:XP_GetXPToLevel(level --[[ integer ]])
 ```
 
 Get max attainable XP
@@ -107,17 +102,36 @@ Get max attainable level
 exports.esx_xp:XP_GetMaxLevel()
 ```
 
-## Events
+## Client Event Listeners
 
 Listen for level change events. These can be used to reward / punish the player for changing level.
 
 Listen for level-up event
 ```lua
-AddEventHandler("esx_xp:levelUp", newLevel, previousLevel)
+AddEventHandler("esx_xp:levelUp", newLevel --[[ integer ]], previousLevel --[[ integer ]])
 ```
 Listen for level-down event
 ```lua
-AddEventHandler("esx_xp:levelDown", newLevel, previousLevel)
+AddEventHandler("esx_xp:levelDown", newLevel --[[ integer ]], previousLevel --[[ integer ]])
+```
+
+## Server Triggers
+
+Each of these triggers will save the player's XP as well as update their UI in real-time
+
+Set player's initial XP
+```lua
+TriggerEvent("esx_xp:XP_SetInitial", source --[[ integer ]], XP --[[ integer ]])
+```
+
+Give XP to player
+```lua
+TriggerEvent("esx_xp:XP_Add", source --[[ integer ]], XP --[[ integer ]])
+```
+
+Remove XP from player
+```lua
+TriggerEvent("esx_xp:XP_Remove", source --[[ integer ]], XP --[[ integer ]])
 ```
 
 ## Commands
