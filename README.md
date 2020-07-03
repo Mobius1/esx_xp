@@ -79,7 +79,14 @@ exports.esx_xp:XP_GetXP()
 
 Get player's current level
 ```lua
+-- Get level from current XP
 exports.esx_xp:XP_GetLevel()
+
+-- or
+
+-- Get level from given XP
+exports.esx_xp:XP_GetLevel(xp --[[ integer ]])
+
 ```
 
 Get XP required to advance the player to the next level
