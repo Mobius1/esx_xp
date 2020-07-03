@@ -13,11 +13,11 @@ You can find an interactive demo [here](https://codepen.io/Mobius1/full/yLeMwzO)
 
 ##### Increasing XP
 
-![Demo Image 1](https://i.imgur.com/b3T7e5C.gif)
+![Demo Image 1](https://i.imgur.com/CpACt9s.gif)
 
 ##### Level Up
 
-![Demo Image 2](https://i.imgur.com/0wI0Via.gif)
+![Demo Image 2](https://i.imgur.com/uNPRGo5.gif)
 
 
 ## Requirements
