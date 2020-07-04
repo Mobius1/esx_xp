@@ -19,3 +19,19 @@ function LimitXP(XPCheck)
 
     return tonumber(XPCheck)
 end
+
+function CheckLevels()
+    local Limit = #Config.Levels
+    local InValid = {}
+
+    for i = 1, Limit do
+        local LevelXP = Config.Levels[i]
+
+        if not IsInt(LevelXP) then
+            table.insert(InValid, _('err_lvl_check', i,  LevelXP))
+        end
+        
+    end
+
+    return InValid
+end

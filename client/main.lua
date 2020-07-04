@@ -19,12 +19,20 @@ Citizen.CreateThread(function()
     Player = ESX.GetPlayerData()
 
     ESX.TriggerServerCallback("esx_xp:ready", function(xPlayer, _xp)
-        XP = tonumber(_xp)
-        SendNUIMessage({
-            init = true,
-            xp = XP,
-            config = Config
-        });
+        local Levels = CheckLevels()
+
+        -- All levels are valid
+        if #Levels == 0 then
+            XP = tonumber(_xp)
+            SendNUIMessage({
+                init = true,
+                xp = XP,
+                config = Config
+            });
+        else
+            print(_('err_lvls_check', #Levels, 'Config.Levels'))
+            print(ESX.DumpTable(Levels))
+        end
     end)
 end)
 
@@ -72,7 +80,7 @@ function XP_SetInitial(XPInit)
     local GoalXP = tonumber(XPInit)
     -- Check for valid XP
     if not GoalXP or (GoalXP < 0 or GoalXP > XP_GetMaxXP()) then
-        print(("esx_xp: Invalid XP (%s) passed to '%s'"):format(XPInit, "XP_SetInitial"))
+        print(_('err_xp_update', XPInit, "XP_SetInitial"))
         return
     end    
     UpdateXP(tonumber(GoalXP), true)
@@ -82,7 +90,7 @@ function XP_SetLevel(Level)
     local GoalLevel = tonumber(Level)
 
     if not GoalLevel then
-        print(("esx_xp: Invalid level (%s) passed to '%s'"):format(Level, "XP_SetLevel"))
+        print(_('err_lvl_update', Level, "XP_SetLevel"))
         return
     end
 
@@ -94,7 +102,7 @@ end
 function XP_Add(XPAdd)
     -- Check for valid XP
     if not tonumber(XPAdd) then
-        print(("esx_xp: Invalid XP (%s) passed to '%s'"):format(XPAdd, "XP_Add"))
+        print(_('err_xp_update', XPAdd, "XP_Add"))
         return
     end       
     UpdateXP(tonumber(XPAdd))
@@ -103,7 +111,7 @@ end
 function XP_Remove(XPRemove)
     -- Check for valid XP
     if not tonumber(XPRemove) then
-        print(("esx_xp: Invalid XP (%s) passed to '%s'"):format(XPRemove, "XP_Remove"))
+        print(_('err_xp_update', XPRemove, "XP_Remove"))
         return
     end       
     UpdateXP(-(tonumber(XPRemove)))
@@ -137,7 +145,7 @@ function XP_GetXPToLevel(Level)
     local GoalLevel = tonumber(Level)
     -- Check for valid level
     if not GoalLevel or (GoalLevel < 1 or GoalLevel > #Config.Levels) then
-        print(("esx_xp: Invalid level (%s) passed to '%s'"):format(Level, "XP_GetXPToLevel"))
+        print(_('err_lvl_update', Level, "XP_GetXPToLevel"))
         return
     end
 
@@ -236,42 +244,54 @@ RegisterCommand('XP', function(source, args)
         TriggerEvent('chat:addMessage', {
             color = { 255, 0, 0},
             multiline = true,
-            args = {"SYSTEM", _U('cmd_current_xp', XP)}
+            args = {"SYSTEM", _('cmd_current_xp', XP)}
         })
         TriggerEvent('chat:addMessage', {
             color = { 255, 0, 0},
             multiline = true,
-            args = {"SYSTEM", _U('cmd_current_lvl', currentLevel)}
+            args = {"SYSTEM", _('cmd_current_lvl', currentLevel)}
         })
         TriggerEvent('chat:addMessage', {
             color = { 255, 0, 0},
             multiline = true,
-            args = {"SYSTEM", _U('cmd_next_lvl', xpToNext, currentLevel + 1)}
+            args = {"SYSTEM", _('cmd_next_lvl', xpToNext, currentLevel + 1)}
         })                
     end)
 end)
 
 -- !!!!!! THESE ARE FOR TESTING PURPOSES AND WILL NOT SAVE THE CHANGES IN THE DB !!!!!! --
 RegisterCommand('XP_SetInitial', function(source, args)
-    XP = LimitXP(tonumber(args[1]))
-    SendNUIMessage({
-        set = true,
-        xp = XP
-    });    
+    if IsInt(args[1]) then
+        XP = LimitXP(tonumber(args[1]))
+        SendNUIMessage({
+            set = true,
+            xp = XP
+        });   
+    else
+        print("esx_xp: Invalid XP") 
+    end       
 end)
 
 RegisterCommand('XP_Add', function(source, args)
-    XP = LimitXP(XP + tonumber(args[1]))
-    SendNUIMessage({
-        set = true,
-        xp = XP
-    });    
+    if IsInt(args[1]) then
+        XP = LimitXP(XP + tonumber(args[1]))
+        SendNUIMessage({
+            set = true,
+            xp = XP
+        }); 
+    else
+        print("esx_xp: Invalid XP") 
+    end  
 end)
 
 RegisterCommand('XP_Remove', function(source, args)
-    XP = LimitXP(XP - tonumber(args[1]))
-    SendNUIMessage({
-        set = true,
-        xp = XP
-    });    
+    if IsInt(args[1]) then
+        XP = LimitXP(XP - tonumber(args[1]))
+        SendNUIMessage({
+            set = true,
+            xp = XP
+        }); 
+    else
+        print("esx_xp: Invalid XP") 
+    end     
 end)
