@@ -47,45 +47,18 @@ function UpdatePlayer(PlayerID, xp)
     end
 end
 
-function XPInt(XPCheck)
-    XPCheck = tonumber(XPCheck)
-    if XPCheck and XPCheck == math.floor(XPCheck) then
-        return true
-    end
-    return false
-end
-
-function LimitXP(XPCheck)
-    local Valid = XPInt(XPCheck)
-    local Max = Config.Levels[#Config.Levels]
-
-    if Valid then
-        if XPCheck > Max then
-            XPCheck = Max
-        elseif XPCheck < 0 then
-            XPCheck = 0
-        end
-
-        return XPCheck
-    end
-
-    return false
-end
-
 ------------------------------------------------------------
 --                        EVENTS                          --
 ------------------------------------------------------------
 
 AddEventHandler("esx_xp:XP_SetInitial", function(PlayerID, XPInit)
-    XPInit = LimitXP(XPInit)
-
-    if XPInit then
-        UpdatePlayer(PlayerID, XPInit)
+    if IsInt(XPInit) then
+        UpdatePlayer(PlayerID, LimitXP(XPInit))
     end
 end)
 
 AddEventHandler("esx_xp:XP_Add", function(PlayerID, XPAdd)
-    if XPInt(XPAdd) then
+    if IsInt(XPAdd) then
         local xPlayer = ESX.GetPlayerFromId(PlayerID)
         local XP = tonumber(xPlayer.get("xp"))
         local Max = tonumber(Config.Levels[#Config.Levels])
@@ -96,16 +69,12 @@ AddEventHandler("esx_xp:XP_Add", function(PlayerID, XPAdd)
 
         local NewXP = XP + XPAdd
 
-        if NewXP > Max then
-            NewXP = Max
-        end
-
-        UpdatePlayer(PlayerID, NewXP)
+        UpdatePlayer(PlayerID, LimitXP(NewXP))
     end
 end)
 
 AddEventHandler("esx_xp:XP_Remove", function(PlayerID, XPRemove)
-    if XPInt(XPRemove) then
+    if IsInt(XPRemove) then
         local xPlayer = ESX.GetPlayerFromId(PlayerID)
         local XP = tonumber(xPlayer.get("xp"))
 
@@ -115,10 +84,6 @@ AddEventHandler("esx_xp:XP_Remove", function(PlayerID, XPRemove)
 
         local NewXP = XP - XPRemove
 
-        if NewXP < 0 then
-            NewXP = 0
-        end
-
-        UpdatePlayer(PlayerID, NewXP)
+        UpdatePlayer(PlayerID, LimitXP(NewXP))
     end
 end)

@@ -43,19 +43,13 @@ function UpdateXP(_xp, init)
         points = _xp
     end
 
-    if points < 0 then
-        points = 0
-    end
-
-    if points > max then
-        points = max
-    end
+    points = LimitXP(points)
 
     Citizen.CreateThread(function()
         local currentLevel = XP_GetLevel()
         local endLevel = XP_GetLevel(points)
-        ESX.TriggerServerCallback("esx_xp:setXP", function(xPlayer, points)
-            XP = tonumber(points)
+        ESX.TriggerServerCallback("esx_xp:setXP", function(xPlayer, xp)
+            XP = tonumber(xp)
             SendNUIMessage({
                 set = true,
                 xp = XP
@@ -255,4 +249,29 @@ RegisterCommand('XP', function(source, args)
             args = {"SYSTEM", _U('cmd_next_lvl', xpToNext, currentLevel + 1)}
         })                
     end)
+end)
+
+-- !!!!!! THESE ARE FOR TESTING PURPOSES AND WILL NOT SAVE THE CHANGES IN THE DB !!!!!! --
+RegisterCommand('XP_SetInitial', function(source, args)
+    XP = LimitXP(tonumber(args[1]))
+    SendNUIMessage({
+        set = true,
+        xp = XP
+    });    
+end)
+
+RegisterCommand('XP_Add', function(source, args)
+    XP = LimitXP(XP + tonumber(args[1]))
+    SendNUIMessage({
+        set = true,
+        xp = XP
+    });    
+end)
+
+RegisterCommand('XP_Remove', function(source, args)
+    XP = LimitXP(XP - tonumber(args[1]))
+    SendNUIMessage({
+        set = true,
+        xp = XP
+    });    
 end)

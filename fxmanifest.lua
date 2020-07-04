@@ -6,7 +6,7 @@ description 'XP Leveling System'
 
 author 'Karl Saunders'
 
-version '0.2.0'
+version '0.2.1'
 
 server_scripts {
     '@async/async.lua',
@@ -14,6 +14,7 @@ server_scripts {
     '@es_extended/locale.lua',
     'locales/en.lua',
     'config.lua',
+    'utils.lua',
     'server/main.lua'
 }
 
@@ -21,6 +22,7 @@ client_scripts {
     '@es_extended/locale.lua',
     'locales/en.lua',
     'config.lua',
+    'utils.lua',
     'client/main.lua'
 }
 
