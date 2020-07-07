@@ -9,7 +9,7 @@ end
 
 -- Prevent XP from going over / under limits
 function LimitXP(XPCheck)
-    local Max = tonumber(Config.Levels[#Config.Levels])
+    local Max = tonumber(Config.Ranks[#Config.Ranks])
 
     if XPCheck > Max then
         XPCheck = Max
@@ -20,15 +20,15 @@ function LimitXP(XPCheck)
     return tonumber(XPCheck)
 end
 
-function CheckLevels()
-    local Limit = #Config.Levels
+function CheckRanks()
+    local Limit = #Config.Ranks
     local InValid = {}
 
     for i = 1, Limit do
-        local LevelXP = Config.Levels[i]
+        local RankXP = Config.Ranks[i]
 
-        if not IsInt(LevelXP) then
-            table.insert(InValid, _('err_lvl_check', i,  LevelXP))
+        if not IsInt(RankXP) then
+            table.insert(InValid, _('err_lvl_check', i,  RankXP))
         end
         
     end

@@ -52,12 +52,12 @@ window.onData = function (data) {
 
         const levels = {};
 
-        for ( let i = 0; i < data.config.Levels.length; i++ ) {
-            levels[i+1] = data.config.Levels[i];
+        for ( let i = 0; i < data.config.Ranks.length; i++ ) {
+            levels[i+1] = data.config.Ranks[i];
         }
 
         // Class instance
-        instance = new XPLeveler({
+        instance = new XPRanker({
             xp: data.xp,
             levels: levels,
 
@@ -84,12 +84,12 @@ window.onData = function (data) {
                 fillSegments(progress, "lastElementChild");
 
                 // Update level indicators
-                levelA.firstElementChild.textContent = this.currentLevel;
-                levelB.firstElementChild.textContent = this.nextLevel;
+                levelA.firstElementChild.textContent = this.currentRank;
+                levelB.firstElementChild.textContent = this.nextRank;
 		
                 // Update XP counter
                 counter.children[0].textContent = this.currentXP;
-                counter.children[1].textContent = this.config.levels[this.nextLevel];
+                counter.children[1].textContent = this.config.levels[this.nextRank];
 
                 initialised = true;
             },
@@ -116,7 +116,7 @@ window.onData = function (data) {
             },
 
             // Update on level change
-            onLevelChange: function (current, next, previous, add, max, levelUp) {
+            onRankChange: function (current, next, previous, add, max, levelUp) {
 
                 counter.children[1].textContent = this.config.levels[next];
 		

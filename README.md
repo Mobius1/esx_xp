@@ -1,12 +1,16 @@
 # esx_xp
-Adds an XP leveling system like the one found in GTA:O
+Adds an XP ranking system like the one found in GTA:O
 
 ## Features
 * Designed to emulate the native GTA:O system
-* Saves and loads players XP / level
+* Saves and loads players XP / rank
 * Add / remove XP from your own script / job
-* Allows you listen for level changes to reward players
+* Allows you listen for rank changes to reward players
 * Fully customisable UI
+
+================================================================================================
+#### NOTE: The API may change until v1.0.0 so check back regularly for any changes.
+================================================================================================
 
 ## Demo
 You can find an interactive demo [here](https://codepen.io/Mobius1/full/yLeMwzO).
@@ -15,7 +19,7 @@ You can find an interactive demo [here](https://codepen.io/Mobius1/full/yLeMwzO)
 
 ![Demo Image 1](https://i.imgur.com/CpACt9s.gif)
 
-##### Level Up
+##### Rank Up
 
 ![Demo Image 2](https://i.imgur.com/uNPRGo5.gif)
 
@@ -43,83 +47,83 @@ Config.Locale = 'en'        -- Current language
 Config.Width = 532          -- Sets the width of the XP bar in px
 Config.Timeout = 5000       -- Sets the interval in ms that the XP bar is shown after updating
 Config.BarSegments = 10     -- Sets the number of segments the XP bar has. Native GTA:O is 10
-Config.Levels = {}          -- XP levels. Must be a table of integers with the first element being 0.
+Config.Ranks = {}          -- XP ranks. Must be a table of integers with the first element being 0.
 ```
 
 ## Functions
 
 ### Setters
 
-Set initial XP level for player
+Set initial XP rank for player
 ```lua
-exports.esx_xp:XP_SetInitial(xp --[[ integer ]])
+exports.esx_xp:ESXP_SetInitial(xp --[[ integer ]])
 ```
 
-Set Level for player. This will add the required XP to advance the player to the given level.
+Set Rank for player. This will add the required XP to advance the player to the given rank.
 ```lua
-exports.esx_xp:XP_SetLevel(level --[[ integer ]])
+exports.esx_xp:ESXP_SetRank(rank --[[ integer ]])
 ```
 
 Give player XP
 ```lua
-exports.esx_xp:XP_Add(xp --[[ integer ]])
+exports.esx_xp:ESXP_Add(xp --[[ integer ]])
 ```
 
 Remove XP from player
 ```lua
-exports.esx_xp:XP_Remove(xp --[[ integer ]])
+exports.esx_xp:ESXP_Remove(xp --[[ integer ]])
 ```
 
 ### Getters
 
 Get player's current XP
 ```lua
-exports.esx_xp:XP_GetXP()
+exports.esx_xp:ESXP_GetXP()
 ```
 
-Get player's current level
+Get player's current rank
 ```lua
--- Get level from current XP
-exports.esx_xp:XP_GetLevel()
+-- Get rank from current XP
+exports.esx_xp:ESXP_GetRank()
 
 -- or
 
--- Get level from given XP
-exports.esx_xp:XP_GetLevel(xp --[[ integer ]])
+-- Get rank from given XP
+exports.esx_xp:ESXP_GetRank(xp --[[ integer ]])
 
 ```
 
-Get XP required to advance the player to the next level
+Get XP required to advance the player to the next rank
 ```lua
-exports.esx_xp:XP_GetXPToNextLevel()
+exports.esx_xp:ESXP_GetXPToNextRank()
 ```
 
-Get XP required to advance the player to the given level
+Get XP required to advance the player to the given rank
 ```lua
-exports.esx_xp:XP_GetXPToLevel(level --[[ integer ]])
+exports.esx_xp:ESXP_GetXPToRank(rank --[[ integer ]])
 ```
 
 Get max attainable XP
 ```lua
-exports.esx_xp:XP_GetMaxXP()
+exports.esx_xp:ESXP_GetMaxXP()
 ```
 
-Get max attainable level
+Get max attainable rank
 ```lua
-exports.esx_xp:XP_GetMaxLevel()
+exports.esx_xp:ESXP_GetMaxRank()
 ```
 
 ## Client Event Listeners
 
-Listen for level change events. These can be used to reward / punish the player for changing level.
+Listen for rank change events. These can be used to reward / punish the player for changing rank.
 
-Listen for level-up event
+Listen for rank-up event
 ```lua
-AddEventHandler("esx_xp:levelUp", newLevel --[[ integer ]], previousLevel --[[ integer ]])
+AddEventHandler("esx_xp:rankUp", newRank --[[ integer ]], previousRank --[[ integer ]])
 ```
-Listen for level-down event
+Listen for rank-down event
 ```lua
-AddEventHandler("esx_xp:levelDown", newLevel --[[ integer ]], previousLevel --[[ integer ]])
+AddEventHandler("esx_xp:rankDown", newRank --[[ integer ]], previousRank --[[ integer ]])
 ```
 
 ## Server Triggers
@@ -128,17 +132,17 @@ Each of these triggers will save the player's XP as well as update their UI in r
 
 Set player's initial XP
 ```lua
-TriggerEvent("esx_xp:XP_SetInitial", source --[[ integer ]], XP --[[ integer ]])
+TriggerEvent("esx_xp:setInitial", source --[[ integer ]], XP --[[ integer ]])
 ```
 
 Give XP to player
 ```lua
-TriggerEvent("esx_xp:XP_Add", source --[[ integer ]], XP --[[ integer ]])
+TriggerEvent("esx_xp:addXP", source --[[ integer ]], XP --[[ integer ]])
 ```
 
 Remove XP from player
 ```lua
-TriggerEvent("esx_xp:XP_Remove", source --[[ integer ]], XP --[[ integer ]])
+TriggerEvent("esx_xp:removeXP", source --[[ integer ]], XP --[[ integer ]])
 ```
 
 ## Commands
@@ -149,12 +153,12 @@ Get current XP stats
 output
 ```lua
 You currently have xxxx XP
-Your current level is xxxx
-You require xxxx XP to advance to level yyyy
+Your current rank is xxxx
+You require xxxx XP to advance to rank yyyy
 ```
 
 ## To Do
-* Allow globe / level colour change based on level
+* Allow globe / rank colour change based on rank
 * Make non-ESX (platform agnostic) version available
 
 ## Contributing

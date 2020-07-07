@@ -19,10 +19,10 @@ Citizen.CreateThread(function()
     Player = ESX.GetPlayerData()
 
     ESX.TriggerServerCallback("esx_xp:ready", function(xPlayer, _xp)
-        local Levels = CheckLevels()
+        local Ranks = CheckRanks()
 
-        -- All levels are valid
-        if #Levels == 0 then
+        -- All ranks are valid
+        if #Ranks == 0 then
             XP = tonumber(_xp)
             SendNUIMessage({
                 init = true,
@@ -30,8 +30,8 @@ Citizen.CreateThread(function()
                 config = Config
             });
         else
-            print(_('err_lvls_check', #Levels, 'Config.Levels'))
-            print(ESX.DumpTable(Levels))
+            print(_('err_lvls_check', #Ranks, 'Config.Ranks'))
+            print(ESX.DumpTable(Ranks))
         end
     end)
 end)
@@ -45,7 +45,7 @@ function UpdateXP(_xp, init)
     _xp = tonumber(_xp)
 
     local points = XP + _xp;
-    local max = XP_GetMaxXP()
+    local max = ESXP_GetMaxXP()
 
     if init then
         points = _xp
@@ -54,8 +54,8 @@ function UpdateXP(_xp, init)
     points = LimitXP(points)
 
     Citizen.CreateThread(function()
-        local currentLevel = XP_GetLevel()
-        local endLevel = XP_GetLevel(points)
+        local currentRank = ESXP_GetRank()
+        local endRank = ESXP_GetRank(points)
         ESX.TriggerServerCallback("esx_xp:setXP", function(xPlayer, xp)
             XP = tonumber(xp)
             SendNUIMessage({
@@ -63,107 +63,107 @@ function UpdateXP(_xp, init)
                 xp = XP
             })
 
-            if endLevel > currentLevel then
-                for i = currentLevel, endLevel - 1 do
-                    TriggerEvent("esx_xp:levelUp", endLevel, currentLevel)
+            if endRank > currentRank then
+                for i = currentRank, endRank - 1 do
+                    TriggerEvent("esx_xp:rankUp", endRank, currentRank)
                 end
-            elseif endLevel < currentLevel then
-                for i = endLevel, currentLevel - 1 do
-                    TriggerEvent("esx_xp:levelDown", endLevel, currentLevel)
+            elseif endRank < currentRank then
+                for i = endRank, currentRank - 1 do
+                    TriggerEvent("esx_xp:rankDown", endRank, currentRank)
                 end                
             end
         end, points)
     end)
 end
 
-function XP_SetInitial(XPInit)
+function ESXP_SetInitial(XPInit)
     local GoalXP = tonumber(XPInit)
     -- Check for valid XP
-    if not GoalXP or (GoalXP < 0 or GoalXP > XP_GetMaxXP()) then
-        print(_('err_xp_update', XPInit, "XP_SetInitial"))
+    if not GoalXP or (GoalXP < 0 or GoalXP > ESXP_GetMaxXP()) then
+        print(_('err_xp_update', XPInit, "ESXP_SetInitial"))
         return
     end    
     UpdateXP(tonumber(GoalXP), true)
 end
 
-function XP_SetLevel(Level)
-    local GoalLevel = tonumber(Level)
+function ESXP_SetRank(Rank)
+    local GoalRank = tonumber(Rank)
 
-    if not GoalLevel then
-        print(_('err_lvl_update', Level, "XP_SetLevel"))
+    if not GoalRank then
+        print(_('err_lvl_update', Rank, "ESXP_SetRank"))
         return
     end
 
-    local XPAdd = tonumber(Config.Levels[GoalLevel]) - XP
+    local XPAdd = tonumber(Config.Ranks[GoalRank]) - XP
 
-    XP_Add(XPAdd)
+    ESXP_Add(XPAdd)
 end
 
-function XP_Add(XPAdd)
+function ESXP_Add(XPAdd)
     -- Check for valid XP
     if not tonumber(XPAdd) then
-        print(_('err_xp_update', XPAdd, "XP_Add"))
+        print(_('err_xp_update', XPAdd, "ESXP_Add"))
         return
     end       
     UpdateXP(tonumber(XPAdd))
 end
 
-function XP_Remove(XPRemove)
+function ESXP_Remove(XPRemove)
     -- Check for valid XP
     if not tonumber(XPRemove) then
-        print(_('err_xp_update', XPRemove, "XP_Remove"))
+        print(_('err_xp_update', XPRemove, "ESXP_Remove"))
         return
     end       
     UpdateXP(-(tonumber(XPRemove)))
 end
 
-function XP_GetLevel(_xp)
-    local len = #Config.Levels
+function ESXP_GetRank(_xp)
+    local len = #Config.Ranks
     local points = XP
     if _xp then
         points = _xp
     end
 
-    for level = 1, len do
-        if level < len then
-            if Config.Levels[level + 1] >= tonumber(points) then
-                return level
+    for rank = 1, len do
+        if rank < len then
+            if Config.Ranks[rank + 1] >= tonumber(points) then
+                return rank
             end
         else
-            return level
+            return rank
         end
     end
 end	
 
-function XP_GetXPToNextLevel()
-    local currentLevel = XP_GetLevel()
+function ESXP_GetXPToNextRank()
+    local currentRank = ESXP_GetRank()
 
-    return Config.Levels[currentLevel + 1] - tonumber(XP)   
+    return Config.Ranks[currentRank + 1] - tonumber(XP)   
 end
 
-function XP_GetXPToLevel(Level)
-    local GoalLevel = tonumber(Level)
-    -- Check for valid level
-    if not GoalLevel or (GoalLevel < 1 or GoalLevel > #Config.Levels) then
-        print(_('err_lvl_update', Level, "XP_GetXPToLevel"))
+function ESXP_GetXPToRank(Rank)
+    local GoalRank = tonumber(Rank)
+    -- Check for valid rank
+    if not GoalRank or (GoalRank < 1 or GoalRank > #Config.Ranks) then
+        print(_('err_lvl_update', Rank, "ESXP_GetXPToRank"))
         return
     end
 
-    local goalXP = tonumber(Config.Levels[GoalLevell])
+    local goalXP = tonumber(Config.Ranks[GoalRankl])
 
     return goalXP - XP
 end
 
-function XP_GetXP()
+function ESXP_GetXP()
     return tonumber(XP)
 end
 
-function XP_GetMaxXP()
-    return Config.Levels[#Config.Levels]
+function ESXP_GetMaxXP()
+    return Config.Ranks[#Config.Ranks]
 end
 
-function XP_GetMaxLevel()
-    return #Config.Levels
+function ESXP_GetMaxRank()
+    return #Config.Ranks
 end
 
 
@@ -203,31 +203,31 @@ end)
 ------------------------------------------------------------
 
 -- SET INTITIAL XP
-exports('XP_SetInitial', XP_SetInitial)
+exports('ESXP_SetInitial', ESXP_SetInitial)
 
 -- ADD XP
-exports('XP_Add', XP_Add)
+exports('ESXP_Add', ESXP_Add)
 
 -- REMOVE XP
-exports('XP_Remove', XP_Remove)
+exports('ESXP_Remove', ESXP_Remove)
 
 -- GET CURRENT XP
-exports('XP_GetXP', XP_GetXP)
+exports('ESXP_GetXP', ESXP_GetXP)
 
--- GET CURRENT LEVEL
-exports('XP_GetLevel', XP_GetLevel)
+-- GET CURRENT RANK
+exports('ESXP_GetRank', ESXP_GetRank)
 
--- GET XP REQUIRED TO LEVEL-UP
-exports('XP_GetXPToNextLevel', XP_GetXPToNextLevel)
+-- GET XP REQUIRED TO RANK-UP
+exports('ESXP_GetXPToNextRank', ESXP_GetXPToNextRank)
 
--- GET XP REQUIRED TO LEVEL-UP
-exports('XP_GetXPToLevel', XP_GetXPToLevel)
+-- GET XP REQUIRED TO RANK-UP
+exports('ESXP_GetXPToRank', ESXP_GetXPToRank)
 
 -- GET MAX XP
-exports('XP_GetMaxXP', XP_GetMaxXP)
+exports('ESXP_GetMaxXP', ESXP_GetMaxXP)
 
--- GET MAX LEVEL
-exports('XP_GetMaxLevel', XP_GetMaxLevel)
+-- GET MAX RANK
+exports('ESXP_GetMaxRank', ESXP_GetMaxRank)
 
 
 ------------------------------------------------------------
@@ -238,8 +238,8 @@ TriggerEvent('chat:addSuggestion', '/XP', 'Display your XP stats')
 
 RegisterCommand('XP', function(source, args)
     Citizen.CreateThread(function()
-        local currentLevel = XP_GetLevel()
-        local xpToNext = XP_GetXPToNextLevel()
+        local currentRank = ESXP_GetRank()
+        local xpToNext = ESXP_GetXPToNextRank()
 
         TriggerEvent('chat:addMessage', {
             color = { 255, 0, 0},
@@ -249,18 +249,18 @@ RegisterCommand('XP', function(source, args)
         TriggerEvent('chat:addMessage', {
             color = { 255, 0, 0},
             multiline = true,
-            args = {"SYSTEM", _('cmd_current_lvl', currentLevel)}
+            args = {"SYSTEM", _('cmd_current_lvl', currentRank)}
         })
         TriggerEvent('chat:addMessage', {
             color = { 255, 0, 0},
             multiline = true,
-            args = {"SYSTEM", _('cmd_next_lvl', xpToNext, currentLevel + 1)}
+            args = {"SYSTEM", _('cmd_next_lvl', xpToNext, currentRank + 1)}
         })                
     end)
 end)
 
 -- !!!!!! THESE ARE FOR TESTING PURPOSES AND WILL NOT SAVE THE CHANGES IN THE DB !!!!!! --
-RegisterCommand('XP_SetInitial', function(source, args)
+RegisterCommand('ESXP_SetInitial', function(source, args)
     if IsInt(args[1]) then
         XP = LimitXP(tonumber(args[1]))
         SendNUIMessage({
@@ -272,7 +272,7 @@ RegisterCommand('XP_SetInitial', function(source, args)
     end       
 end)
 
-RegisterCommand('XP_Add', function(source, args)
+RegisterCommand('ESXP_Add', function(source, args)
     if IsInt(args[1]) then
         XP = LimitXP(XP + tonumber(args[1]))
         SendNUIMessage({
@@ -284,7 +284,7 @@ RegisterCommand('XP_Add', function(source, args)
     end  
 end)
 
-RegisterCommand('XP_Remove', function(source, args)
+RegisterCommand('ESXP_Remove', function(source, args)
     if IsInt(args[1]) then
         XP = LimitXP(XP - tonumber(args[1]))
         SendNUIMessage({

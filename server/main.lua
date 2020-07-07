@@ -51,17 +51,17 @@ end
 --                        EVENTS                          --
 ------------------------------------------------------------
 
-AddEventHandler("esx_xp:XP_SetInitial", function(PlayerID, XPInit)
+AddEventHandler("esx_xp:setInitial", function(PlayerID, XPInit)
     if IsInt(XPInit) then
         UpdatePlayer(PlayerID, LimitXP(XPInit))
     end
 end)
 
-AddEventHandler("esx_xp:XP_Add", function(PlayerID, XPAdd)
+AddEventHandler("esx_xp:addXP", function(PlayerID, XPAdd)
     if IsInt(XPAdd) then
         local xPlayer = ESX.GetPlayerFromId(PlayerID)
         local XP = tonumber(xPlayer.get("xp"))
-        local Max = tonumber(Config.Levels[#Config.Levels])
+        local Max = tonumber(Config.Ranks[#Config.Ranks])
 
         if not XP then
             XP = CurrentXP
@@ -73,7 +73,7 @@ AddEventHandler("esx_xp:XP_Add", function(PlayerID, XPAdd)
     end
 end)
 
-AddEventHandler("esx_xp:XP_Remove", function(PlayerID, XPRemove)
+AddEventHandler("esx_xp:removeXP", function(PlayerID, XPRemove)
     if IsInt(XPRemove) then
         local xPlayer = ESX.GetPlayerFromId(PlayerID)
         local XP = tonumber(xPlayer.get("xp"))

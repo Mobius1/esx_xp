@@ -1,11 +1,11 @@
-class XPLeveler {
+class XPRanker {
     constructor(options) {
         const config = {
             xp: 0,
             tick: 100,
             onInit: () => {},
             onChange: () => {},
-            onLevelChange: () => {},
+            onRankChange: () => {},
             onStart: () => {},
             onEnd: () => {}
         };
@@ -16,18 +16,18 @@ class XPLeveler {
     }
 
     init() {
-        this.currentLevel = 1;
+        this.currentRank = 1;
         this.currentXP = this.config.xp;
-        this.maxLevel = Object.keys(this.config.levels).length;
-        this.maxXP = this.config.levels[this.maxLevel];
-        this.currentLevel = this.getLevelFromXP();
-        this.nextLevel = this.currentLevel + 1;
+        this.maxRank = Object.keys(this.config.levels).length;
+        this.maxXP = this.config.levels[this.maxRank];
+        this.currentRank = this.getRankFromXP();
+        this.nextRank = this.currentRank + 1;
         this.levelProgress =
-            (this.currentXP / this.config.levels[this.nextLevel]) * 100;
+            (this.currentXP / this.config.levels[this.nextRank]) * 100;
 
-        this.previousLevel = 0;
-        if (this.currentLevel > 1) {
-            this.previousLevel = this.currentLevel - 1;
+        this.previousRank = 0;
+        if (this.currentRank > 1) {
+            this.previousRank = this.currentRank - 1;
         }
 
         this.config.onInit.call(this, this.levelProgress);
@@ -65,7 +65,7 @@ class XPLeveler {
         this._update(xp, false);
     }
 	
-    getLevelFromXP(xp) {
+    getRankFromXP(xp) {
         if ( xp === undefined ) {
             xp = this.currentXP;
         }
@@ -97,7 +97,7 @@ class XPLeveler {
         const targetXP = add ? this.currentXP + xp : this.currentXP - xp;
         const levels = this.config.levels;
 		
-        let level = this.currentLevel;
+        let level = this.currentRank;
         let n = this.currentXP;
 
         this.config.onStart.call(this, add);
@@ -108,9 +108,9 @@ class XPLeveler {
                 this.running = true;
 				
                 let levelDiff =
-                    this.currentLevel < this.maxLevel
+                    this.currentRank < this.maxRank
                         ? levels[level + 1] - levels[level]
-                        : levels[this.maxLevel] - levels[this.maxLevel - 1];
+                        : levels[this.maxRank] - levels[this.maxRank - 1];
                 const inc = levelDiff / this.config.tick;
 
                 // increment XP
@@ -145,10 +145,10 @@ class XPLeveler {
 
                 // level changed
                 if (
-                    (add && n >= levels[level + 1] && level < this.maxLevel) ||
+                    (add && n >= levels[level + 1] && level < this.maxRank) ||
                     (!add && n < levels[level] && level > 1)
                 ) {
-                    const previousLevel = level;
+                    const previousRank = level;
                     let max = false;
                     let levelUp = false;
 					
@@ -160,35 +160,35 @@ class XPLeveler {
                         level--;
                     }
 					
-                    max = level === this.maxLevel;
+                    max = level === this.maxRank;
 					
-                    this.currentLevel = level;
+                    this.currentRank = level;
 
                     // new levels
                     if ( !max ) {
-                        this.nextLevel = level + 1;
-                        this.previousLevel = previousLevel;
+                        this.nextRank = level + 1;
+                        this.previousRank = previousRank;
                         this.levelProgress = 0;
                     } else {
                         this.levelProgress = 100;
-                        this.nextLevel = this.maxLevel;
-                        this.previousLevel = this.maxLevel - 1;
+                        this.nextRank = this.maxRank;
+                        this.previousRank = this.maxRank - 1;
                     }
 
                     // level change callback
-                    if (this.previousLevel !== level) {
-                        this.config.onLevelChange.call(
+                    if (this.previousRank !== level) {
+                        this.config.onRankChange.call(
                             this,
                             level,
-                            this.nextLevel,
-                            previousLevel,
+                            this.nextRank,
+                            previousRank,
                             add,
                             max,
                             levelUp
                         );
                     }
 					
-                    this.previousLevel = level;
+                    this.previousRank = level;
                 }
 
                 requestAnimationFrame(animate);
