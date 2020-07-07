@@ -8,9 +8,9 @@ Adds an XP ranking system like the one found in GTA:O
 * Allows you listen for rank changes to reward players
 * Fully customisable UI
 
-================================================================================================
+============================================================================
 #### NOTE: The API may change until v1.0.0 so check back regularly for any changes.
-================================================================================================
+============================================================================
 
 ## Demo
 You can find an interactive demo [here](https://codepen.io/Mobius1/full/yLeMwzO).
