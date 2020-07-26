@@ -48,12 +48,12 @@ function fillSegments(pr, child) {
 
 window.onData = function (data) {
     
-    if (data.init && !initialised) {
+    if (data.esxp_init && !initialised) {
 
         const levels = {};
 
-        for ( let i = 0; i < data.config.Ranks.length; i++ ) {
-            levels[i+1] = data.config.Ranks[i];
+        for ( let i = 0; i < data.esxp_config.Ranks.length; i++ ) {
+            levels[i+1] = data.esxp_config.Ranks[i];
         }
 
         // Class instance
@@ -64,12 +64,12 @@ window.onData = function (data) {
             // set initial XP / level
             onInit: function (progress) {
 
-                segments = data.config.BarSegments
+                segments = data.esxp_config.BarSegments
 
                 // create segmented progress bar
                 renderBar();
 
-                inner.style.width = `${data.config.Width}px`;
+                inner.style.width = `${data.esxp_config.Width}px`;
 
                 clearTimeout(timer);
                 // show the xp bar
@@ -78,7 +78,7 @@ window.onData = function (data) {
                 // hide the xp bar
                 timer = setTimeout(() => {
                     container.classList.remove("active");
-                }, data.config.Timeout);                
+                }, data.esxp_config.Timeout);                
 
                 // fill to starting XP / level
                 fillSegments(progress, "lastElementChild");
@@ -147,7 +147,7 @@ window.onData = function (data) {
                 // hide the xp bar
                 timer = setTimeout(() => {
                     container.classList.remove("active");
-                }, data.config.Timeout);
+                }, data.esxp_config.Timeout);
 
                 xpBar.classList.remove("xp-remove");
             }
@@ -156,22 +156,22 @@ window.onData = function (data) {
 
 
     // Set XP
-    if (data.set && initialised) {
+    if (data.esxp_set && initialised) {
         instance.setXP(data.xp);
     }
 
     // Add XP
-    if (data.add && initialised) {
+    if (data.esxp_add && initialised) {
         instance.addXP(data.xp);
     }
 
     // Remove XP
-    if (data.remove && initialised) {
+    if (data.esxp_remove && initialised) {
         instance.removeXP(data.xp);
     }    
     
     // Show XP bar
-    if (data.display && initialised) {
+    if (data.esxp_display && initialised) {
         container.classList.add("active");
 
         this.clearTimeout(this.xpTimer);

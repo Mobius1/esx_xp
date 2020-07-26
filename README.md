@@ -148,7 +148,7 @@ TriggerEvent("esx_xp:removeXP", source --[[ integer ]], XP --[[ integer ]])
 ## Commands
 Get current XP stats
 ```lua
-/XP
+/ESXP
 ```
 output
 ```lua

@@ -25,9 +25,9 @@ Citizen.CreateThread(function()
         if #Ranks == 0 then
             XP = tonumber(_xp)
             SendNUIMessage({
-                init = true,
+                esxp_init = true,
                 xp = XP,
-                config = Config
+                esxp_config = Config
             });
         else
             print(_('err_lvls_check', #Ranks, 'Config.Ranks'))
@@ -59,7 +59,7 @@ function UpdateXP(_xp, init)
         ESX.TriggerServerCallback("esx_xp:setXP", function(xPlayer, xp)
             XP = tonumber(xp)
             SendNUIMessage({
-                set = true,
+                esxp_set = true,
                 xp = XP
             })
 
@@ -175,7 +175,7 @@ Citizen.CreateThread(function()
     while true do
         if IsControlJustReleased(0, 20) then
             SendNUIMessage({
-                display = true
+                esxp_display = true
             })
         end
         Citizen.Wait(1)
@@ -192,7 +192,7 @@ AddEventHandler("esx_xp:updateUI", function(_xp)
     XP = tonumber(_xp)
 
     SendNUIMessage({
-        set = true,
+        esxp_set = true,
         xp = XP
     });
 end)
@@ -234,12 +234,15 @@ exports('ESXP_GetMaxRank', ESXP_GetMaxRank)
 --                        COMMANDS                        --
 ------------------------------------------------------------
 
-TriggerEvent('chat:addSuggestion', '/XP', 'Display your XP stats') 
+TriggerEvent('chat:addSuggestion', '/ESXP', 'Display your XP stats') 
 
-RegisterCommand('XP', function(source, args)
+RegisterCommand('ESXP', function(source, args)
     Citizen.CreateThread(function()
         local currentRank = ESXP_GetRank()
         local xpToNext = ESXP_GetXPToNextRank()
+
+        -- SHOW THE XP BAR
+        SendNUIMessage({ esxp_display = true })        
 
         TriggerEvent('chat:addMessage', {
             color = { 255, 0, 0},
@@ -264,7 +267,7 @@ RegisterCommand('ESXP_SetInitial', function(source, args)
     if IsInt(args[1]) then
         XP = LimitXP(tonumber(args[1]))
         SendNUIMessage({
-            set = true,
+            esxp_set = true,
             xp = XP
         });   
     else
@@ -276,7 +279,7 @@ RegisterCommand('ESXP_Add', function(source, args)
     if IsInt(args[1]) then
         XP = LimitXP(XP + tonumber(args[1]))
         SendNUIMessage({
-            set = true,
+            esxp_set = true,
             xp = XP
         }); 
     else
@@ -288,7 +291,7 @@ RegisterCommand('ESXP_Remove', function(source, args)
     if IsInt(args[1]) then
         XP = LimitXP(XP - tonumber(args[1]))
         SendNUIMessage({
-            set = true,
+            esxp_set = true,
             xp = XP
         }); 
     else
