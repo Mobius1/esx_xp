@@ -10,6 +10,7 @@ Adds an XP ranking system like the one found in GTA:O
 
 ============================================================================
 #### NOTE: The API may change until v1.0.0 so check back regularly for any changes.
+#### NOTE 2: v1.0.0 will have the ESX dependency removed
 ============================================================================
 
 ## Demo
