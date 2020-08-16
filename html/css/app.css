@@ -83,7 +83,7 @@ body {
     background-color: #df3232;
 }
 
-.xp .xp-inner .xp-level {
+.xp .xp-inner .xp-rank {
     width: 47px;
     height: 47px;
     border-radius: 50%;
@@ -98,13 +98,13 @@ body {
     position: relative;
 }
 
-.xp .xp-inner .xp-level div {
+.xp .xp-inner .xp-rank div {
     position: absolute;
     font-size: 50px;
     z-index: 10;
 }
 
-.xp .xp-inner .xp-level svg {
+.xp .xp-inner .xp-rank svg {
     position: absolute;
     top: 1px;
     left: 0;
@@ -112,38 +112,38 @@ body {
     height: 100%;
 }
 
-.xp .xp-inner .xp-level path {
+.xp .xp-inner .xp-rank path {
     fill: #2e6eb8;
 }
 
-.xp .xp-inner .xp-level.spin div {
+.xp .xp-inner .xp-rank.spin div {
     -webkit-animation: spin 500ms linear 0ms forwards;
     animation: spin 500ms linear 0ms forwards;
 }
 
-.xp .xp-inner .xp-level.pulse {
+.xp .xp-inner .xp-rank.pulse {
     background-color: transparent;
     -webkit-animation: pulse 500ms linear 0ms forwards;
     animation: pulse 500ms linear 0ms forwards;
 }
 
-.xp .xp-inner .xp-level.pulse div {
+.xp .xp-inner .xp-rank.pulse div {
     color: #2e6eb8;
 }
 
-.xp .xp-inner .xp-level.pulse path {
+.xp .xp-inner .xp-rank.pulse path {
     fill: #fff;
 }
 
-.xp .xp-inner .xp-level.highlight {
+.xp .xp-inner .xp-rank.highlight {
     background-color: transparent;
 }
 
-.xp .xp-inner .xp-level.highlight div {
+.xp .xp-inner .xp-rank.highlight div {
     color: #2e6eb8;
 }
 
-.xp .xp-inner .xp-level.highlight path {
+.xp .xp-inner .xp-rank.highlight path {
     fill: #fff;
 }
 
