@@ -34,6 +34,7 @@ You can find an interactive demo [here](https://codepen.io/Mobius1/full/yLeMwzO)
 * Download and extract the package: https://github.com/Mobius1/esx_xp/archive/master.zip
 * Rename the `esx_xp-master` directory to `esx_xp`
 * Drop the `esx_xp` directory into your `[esx]` directory on your server
+* Import the `esx_xp.sql` file into your db
 * Add `start esx_xp` in your `server.cfg`
 * Edit `config.lua` to your liking
 * Start your server and rejoice!
