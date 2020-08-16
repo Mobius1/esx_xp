@@ -91,6 +91,10 @@ window.onData = function (data) {
                 counter.children[0].textContent = this.currentXP;
                 counter.children[1].textContent = this.config.ranks[this.nextRank];
 
+                // add new ranks
+                rankA.classList.add(`xp-rank-${this.currentRank}`);
+                rankB.classList.add(`xp-rank-${this.nextRank}`);                
+
                 initialised = true;
             },
 	
@@ -117,6 +121,14 @@ window.onData = function (data) {
 
             // Update on rank change
             onRankChange: function (current, next, previous, add, max, rankUp) {
+
+                // Remove old ranks
+                rankA.classList.remove(`xp-rank-${previous}`);
+                rankB.classList.remove(`xp-rank-${current}`);
+        
+                // add new ranks
+                rankA.classList.add(`xp-rank-${current}`);
+                rankB.classList.add(`xp-rank-${next}`);             
 
                 counter.children[1].textContent = this.config.ranks[next];
 		
