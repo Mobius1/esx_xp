@@ -22,8 +22,9 @@ class XPRanker {
         this.maxXP = this.config.levels[this.maxRank];
         this.currentRank = this.getRankFromXP();
         this.nextRank = this.currentRank + 1;
-        this.levelProgress =
-            (this.currentXP / this.config.levels[this.nextRank]) * 100;
+
+        const levelDiff = this.config.levels[this.nextRank] - this.config.levels[this.currentRank]
+        this.levelProgress = ((levelDiff - (this.config.levels[this.nextRank] - this.currentXP)) / levelDiff) * 100
 
         this.previousRank = 0;
         if (this.currentRank > 1) {
@@ -122,7 +123,7 @@ class XPRanker {
                 this.currentXP = n;
 
                 // progress bar
-                this.levelProgress = ((n - levels[level]) / levelDiff) * 100;
+                this.levelProgress = ((levelDiff - (levels[level + 1] - n)) / levelDiff) * 100;
 				
                 if ( this.levelProgress >= 100 ) {
                     this.levelProgress = 0;

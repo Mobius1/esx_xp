@@ -6,7 +6,7 @@ description 'XP Ranking System'
 
 author 'Karl Saunders'
 
-version '0.3.1'
+version '0.3.2'
 
 server_scripts {
     '@async/async.lua',
