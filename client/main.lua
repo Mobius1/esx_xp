@@ -209,6 +209,10 @@ AddEventHandler('esx_xp:addXP',  ESXP_Add)
 RegisterNetEvent("esx_xp:removeXP")
 AddEventHandler('esx_xp:removeXP',  ESXP_Remove)
 
+-- SET RANK
+RegisterNetEvent("esx_xp:removeXP")
+AddEventHandler('esx_xp:setRank',  ESXP_SetRank)
+
 ------------------------------------------------------------
 --                        EXPORTS                         --
 ------------------------------------------------------------
@@ -221,6 +225,9 @@ exports('ESXP_Add', ESXP_Add)
 
 -- REMOVE XP
 exports('ESXP_Remove', ESXP_Remove)
+
+-- SET RANK
+exports('ESXP_SetRank', ESXP_SetRank)
 
 -- GET CURRENT XP
 exports('ESXP_GetXP', ESXP_GetXP)

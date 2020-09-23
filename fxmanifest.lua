@@ -6,7 +6,7 @@ description 'XP Ranking System'
 
 author 'Karl Saunders'
 
-version '0.4.0'
+version '0.5.0'
 
 server_scripts {
     '@async/async.lua',
@@ -43,6 +43,7 @@ files {
 export 'ESXP_SetInitial'
 export 'ESXP_Add'
 export 'ESXP_Remove'
+export 'ESXP_SetRank'
 export 'ESXP_GetXP'
 export 'ESXP_GetRank'
 export 'ESXP_GetXPToNextRank'
