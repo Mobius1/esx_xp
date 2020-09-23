@@ -134,17 +134,17 @@ Each of these triggers will save the player's XP as well as update their UI in r
 
 Set player's initial XP
 ```lua
-TriggerEvent("esx_xp:setInitial", source --[[ integer ]], XP --[[ integer ]])
+TriggerClientEvent("esx_xp:setInitial", source --[[ integer ]], XP --[[ integer ]])
 ```
 
 Give XP to player
 ```lua
-TriggerEvent("esx_xp:addXP", source --[[ integer ]], XP --[[ integer ]])
+TriggerClientEvent("esx_xp:addXP", source --[[ integer ]], XP --[[ integer ]])
 ```
 
 Remove XP from player
 ```lua
-TriggerEvent("esx_xp:removeXP", source --[[ integer ]], XP --[[ integer ]])
+TriggerClientEvent("esx_xp:removeXP", source --[[ integer ]], XP --[[ integer ]])
 ```
 
 ## Commands

@@ -197,6 +197,17 @@ AddEventHandler("esx_xp:updateUI", function(_xp)
     });
 end)
 
+-- SET INTITIAL XP
+RegisterNetEvent("esx_xp:setInitial")
+AddEventHandler('esx_xp:setInitial',  ESXP_SetInitial)
+
+-- ADD XP
+RegisterNetEvent("esx_xp:addXP")
+AddEventHandler('esx_xp:addXP',  ESXP_Add)
+
+-- REMOVE XP
+RegisterNetEvent("esx_xp:removeXP")
+AddEventHandler('esx_xp:removeXP',  ESXP_Remove)
 
 ------------------------------------------------------------
 --                        EXPORTS                         --
