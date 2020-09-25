@@ -77,7 +77,7 @@ class XPRanker {
                 const rank = parseInt(id, 10);
 
                 if (rank < len) {
-                    if (this.config.ranks[rank + 1] >= xp) {
+                    if (this.config.ranks[rank + 1] > xp) {
                         return rank;
                     }
                 } else {
