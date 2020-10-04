@@ -28,6 +28,7 @@ This is the ESX version of my framework agnostic [XpM](https://github.com/Mobius
 * [Server Triggers](#server-triggers)
 * [UI](#ui)
 * [Commands](#commands)
+* [Demo Commands](#demo-commands)
 * [FAQ](#faq)
 * [Contributing](#contributing)
 * [Legal](#legal)
@@ -207,6 +208,32 @@ output
 You currently have xxxx XP
 Your current rank is xxxx
 You require xxxx XP to advance to rank yyyy
+```
+
+## Demo Commands
+
+These commands will change the XP level / Rank on the UI, but won't be saved.
+
+If these are not required, you can delete the `demo.lua` file and remove it's entry in the `fxmanifest.lua` file.
+
+Set intitial XP
+```lua
+/ESXP_SetInitial xp
+```
+
+Add XP
+```lua
+/ESXP_Add xp
+```
+
+Remove XP
+```lua
+/ESXP_Remove xp
+```
+
+Add fake player to leaderboard
+```lua
+/ESXP_AddFakePlayer
 ```
 
 ## FAQ
