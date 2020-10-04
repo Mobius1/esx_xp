@@ -216,7 +216,7 @@ These commands will change the XP level / Rank on the UI, but won't be saved.
 
 If these are not required, you can delete the `demo.lua` file and remove it's entry in the `fxmanifest.lua` file.
 
-Set intitial XP
+Set initial XP
 ```lua
 /ESXP_SetInitial xp
 ```
