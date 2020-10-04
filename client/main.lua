@@ -85,6 +85,13 @@ end)
 if Config.Leaderboard.Enabled then
     RegisterNetEvent("esx_xp:setPlayerData")
     AddEventHandler("esx_xp:setPlayerData", function(players)
+
+        for k, v in pairs(Players) do
+            if v.fake == nil then
+                Players[k] = nil
+            end
+        end
+
         for k, v in pairs(players) do
             Players[v.id] = v
         end

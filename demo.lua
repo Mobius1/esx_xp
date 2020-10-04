@@ -24,17 +24,17 @@ RegisterCommand('ESXP', function(source, args)
         TriggerEvent('chat:addMessage', {
             color = { 255, 0, 0},
             multiline = true,
-            args = {"SYSTEM", trans('cmd_current_xp', CurrentXP)}
+            args = {"SYSTEM", _('cmd_current_xp', CurrentXP)}
         })
         TriggerEvent('chat:addMessage', {
             color = { 255, 0, 0},
             multiline = true,
-            args = {"SYSTEM", trans('cmd_current_lvl', CurrentRank)}
+            args = {"SYSTEM", _('cmd_current_lvl', CurrentRank)}
         })
         TriggerEvent('chat:addMessage', {
             color = { 255, 0, 0},
             multiline = true,
-            args = {"SYSTEM", trans('cmd_next_lvl', xpToNext, CurrentRank + 1)}
+            args = {"SYSTEM", _('cmd_next_lvl', xpToNext, CurrentRank + 1)}
         })                
     end)
 end)
@@ -95,5 +95,16 @@ RegisterCommand('ESXP_AddFakePlayer', function(source, args)
         fake = true
     }
 
-    ESXP_ShowUI()
+    ESXP_ShowUI()   
+end)
+
+RegisterCommand('ESXP_RemoveFakePlayers', function(source, args)
+
+    for k, v in pairs(Players) do
+        if v.fake ~= nil then
+            Players[k] = nil
+        end
+    end
+
+    ESXP_ShowUI()     
 end)

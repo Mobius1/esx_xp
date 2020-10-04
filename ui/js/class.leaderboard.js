@@ -86,10 +86,23 @@ class Leaderboard {
 		
         this.players[player.id] = player;
 		
-        this.header.textContent = `Players: ${Object.keys(this.players).length}`;
+        this.header.textContent = `Players: ${this.getPlayerCount()}`;
     }
 
     updatePlayers(players) {
+        const currentCount = this.getPlayerCount();
+        const playerCount = Object.keys(players).length;
+
+        if ( currentCount > playerCount ) {
+            for ( const id in this.players ) {
+                const player = this.players[id];
+
+                if ( !(id in players) ) {
+                    this.removePlayer(player);
+                }
+            }
+        }
+
         for ( const id in players ) {
             const player = players[id];
             if ( !(player.id in this.players) ) {
@@ -110,7 +123,11 @@ class Leaderboard {
             
         }
 
-        this.header.textContent = `Players: ${Object.keys(this.players).length}`;
+        this.header.textContent = `Players: ${this.getPlayerCount()}`;
+    }
+
+    getPlayerCount() {
+        return Object.keys(this.players).length;
     }
 	
     addPlayers(players) {

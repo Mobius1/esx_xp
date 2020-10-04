@@ -6,7 +6,7 @@ description 'XP Ranking System'
 
 author 'Karl Saunders'
 
-version '1.0.2'
+version '1.0.3'
 
 server_scripts {
     '@mysql-async/lib/MySQL.lua',
@@ -30,15 +30,15 @@ dependencies {
     'es_extended',
 }
 
-ui_page 'html/ui.html'
+ui_page 'ui/ui.html'
 
 files {
-    'html/ui.html',
-    'html/fonts/ChaletComprimeCologneSixty.ttf',
-    'html/css/app.css',
-    'html/js/class.xpm.js',
-    'html/js/class.leaderboard.js',
-    'html/js/app.js'
+    'ui/ui.html',
+    'ui/fonts/ChaletComprimeCologneSixty.ttf',
+    'ui/css/app.css',
+    'ui/js/class.xpm.js',
+    'ui/js/class.leaderboard.js',
+    'ui/js/app.js'
 }
 
 export 'ESXP_SetInitial'
