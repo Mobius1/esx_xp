@@ -1,5 +1,7 @@
 # esx_xp
-Adds an XP ranking system like the one found in GTA:O
+Adds an XP ranking system like the one found in GTA:O.
+
+This is the ESX version of my framework agnostic [XpM](https://github.com/Mobius1/XpM) package.
 
 ## Features
 * Designed to emulate the native GTA:O system
@@ -7,13 +9,27 @@ Adds an XP ranking system like the one found in GTA:O
 * Add / remove XP from your own script / job
 * Allows you listen for rank changes to reward players
 * Fully customisable UI
+* Integrated leaderboard
 
-============================================================================
-#### NOTE: The API may change until v1.0.0 so check back regularly for any changes.
-#### NOTE 2: If you want a non-ESX / framework agnostic version then check out my other repo - [XpM](https://github.com/Mobius1/XpM)
-============================================================================
+## TOC
+* [Features](#features)
+* [Demos](#demos)
+* [Requirements](#requirements)
+* [Download & Installation](#download---installation)
+* [Configuration](#configuration)
+* [Functions](#functions)
+* [Setters](#setters)
+* [Getters](#getters)
+* [Client Event Listeners](#client-event-listeners)
+* [Server Triggers](#server-triggers)
+* [UI](#ui)
+* [Commands](#commands)
+* [FAQ](#faq)
+* [Contributing](#contributing)
+* [Legal](#legal)
+* [License](#license)
 
-## Demo
+## Demos
 You can find an interactive demo [here](https://codepen.io/Mobius1/full/yLeMwzO).
 
 ##### Increasing XP
@@ -24,32 +40,40 @@ You can find an interactive demo [here](https://codepen.io/Mobius1/full/yLeMwzO)
 
 ![Demo Image 2](https://i.imgur.com/uNPRGo5.gif)
 
+##### Leaderboard
+![Demo Image 3](https://i.imgur.com/vOY7xpI.png)
 
 ## Requirements
 
-* [es_extended](https://github.com/ESX-Org/es_extended)
+* [es_extended](https://github.com/esx-framework/es_extended/tree/v1-final)
 
 ## Download & Installation
 
 * Download and extract the package: https://github.com/Mobius1/esx_xp/archive/master.zip
 * Rename the `esx_xp-master` directory to `esx_xp`
-* Drop the `esx_xp` directory into your `[esx]` directory on your server
+* Drop the `esx_xp` directory into your `resources` directory on your server
 * Import the `esx_xp.sql` file into your db
-* Add `start esx_xp` in your `server.cfg`
+* Add `ensure esx_xp` in your `server.cfg`
 * Edit `config.lua` to your liking
-* Start your server and rejoice!
+* Start your server
 
 ## Configuration
 
 The `config.lua` file is set to emulate GTA:O as close as possible, but can be changed to fit your own needs.
 
 ```lua
-Config.Enabled = true       -- enable / disable the resource
-Config.Locale = 'en'        -- Current language
-Config.Width = 532          -- Sets the width of the XP bar in px
-Config.Timeout = 5000       -- Sets the interval in ms that the XP bar is shown after updating
-Config.BarSegments = 10     -- Sets the number of segments the XP bar has. Native GTA:O is 10
-Config.Ranks = {}          -- XP ranks. Must be a table of integers with the first element being 0.
+Config.Enabled      = true  -- enable / disable the resource
+Config.Locale       = 'en'  -- Current language
+Config.Width        = 532   -- Sets the width of the XP bar in px
+Config.Timeout      = 5000  -- Sets the interval in ms that the XP bar is shown before fading out
+Config.BarSegments  = 10    -- Sets the number of segments the XP bar has. Native GTA:O is 10
+Config.Ranks        = {}    -- XP ranks. Must be a table of integers with the first element being 0.
+
+Config.Leaderboard = {
+    Enabled     = true,     -- Enable the leaderboard
+    ShowPing    = true,     -- Show player pings on the leaderboard
+    Order       = "rank"    -- Order the player list by "name", "rank" or "id"
+}
 ```
 
 ## Functions
@@ -121,31 +145,37 @@ Listen for rank change events. These can be used to reward / punish the player f
 
 Listen for rank-up event
 ```lua
-AddEventHandler("esx_xp:rankUp", newRank --[[ integer ]], previousRank --[[ integer ]])
+AddEventHandler("esx_xp:rankUp", function(newRank --[[ integer ]], previousRank --[[ integer ]])
+    -- Do something when player ranks up
+end)
 ```
 Listen for rank-down event
 ```lua
-AddEventHandler("esx_xp:rankDown", newRank --[[ integer ]], previousRank --[[ integer ]])
+AddEventHandler("esx_xp:rankDown", function(newRank --[[ integer ]], previousRank --[[ integer ]])
+    -- Do something when player drops a rank
+end)
 ```
 
 ## Server Triggers
-
-Each of these triggers will save the player's XP as well as update their UI in real-time
-
-Set player's initial XP
 ```lua
-TriggerClientEvent("esx_xp:setInitial", source --[[ integer ]], XP --[[ integer ]])
+-- SET INTITIAL XP
+TriggerClientEvent('esx_xp:SetInitial', source, xp)
+
+-- ADD XP
+TriggerClientEvent('esx_xp:Add', source, xp)
+
+-- REMOVE XP
+TriggerClientEvent('esx_xp:Remove', source, xp)
+
+-- SET RANK
+TriggerClientEvent('esx_xp:SetRank', source, rank)
+
 ```
 
-Give XP to player
-```lua
-TriggerClientEvent("esx_xp:addXP", source --[[ integer ]], XP --[[ integer ]])
-```
+## UI
+The UI can be toggled with the `Z` key by default. The UI will fade out after the interval defined by `Config.Timeout` or you can close it immediately with the `Z` key.
 
-Remove XP from player
-```lua
-TriggerClientEvent("esx_xp:removeXP", source --[[ integer ]], XP --[[ integer ]])
-```
+The data in the leaderboard is refreshed whenever it is opened so you get up-to-date information.
 
 ## Commands
 Get current XP stats
@@ -159,9 +189,26 @@ Your current rank is xxxx
 You require xxxx XP to advance to rank yyyy
 ```
 
-## To Do
-* Allow globe / rank colour change based on rank
-* Make non-ESX (platform agnostic) version available
+## FAQ
+
+#### How do I change the look of the UI?
+
+With a little knowledge of HTML5,  CSS3 and JS you can change all aspects of the look and layout of the bar to make it fit with your UI. The main structure is defined in `html/ui.html`, the main style is defined in `html/css/app.css` and scripting is defined in `html/js/app.js`.
+
+You can find a demo of customised UI [here](https://codepen.io/Mobius1/full/eYJRmVy)
+
+#### How do I lock a weapon / vehicle / unlockable to a rank?
+
+To lock something to a rank you can listen for the `esx_xp:rankUp` or `esx_xp:rankDown` events:
+
+Example of unlocking the minigun at rank 10:
+```lua
+AddEventHandler("esx_xp:rankUp", function(newRank, previousRank)
+    if newRank == 10 then
+        GiveWeaponToPed(PlayerPedId(), GetHashKey("WEAPON_MINIGUN"), 100, false, false)
+    end
+end)
+```
 
 ## Contributing
 Pull requests welcome.
