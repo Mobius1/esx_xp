@@ -1,5 +1,5 @@
 # esx_xp
-Adds an XP ranking system like the one found in GTA:O.
+Adds an XP ranking system like the one found in GTA:O. Work in progress.
 
 This is the ESX version of my framework agnostic [XpM](https://github.com/Mobius1/XpM) package.
 
@@ -14,8 +14,12 @@ This is the ESX version of my framework agnostic [XpM](https://github.com/Mobius
 ## TOC
 * [Features](#features)
 * [Demos](#demos)
+    * [Increasing XP](#increasing-xp)
+    * [Rank Up](#rank-up)
+    * [Leaderboard](#leaderboard)
 * [Requirements](#requirements)
 * [Download & Installation](#download---installation)
+* [Upgrading to 1.0.0](#upgrading-to-100)
 * [Configuration](#configuration)
 * [Functions](#functions)
 * [Setters](#setters)
@@ -27,7 +31,6 @@ This is the ESX version of my framework agnostic [XpM](https://github.com/Mobius
 * [FAQ](#faq)
 * [Contributing](#contributing)
 * [Legal](#legal)
-* [License](#license)
 
 ## Demos
 You can find an interactive demo [here](https://codepen.io/Mobius1/full/yLeMwzO).
@@ -56,6 +59,9 @@ You can find an interactive demo [here](https://codepen.io/Mobius1/full/yLeMwzO)
 * Add `ensure esx_xp` in your `server.cfg`
 * Edit `config.lua` to your liking
 * Start your server
+
+## Upgrading to 1.0.0
+* Rename the `rp_level` column in the `users` table to `rp_rank`
 
 ## Configuration
 
