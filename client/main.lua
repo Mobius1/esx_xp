@@ -62,7 +62,7 @@ AddEventHandler("esx_xp:init", function(_xp, _rank, players)
         -- Native stats
         StatSetInt("MPPLY_GLOBALXP", CurrentXP, 1)
     else
-        print(trans('err_lvls_check', #Ranks, 'Config.Ranks'))
+        print(_('err_lvls_check', #Ranks, 'Config.Ranks'))
     end
 end)
 
@@ -137,7 +137,7 @@ function ESXP_SetInitial(XPInit)
     local GoalXP = tonumber(XPInit)
     -- Check for valid XP
     if not GoalXP or (GoalXP < 0 or GoalXP > ESXP_GetMaxXP()) then
-        print(trans('err_xp_update', XPInit, "ESXP_SetInitial"))
+        print(_('err_xp_update', XPInit, "ESXP_SetInitial"))
         return
     end    
     UpdateXP(tonumber(GoalXP), true)
@@ -153,7 +153,7 @@ function ESXP_SetRank(Rank)
     local GoalRank = tonumber(Rank)
 
     if not GoalRank then
-        print(trans('err_lvl_update', Rank, "ESXP_SetRank"))
+        print(_('err_lvl_update', Rank, "ESXP_SetRank"))
         return
     end
 
@@ -171,7 +171,7 @@ end
 function ESXP_Add(XPAdd)
     -- Check for valid XP
     if not tonumber(XPAdd) then
-        print(trans('err_xp_update', XPAdd, "ESXP_Add"))
+        print(_('err_xp_update', XPAdd, "ESXP_Add"))
         return
     end       
     UpdateXP(tonumber(XPAdd))
@@ -186,7 +186,7 @@ end
 function ESXP_Remove(XPRemove)
     -- Check for valid XP
     if not tonumber(XPRemove) then
-        print(trans('err_xp_update', XPRemove, "ESXP_Remove"))
+        print(_('err_xp_update', XPRemove, "ESXP_Remove"))
         return
     end       
     UpdateXP(-(tonumber(XPRemove)))
@@ -207,7 +207,7 @@ function ESXP_GetRank(_xp)
     local len = #Config.Ranks
     for rank = 1, len do
         if rank < len then
-            if Config.Ranks[rank + 1] >= tonumber(_xp) then
+            if Config.Ranks[rank + 1] > tonumber(_xp) then
                 return rank
             end
         else
@@ -237,7 +237,7 @@ function ESXP_GetXPToRank(Rank)
     local GoalRank = tonumber(Rank)
     -- Check for valid rank
     if not GoalRank or (GoalRank < 1 or GoalRank > #Config.Ranks) then
-        print(trans('err_lvl_update', Rank, "ESXP_GetXPToRank"))
+        print(_('err_lvl_update', Rank, "ESXP_GetXPToRank"))
         return
     end
 
