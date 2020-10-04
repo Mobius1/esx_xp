@@ -253,6 +253,22 @@ window.onData = function (data) {
             UIOpen()
         }
     }   
+
+    if (data.xpm_show && initialised) {
+        UIOpen()
+    } 
+
+    if (data.xpm_hide && initialised) {
+        UIClose()
+    }
+
+    if (data.xpm_removeplayer && initialised) {
+        leaderboard.removePlayer(data.player);
+    }   
+
+    if (data.xpm_removeplayers && initialised) {
+        leaderboard.removePlayers(data.players);
+    }     
     
     // Update Leaderboard
     if (data.xpm_updateleaderboard && initialised) {

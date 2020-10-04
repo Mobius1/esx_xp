@@ -6,7 +6,7 @@ description 'XP Ranking System'
 
 author 'Karl Saunders'
 
-version '1.0.0'
+version '1.0.1'
 
 server_scripts {
     '@mysql-async/lib/MySQL.lua',
@@ -52,3 +52,5 @@ export 'ESXP_GetXPToNextRank'
 export 'ESXP_GetXPToRank'
 export 'ESXP_GetMaxXP'
 export 'ESXP_GetMaxRank'
+export 'ESXP_ShowUI'
+export 'ESXP_HideUI'

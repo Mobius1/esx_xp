@@ -1,10 +1,9 @@
-
-local CurrentXP = 0
-local CurrentRank = 0
-local Leaderboard = nil
-local Players = {}
-local UIActive = true
-local ESX = nil
+CurrentXP = 0
+CurrentRank = 0
+Leaderboard = nil
+Players = {}
+UIActive = true
+ESX = nil
 
 Citizen.CreateThread(function()
     while ESX == nil do
@@ -274,7 +273,33 @@ function ESXP_GetMaxRank()
     return #Config.Ranks
 end
 
+------------
+-- ESXP_ShowUI.
+--
+-- @global
+-- @return	void
+function ESXP_ShowUI()
+    UIActive = true
 
+    TriggerServerEvent("esx_xp:getPlayerData")
+    
+    SendNUIMessage({
+        xpm_show = true
+    })    
+end
+
+------------
+-- ESXP_HideUI.
+--
+-- @global
+-- @return	void
+function ESXP_HideUI()
+    UIActive = false
+        
+    SendNUIMessage({
+        xpm_hide = true
+    })      
+end
 ------------------------------------------------------------
 --                        CONTROLS                        --
 ------------------------------------------------------------

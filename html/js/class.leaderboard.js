@@ -119,6 +119,26 @@ class Leaderboard {
         }
     }
 
+    removePlayer(player) {
+        if ( player.id in this.players ) {
+            this.list.removeChild(this.players[player.id].row);
+
+            delete this.players[player.id];
+        }
+    }
+
+    removePlayers(players) {
+        for ( const id in players ) {
+            const player = players[id];
+
+            if ( player.id in this.players ) {
+                this.list.removeChild(this.players[player.id].row);
+
+                delete this.players[player.id];
+            }
+        }
+    }
+
     updateRank(id, rank) {
         this.players[id].rank = rank;
         this.players[id].row.querySelector(".xpm-leaderboard--playerranknum").textContent = rank;
