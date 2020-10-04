@@ -1,4 +1,4 @@
-class XPRanker {
+class XPM {
     constructor(options) {
         const config = {
             xp: 0,

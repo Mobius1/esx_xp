@@ -1,3 +1,17 @@
+-- Get Identifier
+function GetSteamIdentifier(id)
+    local identifier = false
+    
+    for k,v in ipairs(GetPlayerIdentifiers(id)) do
+        if string.match(v, 'steam:') then
+            identifier = v
+            break
+        end
+    end
+
+    return identifier
+end
+
 -- Check XP is an integer
 function IsInt(XPCheck)
     XPCheck = tonumber(XPCheck)
@@ -28,10 +42,22 @@ function CheckRanks()
         local RankXP = Config.Ranks[i]
 
         if not IsInt(RankXP) then
-            table.insert(InValid, _('err_lvl_check', i,  RankXP))
+            table.insert(InValid, trans('err_lvl_check', i,  RankXP))
         end
         
     end
 
     return InValid
+end
+
+function SortLeaderboard(players)
+    if Config.Leaderboard.Order == "rank" then
+        table.sort(players, function(a,b)
+            return a.rank > b.rank
+        end)
+    elseif Config.Leaderboard.Order == "name" then
+        table.sort(players, function(a,b)
+            return a.name < b.name
+        end)                
+    end    
 end

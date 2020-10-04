@@ -6,10 +6,9 @@ description 'XP Ranking System'
 
 author 'Karl Saunders'
 
-version '0.5.0'
+version '1.0.0'
 
 server_scripts {
-    '@async/async.lua',
     '@mysql-async/lib/MySQL.lua',
     '@es_extended/locale.lua',
     'locales/en.lua',
@@ -36,7 +35,8 @@ files {
     'html/ui.html',
     'html/fonts/ChaletComprimeCologneSixty.ttf',
     'html/css/app.css',
-    'html/js/class.xp.js',
+    'html/js/class.xpm.js',
+    'html/js/class.leaderboard.js',
     'html/js/app.js'
 }
 
@@ -44,6 +44,7 @@ export 'ESXP_SetInitial'
 export 'ESXP_Add'
 export 'ESXP_Remove'
 export 'ESXP_SetRank'
+
 export 'ESXP_GetXP'
 export 'ESXP_GetRank'
 export 'ESXP_GetXPToNextRank'
