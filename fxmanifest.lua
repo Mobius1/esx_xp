@@ -22,7 +22,8 @@ client_scripts {
     'locales/en.lua',
     'config.lua',
     'utils.lua',
-    'client/main.lua'
+    'client/main.lua',
+    'demo.lua', -- remove if not required
 }
 
 dependencies {
