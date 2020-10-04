@@ -162,6 +162,21 @@ AddEventHandler("esx_xp:rankDown", function(newRank --[[ integer ]], previousRan
 end)
 ```
 
+## Client Triggers
+```lua
+-- SET INTITIAL XP
+TriggerClientEvent('esx_xp:SetInitial', xp)
+
+-- ADD XP
+TriggerClientEvent('esx_xp:Add', xp)
+
+-- REMOVE XP
+TriggerClientEvent('esx_xp:Remove', xp)
+
+-- SET RANK
+TriggerClientEvent('esx_xp:SetRank', rank)
+```
+
 ## Server Triggers
 ```lua
 -- SET INTITIAL XP
@@ -175,7 +190,6 @@ TriggerClientEvent('esx_xp:Remove', source, xp)
 
 -- SET RANK
 TriggerClientEvent('esx_xp:SetRank', source, rank)
-
 ```
 
 ## UI
@@ -212,6 +226,20 @@ Example of unlocking the minigun at rank 10:
 AddEventHandler("esx_xp:rankUp", function(newRank, previousRank)
     if newRank == 10 then
         GiveWeaponToPed(PlayerPedId(), GetHashKey("WEAPON_MINIGUN"), 100, false, false)
+    end
+end)
+```
+
+If player ranks down then you can remove it:
+```lua
+AddEventHandler("esx_xp:rankUp", function(newRank, previousRank)
+    if newRank < 10 then
+        local player = PlayerPedId()
+        local weapon = GetHashKey("WEAPON_MINIGUN")
+        
+        if HasPedGotWeapon(player, weapon, false) then
+            RemoveWeaponFromPed(player, weapon)
+        end
     end
 end)
 ```
