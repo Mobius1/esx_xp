@@ -236,6 +236,16 @@ Add fake player to leaderboard
 /ESXP_AddFakePlayer
 ```
 
+Add number of fake players to leaderboard
+```lua
+/ESXP_AddFakePlayer count
+```
+
+Remove all fake players from leaderboard
+```lua
+/ESXP_RemoveFakePlayers
+```
+
 ## FAQ
 
 #### How do I change the look of the UI?
