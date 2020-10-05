@@ -233,7 +233,7 @@ You require xxxx XP to advance to rank yyyy
 
 ## Demo Commands
 
-These commands will change the XP level / Rank on the UI, but won't be saved.
+These commands are for testing and will change the UI, but no data will be saved.
 
 If these are not required, you can delete the `demo.lua` file and remove it's entry in the `fxmanifest.lua` file.
 
