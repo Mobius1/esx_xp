@@ -16,6 +16,9 @@ AddEventHandler("esx_xp:ready", function()
             if #result > 0 then
                 CurrentXP = tonumber(result[1]["rp_xp"])
                 CurrentRank = tonumber(result[1]["rp_rank"])  
+
+                xPlayer.set("xp", CurrentXP)
+                xPlayer.set("rank", CurrentRank)                
                 
                 local Players = false
 
@@ -66,8 +69,12 @@ AddEventHandler("esx_xp:setXP", function(_xp, _rank)
             ['@xp'] = _xp,
             ['@rank'] = _rank
         }, function(result)
-            CurrentXP = _xp
-            CurrentRank = _rank
+            CurrentXP = tonumber(_xp)
+            CurrentRank = tonumber(_rank)
+
+            xPlayer.set("xp", CurrentXP)
+            xPlayer.set("rank", CurrentRank)
+
             TriggerClientEvent("esx_xp:update", _source, CurrentXP, CurrentRank)
         end)
     end
@@ -86,6 +93,9 @@ function UpdatePlayer(source, xp)
             ['@xp'] = CurrentXP,
             ['@rank'] = CurrentRank
         }, function(result)
+
+            xPlayer.set("xp", CurrentXP)
+            xPlayer.set("rank", CurrentRank)
 
             TriggerClientEvent("esx_xp:update", _source, CurrentXP, CurrentRank)
         end)
