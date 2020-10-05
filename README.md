@@ -28,7 +28,7 @@ This is the ESX version of my framework agnostic [XpM](https://github.com/Mobius
 * [Commands](#commands)
 * [Demo Commands](#demo-commands)
 * [FAQ](#faq)
-    - [Does this use  VenomXNL's XNLRankBar?](#does-this-use--venomxnl-s--xnlrankbar--)
+    - [Does this use  VenomXNL's XNLRankBar?](#does-this-use--venomxnls-xnlrankbar)
     - [How do I change the look of the UI?](#how-do-i-change-the-look-of-the-ui-)
     - [How do I lock a weapon / vehicle / unlockable to a rank?](#how-do-i-lock-a-weapon---vehicle---unlockable-to-a-rank-)
 * [Contributing](#contributing)
