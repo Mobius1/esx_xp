@@ -27,16 +27,17 @@ AddEventHandler("esx_xp:init", function(_xp, _rank, players)
 
     -- All ranks are valid
     if #Ranks == 0 then
-    
+        CurrentXP = tonumber(_xp)
+        CurrentRank = tonumber(_rank)
+
         local data = {
             xpm_init = true,
             xpm_config = Config,
             currentID = false,
+            xp = CurrentXP
         }
     
         if Config.Leaderboard.Enabled and players then
-            SortLeaderboard(players)
-    
             data.players = players
             data.showPing = Config.Leaderboard.ShowPing
             
@@ -45,19 +46,15 @@ AddEventHandler("esx_xp:init", function(_xp, _rank, players)
                     data.currentID = tonumber(v.id)
                 end
             end
+
+            -- Sort the leaderboard
+            SortLeaderboard(players)            
     
-            for k,v in pairs(players) do
-                Players[tonumber(v.id)] = v
-            end                        
+            Players = players                       
         end
     
-        CurrentXP = tonumber(_xp)
-    
-        data.xp = CurrentXP
-    
+        -- Update UI
         SendNUIMessage(data)
-    
-        CurrentRank = _rank
     
         -- Native stats
         StatSetInt("MPPLY_GLOBALXP", CurrentXP, 1)
@@ -86,15 +83,30 @@ if Config.Leaderboard.Enabled then
     RegisterNetEvent("esx_xp:setPlayerData")
     AddEventHandler("esx_xp:setPlayerData", function(players)
 
-        for k, v in pairs(Players) do
-            if v.fake == nil then
-                Players[k] = nil
+        -- Remove disconnected players
+        for i=#Players,1,-1 do
+            local active = PlayerIsActive(players, Players[i].id)
+
+            if not Players[i].fake then
+                if not active then
+                    table.remove(Players, i)
+                end
             end
         end
 
+        -- Add new players
         for k, v in pairs(players) do
-            Players[v.id] = v
+            local active = PlayerIsActive(Players, v.id)
+
+            if not active then
+                table.insert(Players, v)
+            else
+                Players[active] = v
+            end
         end
+
+        -- Sort the leaderboard
+        SortLeaderboard(Players)
 
         -- Update leaderboard
         SendNUIMessage({
@@ -285,10 +297,12 @@ end
 --
 -- @global
 -- @return	void
-function ESXP_ShowUI()
+function ESXP_ShowUI(update)
     UIActive = true
 
-    TriggerServerEvent("esx_xp:getPlayerData")
+    if update ~= nil then
+        TriggerServerEvent("esx_xp:getPlayerData")
+    end
     
     SendNUIMessage({
         xpm_show = true
@@ -307,6 +321,16 @@ function ESXP_HideUI()
         xpm_hide = true
     })      
 end
+
+function ESXP_SortLeaderboard(type)
+    if type == nil then
+        type = "rank"
+    end
+    SendNUIMessage({
+        xpm_sortleaderboard = type
+    })      
+end
+
 ------------------------------------------------------------
 --                        CONTROLS                        --
 ------------------------------------------------------------
@@ -406,3 +430,34 @@ exports('ESXP_GetMaxXP', ESXP_GetMaxXP)
 
 -- GET MAX RANK
 exports('ESXP_GetMaxRank', ESXP_GetMaxRank)
+
+
+------------------------------------------------------------
+--                        COMMANDS                        --
+------------------------------------------------------------
+TriggerEvent('chat:addSuggestion', '/ESXP', 'Display your XP stats')
+
+RegisterCommand('ESXP', function(source, args)
+    Citizen.CreateThread(function()
+        local xpToNext = ESXP_GetXPToNextRank()
+
+        -- SHOW THE XP BAR
+        SendNUIMessage({ xpm_display = true })        
+
+        TriggerEvent('chat:addMessage', {
+            color = { 255, 0, 0},
+            multiline = true,
+            args = {"SYSTEM", _('cmd_current_xp', CurrentXP)}
+        })
+        TriggerEvent('chat:addMessage', {
+            color = { 255, 0, 0},
+            multiline = true,
+            args = {"SYSTEM", _('cmd_current_lvl', CurrentRank)}
+        })
+        TriggerEvent('chat:addMessage', {
+            color = { 255, 0, 0},
+            multiline = true,
+            args = {"SYSTEM", _('cmd_next_lvl', xpToNext, CurrentRank + 1)}
+        })                
+    end)
+end)

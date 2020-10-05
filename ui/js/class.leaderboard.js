@@ -90,37 +90,12 @@ class Leaderboard {
     }
 
     updatePlayers(players) {
-        const currentCount = this.getPlayerCount();
-        const playerCount = Object.keys(players).length;
 
-        if ( currentCount > playerCount ) {
-            for ( const id in this.players ) {
-                const player = this.players[id];
+        this.list.innerHTML = "";
+        this.players = {};
 
-                if ( !(id in players) ) {
-                    this.removePlayer(player);
-                }
-            }
-        }
-
-        for ( const id in players ) {
-            const player = players[id];
-            if ( !(player.id in this.players) ) {
-                this.addPlayer(player);
-            } else {
-                const row = this.players[player.id].row;
-                row.querySelector(".xpm-leaderboard--playername").textContent = player.name;
-                row.querySelector(".xpm-leaderboard--playerranknum").textContent = player.rank;
-
-                if ( this.config.showPing ) {
-                    row.querySelector(".xpm-leaderboard--playerping").textContent = `${player.ping}ms`;
-                }
-
-                this.players[player.id].name = player.name;
-                this.players[player.id].rank = player.rank;
-                this.players[player.id].ping = player.ping;
-            }
-            
+        for ( const player of players ) {
+            this.addPlayer(player);
         }
 
         this.header.textContent = `Players: ${this.getPlayerCount()}`;
@@ -132,7 +107,9 @@ class Leaderboard {
 	
     addPlayers(players) {
         for ( const player of players ) {
-            this.addPlayer(player);
+            if ( !(player.id in this.players) ) {
+                this.addPlayer(player);
+            }
         }
     }
 

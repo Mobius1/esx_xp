@@ -32,28 +32,7 @@ end)
 function FetchActivePlayers(_source, CurrentXP, CurrentRank)
     MySQL.Async.fetchAll('SELECT * FROM users', {}, function(players)
         if #players > 0 then
-            local Players = {}
-            for _, playerId in ipairs(GetPlayers()) do
-                local name = GetPlayerName(playerId)
-
-                for k, v in pairs(players) do
-                    if name == v.name then
-                        local Player = {
-                            name = name,
-                            id = playerId,
-                            xp = v.rp_xp,
-                            rank = v.rp_rank
-                        }     
-                        
-                        if Config.Leaderboard.ShowPing then
-                            Player.ping = GetPlayerPing(playerId)
-                        end
-
-                        table.insert(Players, Player)
-                        break
-                    end
-                end
-            end                
+            local Players = GetOnlinePlayers(players)          
             
             TriggerClientEvent("esx_xp:init", _source, CurrentXP, CurrentRank, Players)
         end
@@ -118,25 +97,7 @@ AddEventHandler("esx_xp:getPlayerData", function()
     local _source = source
     MySQL.Async.fetchAll('SELECT * FROM users', {}, function(players)
         if #players > 0 then
-            local Players = {}
-            for _, playerId in ipairs(GetPlayers()) do
-                local name = GetPlayerName(playerId)
-    
-                for k, v in pairs(players) do
-                    if name == v.name then
-                        local Player = {
-                            name = name,
-                            id = playerId,
-                            xp = v.rp_xp,
-                            rank = v.rp_rank,
-                            ping = GetPlayerPing(playerId)
-                        }     
-    
-                        table.insert(Players, Player)
-                        break
-                    end
-                end
-            end                
+            local Players = GetOnlinePlayers(players)             
                 
             TriggerClientEvent("esx_xp:setPlayerData", _source, Players)
         end

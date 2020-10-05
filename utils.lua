@@ -50,14 +50,58 @@ function CheckRanks()
     return InValid
 end
 
-function SortLeaderboard(players)
-    if Config.Leaderboard.Order == "rank" then
+function SortLeaderboard(players, order)
+    if order == nil then
+        order = Config.Leaderboard.Order
+    end
+
+    if order == "rank" then
         table.sort(players, function(a,b)
             return a.rank > b.rank
         end)
-    elseif Config.Leaderboard.Order == "name" then
+    elseif order == "id" then
+        table.sort(players, function(a,b)
+            return a.id > b.id
+        end)                      
+    elseif order == "name" then
         table.sort(players, function(a,b)
             return a.name < b.name
         end)                
     end    
+end
+
+function PlayerIsActive(tab, val)
+    for k, v in ipairs(tab) do
+        if tonumber(v.id) == tonumber(val) then
+            return k
+        end
+    end
+
+    return false
+end
+
+function GetOnlinePlayers(players)
+    local Players = {}
+    for _, playerId in ipairs(GetPlayers()) do
+        local name = GetPlayerName(playerId)
+    
+        for k, v in pairs(players) do
+            if name == v.name then
+                local Player = {
+                    name = name,
+                    id = playerId,
+                    xp = v.rp_xp,
+                    rank = v.rp_rank
+                }     
+                            
+                if Config.Leaderboard.ShowPing then
+                    Player.ping = GetPlayerPing(playerId)
+                end
+    
+                table.insert(Players, Player)
+                break
+            end
+        end
+    end
+    return Players 
 end
