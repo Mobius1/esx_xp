@@ -12,8 +12,6 @@ This is the ESX version of my framework agnostic [XpM](https://github.com/Mobius
 * Integrated leaderboard
 
 ## TOC
-* [Features](#features)
-* [TOC](#toc)
 * [Demos](#demos)
 * [Requirements](#requirements)
 * [Download & Installation](#download---installation)
