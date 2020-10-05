@@ -28,6 +28,7 @@ This is the ESX version of my framework agnostic [XpM](https://github.com/Mobius
 * [Commands](#commands)
 * [Demo Commands](#demo-commands)
 * [FAQ](#faq)
+    - [Does this use  VenomXNL's XNLRankBar?](#does-this-use--venomxnl-s--xnlrankbar--)
     - [How do I change the look of the UI?](#how-do-i-change-the-look-of-the-ui-)
     - [How do I lock a weapon / vehicle / unlockable to a rank?](#how-do-i-lock-a-weapon---vehicle---unlockable-to-a-rank-)
 * [Contributing](#contributing)
@@ -268,6 +269,10 @@ Remove all fake players from leaderboard
 ```
 
 ## FAQ
+
+#### Does this use  VenomXNL's `XNLRankBar`?
+
+No. I thought about using it, but I created a HTML5 version of the GTA:O rankbar so I could have greater control / customisation. You can see the base system I created [here](https://codepen.io/Mobius1/pen/yLeMwzO).
 
 #### How do I change the look of the UI?
 
