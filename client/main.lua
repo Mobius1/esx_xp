@@ -57,7 +57,7 @@ AddEventHandler("esx_xp:init", function(_xp, _rank, players)
         SendNUIMessage(data)
 
         ESX.SetPlayerData("xp", CurrentXP)
-        ESX.SetPlayerData("rank", CurrentRank)            
+        ESX.SetPlayerData("rank", CurrentRank)
     
         -- Native stats
         StatSetInt("MPPLY_GLOBALXP", CurrentXP, 1)

@@ -20,8 +20,6 @@ AddEventHandler("esx_xp:ready", function()
                 xPlayer.set("xp", CurrentXP)
                 xPlayer.set("rank", CurrentRank)                
                 
-                local Players = false
-
                 if Config.Leaderboard.Enabled then
                     FetchActivePlayers(_source, CurrentXP, CurrentRank)
                 else

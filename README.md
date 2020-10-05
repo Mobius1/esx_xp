@@ -146,6 +146,24 @@ Get max attainable rank
 exports.esx_xp:ESXP_GetMaxRank()
 ```
 
+If you want to access the players xp and / or rank in other `ESX` resources:
+
+Client
+```lua
+local xPlayer = ESX.GetPlayerData()
+
+local playerXP = xPlayer.xp
+local playerRank = xPlayer.rank
+```
+
+Server
+```lua
+local xPlayer = ESX.GetPlayerFromId(source)
+
+local playerXP = xPlayer.get("xp")
+local playerRank = xPlayer.get("rank")
+```
+
 ## Client Event Listeners
 
 Listen for rank change events. These can be used to reward / punish the player for changing rank.
