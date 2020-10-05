@@ -13,25 +13,28 @@ This is the ESX version of my framework agnostic [XpM](https://github.com/Mobius
 
 ## TOC
 * [Features](#features)
+* [TOC](#toc)
 * [Demos](#demos)
-    * [Increasing XP](#increasing-xp)
-    * [Rank Up](#rank-up)
-    * [Leaderboard](#leaderboard)
 * [Requirements](#requirements)
 * [Download & Installation](#download---installation)
 * [Upgrading to 1.0.0](#upgrading-to-100)
 * [Configuration](#configuration)
 * [Functions](#functions)
-* [Setters](#setters)
-* [Getters](#getters)
+    + [Setters](#setters)
+    + [Getters](#getters)
+* [Get player XP and Rank from other ESX resources](#get-player-xp-and-rank-from-other-esx-resources)
 * [Client Event Listeners](#client-event-listeners)
+* [Client Triggers](#client-triggers)
 * [Server Triggers](#server-triggers)
 * [UI](#ui)
 * [Commands](#commands)
 * [Demo Commands](#demo-commands)
 * [FAQ](#faq)
+    - [How do I change the look of the UI?](#how-do-i-change-the-look-of-the-ui-)
+    - [How do I lock a weapon / vehicle / unlockable to a rank?](#how-do-i-lock-a-weapon---vehicle---unlockable-to-a-rank-)
 * [Contributing](#contributing)
 * [Legal](#legal)
+
 
 ## Demos
 You can find an interactive demo [here](https://codepen.io/Mobius1/full/yLeMwzO).
@@ -146,6 +149,8 @@ Get max attainable rank
 exports.esx_xp:ESXP_GetMaxRank()
 ```
 
+
+## Get player XP and Rank from other ESX resources
 If you want to access the players xp and / or rank in other `ESX` resources:
 
 Client
