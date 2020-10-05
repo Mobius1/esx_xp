@@ -220,6 +220,8 @@ TriggerClientEvent('esx_xp:SetRank', source, rank)
 ## UI
 The UI can be toggled with the `Z` key by default. The UI will fade out after the interval defined by `Config.Timeout` or you can close it immediately with the `Z` key.
 
+You can customise the UI key with `Config.UIKey` in `config.lua`.
+
 The data in the leaderboard is refreshed whenever it is opened so you get up-to-date information.
 
 ## Commands
