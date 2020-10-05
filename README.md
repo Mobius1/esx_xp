@@ -76,6 +76,8 @@ Config.Locale       = 'en'  -- Current language
 Config.Width        = 532   -- Sets the width of the XP bar in px
 Config.Timeout      = 5000  -- Sets the interval in ms that the XP bar is shown before fading out
 Config.BarSegments  = 10    -- Sets the number of segments the XP bar has. Native GTA:O is 10
+Config.UIKey        = 20    -- The key that toggles the UI - default is "Z"
+
 Config.Ranks        = {}    -- XP ranks. Must be a table of integers with the first element being 0.
 
 Config.Leaderboard = {
