@@ -107,8 +107,60 @@ function AddFakePlayer()
         return max
     end
 
-    local names = { "Abe", "MasterChief", "Mario", "Sonic", "Knuckles", "MaxPayne", "Micheal", "Trevor", "PrincessPeach", "LaraCroft" }
-    local name  = names[ math.random( #names ) ] .. math.random(100, 1000)
+    local names = {
+        "xxvctdreemaxxto",
+        "estropevc",
+        "bruscavi5a",
+        "fretaretzgl",
+        "tenshii58",
+        "afamatt9",
+        "motriuo1",
+        "kittykatrox13cj",
+        "meastalfs",
+        "tisleiferxl",
+        "persephone33ql",
+        "herbianinvu",
+        "lapic4r",
+        "rubia1044rp",
+        "dzieciaryd9",
+        "Lactabikito12",
+        "trappunumu7",
+        "Dallioes",
+        "apanyava43",
+        "hcoloverrrrx33x",
+        "kastplankif",
+        "Foramitibp",
+        "Rail45",
+        "dargludajm",
+        "Condoloqo",
+        "hestvagn3g",
+        "Aidelmimaip",
+        "Stehanjkgr",
+        "daycapaniwebs05",
+        "polars87",
+        "nickbitemekt",
+        "hovedlegeb0",
+        "peoplesuck076l",
+        "Laisvisli",
+        "drargewabwz",
+        "Cocconiz0",
+        "BypeSkebykj",
+        "neerdaalcc",
+        "kennirh7",
+        "kuhwelela50",
+        "Honshubv",
+        "Mungarilz",
+        "aphangejy",
+        "Fiananese93",
+        "Mushungtq",
+        "lorci1",
+        "rongalitnm",
+        "engusardet9",
+        "bauginojj",
+        "sonsonatzk0"
+    }
+
+    local name  = names[ math.random( #names ) ]
     local rank  = math.random(1, 100)
     local id    = maxVal() + 1
     local ping  = false
