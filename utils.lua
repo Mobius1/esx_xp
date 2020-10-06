@@ -80,7 +80,7 @@ function PlayerIsActive(tab, val)
     return false
 end
 
-function GetOnlinePlayers(players)
+function GetOnlinePlayers(_source, players)
     local Players = {}
     for _, playerId in ipairs(GetPlayers()) do
         local name = GetPlayerName(playerId)
@@ -92,7 +92,11 @@ function GetOnlinePlayers(players)
                     id = playerId,
                     xp = v.rp_xp,
                     rank = v.rp_rank
-                }     
+                }
+
+                if v.identifier == ESX.GetPlayerFromId(_source).identifier then
+                    Player.current = true
+                end
                             
                 if Config.Leaderboard.ShowPing then
                     Player.ping = GetPlayerPing(playerId)

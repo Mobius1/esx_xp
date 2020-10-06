@@ -134,7 +134,9 @@ class Leaderboard {
     }
 
     updateRank(id, rank) {
-        this.players[id].rank = rank;
-        this.players[id].row.querySelector(".xpm-leaderboard--playerranknum").textContent = rank;
+        if ( id in this.players ) {
+            this.players[id].rank = rank;
+            this.players[id].row.querySelector(".xpm-leaderboard--playerranknum").textContent = rank;
+        }
     }    
 }

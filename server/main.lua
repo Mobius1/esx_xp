@@ -10,7 +10,7 @@ AddEventHandler("esx_xp:ready", function()
     local xPlayer = ESX.GetPlayerFromId(_source)
 
     if xPlayer then
-        MySQL.Async.fetchAll('SELECT rp_xp, rp_rank FROM users WHERE identifier = @identifier', {
+        MySQL.Async.fetchAll('SELECT * FROM users WHERE identifier = @identifier', {
             ['@identifier'] = xPlayer.identifier
         }, function(result)
             if #result > 0 then
@@ -33,7 +33,7 @@ end)
 function FetchActivePlayers(_source, CurrentXP, CurrentRank)
     MySQL.Async.fetchAll('SELECT * FROM users', {}, function(players)
         if #players > 0 then
-            local Players = GetOnlinePlayers(players)          
+            local Players = GetOnlinePlayers(_source, players)          
             
             TriggerClientEvent("esx_xp:init", _source, CurrentXP, CurrentRank, Players)
         end
@@ -105,7 +105,7 @@ AddEventHandler("esx_xp:getPlayerData", function()
     local _source = source
     MySQL.Async.fetchAll('SELECT * FROM users', {}, function(players)
         if #players > 0 then
-            local Players = GetOnlinePlayers(players)             
+            local Players = GetOnlinePlayers(_source, players)             
                 
             TriggerClientEvent("esx_xp:setPlayerData", _source, Players)
         end

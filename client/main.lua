@@ -2,6 +2,7 @@ CurrentXP = 0
 CurrentRank = 0
 Leaderboard = nil
 Players = {}
+Player = nil
 UIActive = true
 ESX = nil
 
@@ -33,20 +34,20 @@ AddEventHandler("esx_xp:init", function(_xp, _rank, players)
         local data = {
             xpm_init = true,
             xpm_config = Config,
-            currentID = false,
+            currentID = GetPlayerServerId(PlayerId()),
             xp = CurrentXP
         }
     
         if Config.Leaderboard.Enabled and players then
             data.players = players
             data.showPing = Config.Leaderboard.ShowPing
-            
+
             for k, v in pairs(players) do
-                if GetPlayerServerId(PlayerId()) == tonumber(v.id) then
-                    data.currentID = tonumber(v.id)
+                if v.current then
+                    Player = v
                 end
             end
-
+            
             -- Sort the leaderboard
             SortLeaderboard(players)            
     
@@ -109,6 +110,10 @@ if Config.Leaderboard.Enabled then
             else
                 Players[active] = v
             end
+
+            if v.current then
+                Player = v
+            end            
         end
 
         -- Sort the leaderboard
