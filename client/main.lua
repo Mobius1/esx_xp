@@ -6,7 +6,13 @@ Player = nil
 UIActive = true
 ESX = nil
 
+
+------------------------------------------------------------
+--                          ESX                           --
+------------------------------------------------------------
+
 Citizen.CreateThread(function()
+    -- Wait for ESX
     while ESX == nil do
         Citizen.Wait(10)
         TriggerEvent("esx:getSharedObject", function(esx)
@@ -14,12 +20,19 @@ Citizen.CreateThread(function()
         end)
     end
     
+    -- Wait for ESX player
     while not ESX.IsPlayerLoaded() do
         Citizen.Wait(10)
     end
     
+    -- Initialise
     TriggerServerEvent("esx_xp:ready")
 end)
+
+
+------------------------------------------------------------
+--                      MAIN EVENTS                       --
+------------------------------------------------------------
 
 RegisterNetEvent("esx_xp:init")
 AddEventHandler("esx_xp:init", function(_xp, _rank, players)
@@ -57,6 +70,7 @@ AddEventHandler("esx_xp:init", function(_xp, _rank, players)
         -- Update UI
         SendNUIMessage(data)
 
+        -- Set ESX properties
         ESX.SetPlayerData("xp", CurrentXP)
         ESX.SetPlayerData("rank", CurrentRank)
     
@@ -83,6 +97,7 @@ AddEventHandler("esx_xp:update", function(_xp, _rank)
     CurrentXP = newXP
     CurrentRank = newRank
 
+    -- Set ESX properties
     ESX.SetPlayerData("xp", CurrentXP)
     ESX.SetPlayerData("rank", CurrentRank)    
 end)
@@ -128,13 +143,13 @@ if Config.Leaderboard.Enabled then
     end)
 end
 
+-- Error Printing
 RegisterNetEvent("esx_xp:print")
 AddEventHandler("esx_xp:print", function(message)
     local s = string.rep("=", string.len(message))
     print(s)
     print(message)
-    print(s)
-                                
+    print(s)           
 end)
 
 ------------------------------------------------------------
@@ -375,7 +390,7 @@ end)
 
 
 ------------------------------------------------------------
---                         EVENTS                         --
+--                         MAIN                          --
 ------------------------------------------------------------
 
 RegisterNetEvent("esx_xp:updateUI")
