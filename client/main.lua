@@ -63,7 +63,8 @@ AddEventHandler("esx_xp:init", function(_xp, _rank, players)
         -- Native stats
         StatSetInt("MPPLY_GLOBALXP", CurrentXP, 1)
     else
-        print(_('err_lvls_check', #Ranks, 'Config.Ranks'))
+        TriggerEvent("esx_xp:print", _('err_lvls_check', #Ranks, 'Config.Ranks'))
+        print(ESX.DumpTable(Ranks))
     end
 end)
 
@@ -127,6 +128,14 @@ if Config.Leaderboard.Enabled then
     end)
 end
 
+RegisterNetEvent("esx_xp:print")
+AddEventHandler("esx_xp:print", function(message)
+    local s = string.rep("=", string.len(message))
+    print(s)
+    print(message)
+    print(s)
+                                
+end)
 
 ------------------------------------------------------------
 --                       FUNCTIONS                        --
@@ -167,7 +176,7 @@ function ESXP_SetInitial(XPInit)
     local GoalXP = tonumber(XPInit)
     -- Check for valid XP
     if not GoalXP or (GoalXP < 0 or GoalXP > ESXP_GetMaxXP()) then
-        print(_('err_xp_update', XPInit, "ESXP_SetInitial"))
+        TriggerEvent("esx_xp:print", _('err_xp_update', XPInit, "ESXP_SetInitial"))
         return
     end    
     UpdateXP(tonumber(GoalXP), true)
@@ -183,7 +192,7 @@ function ESXP_SetRank(Rank)
     local GoalRank = tonumber(Rank)
 
     if not GoalRank then
-        print(_('err_lvl_update', Rank, "ESXP_SetRank"))
+        TriggerEvent("esx_xp:print", _('err_lvl_update', Rank, "ESXP_SetRank"))
         return
     end
 
@@ -201,7 +210,7 @@ end
 function ESXP_Add(XPAdd)
     -- Check for valid XP
     if not tonumber(XPAdd) then
-        print(_('err_xp_update', XPAdd, "ESXP_Add"))
+        TriggerEvent("esx_xp:print", _('err_xp_update', XPAdd, "ESXP_Add"))
         return
     end       
     UpdateXP(tonumber(XPAdd))
@@ -216,7 +225,7 @@ end
 function ESXP_Remove(XPRemove)
     -- Check for valid XP
     if not tonumber(XPRemove) then
-        print(_('err_xp_update', XPRemove, "ESXP_Remove"))
+        TriggerEvent("esx_xp:print", _('err_xp_update', XPRemove, "ESXP_Remove"))
         return
     end       
     UpdateXP(-(tonumber(XPRemove)))
@@ -267,7 +276,7 @@ function ESXP_GetXPToRank(Rank)
     local GoalRank = tonumber(Rank)
     -- Check for valid rank
     if not GoalRank or (GoalRank < 1 or GoalRank > #Config.Ranks) then
-        print(_('err_lvl_update', Rank, "ESXP_GetXPToRank"))
+        TriggerEvent("esx_xp:print", _('err_lvl_update', Rank, "ESXP_GetXPToRank"))
         return
     end
 

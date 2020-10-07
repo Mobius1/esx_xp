@@ -42,7 +42,7 @@ function CheckRanks()
         local RankXP = Config.Ranks[i]
 
         if not IsInt(RankXP) then
-            table.insert(InValid, trans('err_lvl_check', i,  RankXP))
+            table.insert(InValid, _('err_lvl_check', i,  RankXP))
         end
         
     end

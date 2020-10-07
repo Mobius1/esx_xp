@@ -14,17 +14,24 @@ AddEventHandler("esx_xp:ready", function()
             ['@identifier'] = xPlayer.identifier
         }, function(result)
             if #result > 0 then
-                CurrentXP = tonumber(result[1]["rp_xp"])
-                CurrentRank = tonumber(result[1]["rp_rank"])  
 
-                xPlayer.set("xp", CurrentXP)
-                xPlayer.set("rank", CurrentRank)                
-                
-                if Config.Leaderboard.Enabled then
-                    FetchActivePlayers(_source, CurrentXP, CurrentRank)
+                if result[1]["rp_xp"] == nil or result[1]["rp_rank"] == nil then
+                    TriggerClientEvent("esx_xp:print", _source, _("err_db_columns"))
                 else
-                    TriggerClientEvent("esx_xp:init", _source, CurrentXP, CurrentRank, false)
+                    CurrentXP = tonumber(result[1]["rp_xp"])
+                    CurrentRank = tonumber(result[1]["rp_rank"])  
+
+                    xPlayer.set("xp", CurrentXP)
+                    xPlayer.set("rank", CurrentRank)                
+                    
+                    if Config.Leaderboard.Enabled then
+                        FetchActivePlayers(_source, CurrentXP, CurrentRank)
+                    else
+                        TriggerClientEvent("esx_xp:init", _source, CurrentXP, CurrentRank, false)
+                    end
                 end
+            else
+                TriggerClientEvent("esx_xp:print", _source, _("err_db_user"))
             end
         end)
     end
