@@ -50,7 +50,7 @@ function fillSegments(pr, child) {
 }
 
 function TriggerRankChange(rankUp, current, previous) {
-    if ( currentID ) {
+    if ( leaderboard && currentID ) {
         leaderboard.updateRank(currentID, current);
     }
 
