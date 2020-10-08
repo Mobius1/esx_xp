@@ -83,7 +83,8 @@ Config.Ranks        = {}    -- XP ranks. Must be a table of integers with the fi
 Config.Leaderboard = {
     Enabled     = true,     -- Enable the leaderboard
     ShowPing    = true,     -- Show player pings on the leaderboard
-    Order       = "rank"    -- Order the player list by "name", "rank" or "id"
+    Order       = "rank",   -- Order the player list by "name", "rank" or "id"
+    PerPage     = 12        -- Max players to show per page    
 }
 ```
 
@@ -220,7 +221,7 @@ TriggerClientEvent('esx_xp:SetRank', source, rank)
 ## UI
 The UI can be toggled with the `Z` key by default. The UI will fade out after the interval defined by `Config.Timeout` or you can close it immediately with the `Z` key.
 
-The leaderboard is paginated and can be navigated with arrow keys.
+The leaderboard is paginated and can be navigated with arrow keys. The number of players displayed per page can be customised with the `PerPage` variable.
 
 You can customise the UI key with `Config.UIKey` in `config.lua`.
 
