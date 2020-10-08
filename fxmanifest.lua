@@ -6,7 +6,7 @@ description 'XP Ranking System'
 
 author 'Karl Saunders'
 
-version '1.0.6'
+version '1.1.0'
 
 server_scripts {
     '@mysql-async/lib/MySQL.lua',
@@ -37,6 +37,7 @@ files {
     'ui/fonts/ChaletComprimeCologneSixty.ttf',
     'ui/css/app.css',
     'ui/js/class.xpm.js',
+    'ui/js/class.paginator.js',
     'ui/js/class.leaderboard.js',
     'ui/js/app.js'
 }

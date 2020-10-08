@@ -61,7 +61,7 @@ RegisterCommand('ESXP_AddFakePlayer', function(source, args)
         AddFakePlayer()
     end    
 
-    ESXP_ShowUI(true)
+    ESXP_TimeoutUI(true)
 
     ESX.ShowNotification("~b~ESX_XP: ~g~" .. count .. " ~w~players added")      
 end)
@@ -75,7 +75,7 @@ RegisterCommand('ESXP_RemoveFakePlayers', function(source, args)
 
     ESX.ShowNotification("~b~ESX_XP: ~w~Fake players removed")    
 
-    ESXP_ShowUI(true)  
+    ESXP_TimeoutUI(true)  
 end)
 
 RegisterCommand('ESXP_Sort', function(source, args)

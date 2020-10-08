@@ -4,7 +4,6 @@ Leaderboard = nil
 Players = {}
 Player = nil
 UIActive = true
-LBActive = false
 ESX = nil
 
 
@@ -37,8 +36,6 @@ end)
 
 RegisterNetEvent("esx_xp:init")
 AddEventHandler("esx_xp:init", function(_xp, _rank, players)
-
-    ESXP_HideLeaderboard()
 
     local Ranks = CheckRanks()
 
@@ -360,26 +357,17 @@ function ESXP_HideUI()
     })      
 end
 
-function ESXP_ShowLeaderboard(update)
-    LBActive = true
+function ESXP_TimeoutUI(update)
+    UIActive = true
 
     if update ~= nil then
         TriggerServerEvent("esx_xp:getPlayerData")
     end
-
-    SendNUIMessage({
-        xpm_lb_show = true
-    })
-end
-
-function ESXP_HideLeaderboard(update)
-    LBActive = false
     
     SendNUIMessage({
-        xpm_lb_hide = true
-    })
+        xpm_display = true
+    })    
 end
-
 
 function ESXP_SortLeaderboard(type)
     if type == nil then
@@ -398,26 +386,31 @@ Citizen.CreateThread(function()
     while true do
         if IsControlJustReleased(0, Config.UIKey) then
             UIActive = not UIActive
-
+            
             if UIActive then
                 TriggerServerEvent("esx_xp:getPlayerData")
-            end
-
-            SendNUIMessage({
-                xpm_display = true
-            })
-            
-        elseif IsControlJustReleased(0, Config.LBKey) then
-            if not LBActive then
-                TriggerServerEvent("esx_xp:getPlayerData")
-
-                ESXP_ShowLeaderboard()
+                SendNUIMessage({
+                    xpm_show = true
+                })                 
             else
-                ESXP_HideLeaderboard()
+                SendNUIMessage({
+                    xpm_hide = true
+                })                
             end
+        elseif IsControlJustPressed(0, 174) then
+            if UIActive then
+                SendNUIMessage({
+                    xpm_lb_prev = true
+                })
+            end
+        elseif IsControlJustPressed(0, 175) then
+            if UIActive then
+                SendNUIMessage({
+                    xpm_lb_next = true
+                })
+            end
+        end
 
-            
-        end        
         Citizen.Wait(1)
     end
 end)

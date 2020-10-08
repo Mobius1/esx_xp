@@ -2,14 +2,15 @@ class Leaderboard {
     constructor(options) {
 
         const config = {
-            showPing: false
+            showPing: false,
+            perPage: 18
         };
 
         this.config = Object.assign({}, config, options);
 
         this.container = document.getElementById("xpm_leaderboard");
         this.players = {};
-        this.full = false;
+        this.paginator = new Paginator(this.players, this.config.perPage);
 		
         this.init();
     }
@@ -20,9 +21,18 @@ class Leaderboard {
 		
         this.header = document.createElement("div");
         this.header.classList.add("xpm-leaderboard--header");
+			
+        this.counter = document.createElement("div");
+        this.counter.classList.add("xpm-leaderboard--counter");
+			
+        this.pager = document.createElement("div");
+        this.pager.classList.add("xpm-leaderboard--pager");					
 		
         this.list = document.createElement("ul");
         this.list.classList.add("xpm-leaderboard--players");
+			
+        this.header.appendChild(this.counter);
+        this.header.appendChild(this.pager);
 		
         this.inner.appendChild(this.header);
         this.inner.appendChild(this.list);
@@ -31,6 +41,32 @@ class Leaderboard {
     render() {
         this.container.appendChild(this.inner);
     }
+	
+    update() {
+        this.list.innerHTML = "";
+        for ( const player of this.paginator.pages[this.paginator.currentPage - 1] ) {
+            this.list.appendChild(this.players[player].row)
+        }
+        
+        this.counter.textContent = `Players: ${this.getPlayerCount()}`;
+        this.pager.textContent = `${this.paginator.currentPage} / ${this.paginator.totalPages}`
+    }
+
+    nextPage() {
+        if ( this.paginator.currentPage < this.paginator.lastPage ) {
+            this.paginator.currentPage++;
+        }
+        
+        this.update();
+    }
+
+    prevPage() {
+        if ( this.paginator.currentPage > 1 ) {
+            this.paginator.currentPage--;
+        }
+        
+        this.update();
+    }	
 	
     addPlayer(player) {
         const li = document.createElement("li");
@@ -83,13 +119,12 @@ class Leaderboard {
 		
         this.list.appendChild(li);
 		
-        player.row = li;
-
-        player.row.classList.toggle("hidden", !this.full && this.getPlayerCount() > 18);        
+        player.row = li;  
 		
         this.players[player.id] = player;
+        this.paginator.addItem(player);
 		
-        this.header.textContent = `Players: ${this.getPlayerCount()}`;
+        this.counter.textContent = `Players: ${this.getPlayerCount()}`;
     }
 
     updatePlayers(players) {
@@ -100,7 +135,7 @@ class Leaderboard {
             this.addPlayer(player);         
         }
 
-        this.header.textContent = `Players: ${this.getPlayerCount()}`;
+        this.update();
     }
 
     getPlayerCount() {
