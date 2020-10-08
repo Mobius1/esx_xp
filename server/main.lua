@@ -40,9 +40,7 @@ end)
 function FetchActivePlayers(_source, CurrentXP, CurrentRank)
     MySQL.Async.fetchAll('SELECT * FROM users', {}, function(players)
         if #players > 0 then
-            local Players = GetOnlinePlayers(_source, players)          
-            
-            TriggerClientEvent("esx_xp:init", _source, CurrentXP, CurrentRank, Players)
+            TriggerClientEvent("esx_xp:init", _source, CurrentXP, CurrentRank, GetOnlinePlayers(_source, players))
         end
     end)
 end
@@ -111,10 +109,8 @@ RegisterNetEvent("esx_xp:getPlayerData")
 AddEventHandler("esx_xp:getPlayerData", function()
     local _source = source
     MySQL.Async.fetchAll('SELECT * FROM users', {}, function(players)
-        if #players > 0 then
-            local Players = GetOnlinePlayers(_source, players)             
-                
-            TriggerClientEvent("esx_xp:setPlayerData", _source, Players)
+        if #players > 0 then     
+            TriggerClientEvent("esx_xp:setPlayerData", _source, GetOnlinePlayers(_source, players))
         end
     end) 
 end)

@@ -61,39 +61,35 @@ RegisterCommand('ESXP_AddFakePlayer', function(source, args)
         AddFakePlayer()
     end    
 
-    ESXP_TimeoutUI(true)
+    ESXP_ShowUI(true)
 
     ESX.ShowNotification("~b~ESX_XP: ~g~" .. count .. " ~w~players added")      
 end)
 
 RegisterCommand('ESXP_RemoveFakePlayers', function(source, args)
     for i=#Players,1,-1 do
-        if Players[i].fake then
+        if Players[i].fake ~= nil then
             table.remove(Players, i)
         end
     end
 
     ESX.ShowNotification("~b~ESX_XP: ~w~Fake players removed")    
 
-    ESXP_TimeoutUI(true)  
+    ESXP_ShowUI(true)
 end)
 
-RegisterCommand('ESXP_Sort', function(source, args)
-    local order = args[1] or "rank"
+-- RegisterCommand('ESXP_Sort', function(source, args)
+--     local order = args[1] or "rank"
 
-    ESXP_ShowUI() 
+--     ESXP_ShowUI() 
 
-    -- Sort the leaderboard
-    SortLeaderboard(Players, order)
+--     -- Sort the leaderboard
+--     SortLeaderboard(Players, order)
 
-    -- Update leaderboard
-    SendNUIMessage({
-        xpm_updateleaderboard = true,
-        xpm_players = Players
-    })
+--     ESXP_ShowUI(true)
 
-    ESX.ShowNotification("~b~ESX_XP: ~w~Leaderboard ordered by ~g~" .. order)    
-end)
+--     ESX.ShowNotification("~b~ESX_XP: ~w~Leaderboard ordered by ~g~" .. order)    
+-- end)
 
 function AddFakePlayer()
     function maxVal(t, fn)

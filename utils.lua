@@ -81,7 +81,7 @@ function PlayerIsActive(tab, val)
 end
 
 function GetOnlinePlayers(_source, players)
-    local Players = {}
+    local Active = {}
     for _, playerId in ipairs(GetPlayers()) do
         local name = GetPlayerName(playerId)
     
@@ -102,10 +102,10 @@ function GetOnlinePlayers(_source, players)
                     Player.ping = GetPlayerPing(playerId)
                 end
     
-                table.insert(Players, Player)
+                table.insert(Active, Player)
                 break
             end
         end
     end
-    return Players 
+    return Active 
 end

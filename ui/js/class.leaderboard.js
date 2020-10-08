@@ -114,6 +114,7 @@ class Leaderboard {
     }
 
     update() {
+        this.paginator.list = this.players;
         this.paginator.paginate();
 
         this.list.innerHTML = "";
