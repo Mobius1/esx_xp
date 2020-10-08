@@ -46,7 +46,7 @@ You can find an interactive demo [here](https://codepen.io/Mobius1/full/yLeMwzO)
 
 ![Demo Image 2](https://i.imgur.com/uNPRGo5.gif)
 
-##### Leaderboard
+##### Mini Leaderboard
 ![Demo Image 3](https://i.imgur.com/vOY7xpI.png)
 
 ## Requirements
@@ -77,6 +77,7 @@ Config.Width        = 532   -- Sets the width of the XP bar in px
 Config.Timeout      = 5000  -- Sets the interval in ms that the XP bar is shown before fading out
 Config.BarSegments  = 10    -- Sets the number of segments the XP bar has. Native GTA:O is 10
 Config.UIKey        = 20    -- The key that toggles the UI - default is "Z"
+Config.LBKey        = 7     -- The key that toggles the full leaderboard - default is "L"
 
 Config.Ranks        = {}    -- XP ranks. Must be a table of integers with the first element being 0.
 
@@ -223,6 +224,8 @@ The UI can be toggled with the `Z` key by default. The UI will fade out after th
 You can customise the UI key with `Config.UIKey` in `config.lua`.
 
 The data in the leaderboard is refreshed whenever it is opened so you get up-to-date information.
+
+The mini leaderboard will only display a maximum of 18 players. If you require all players to be displayed, you can hit the key defined with `Config.LBKey` to show the full leaderboard. Default is the `L` key.
 
 ## Commands
 Get current XP stats
