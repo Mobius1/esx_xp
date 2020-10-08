@@ -77,7 +77,6 @@ Config.Width        = 532   -- Sets the width of the XP bar in px
 Config.Timeout      = 5000  -- Sets the interval in ms that the XP bar is shown before fading out
 Config.BarSegments  = 10    -- Sets the number of segments the XP bar has. Native GTA:O is 10
 Config.UIKey        = 20    -- The key that toggles the UI - default is "Z"
-Config.LBKey        = 7     -- The key that toggles the full leaderboard - default is "L"
 
 Config.Ranks        = {}    -- XP ranks. Must be a table of integers with the first element being 0.
 
@@ -221,11 +220,11 @@ TriggerClientEvent('esx_xp:SetRank', source, rank)
 ## UI
 The UI can be toggled with the `Z` key by default. The UI will fade out after the interval defined by `Config.Timeout` or you can close it immediately with the `Z` key.
 
+The leaderboard is paginated and can be navigated with arrow keys.
+
 You can customise the UI key with `Config.UIKey` in `config.lua`.
 
 The data in the leaderboard is refreshed whenever it is opened so you get up-to-date information.
-
-The mini leaderboard will only display a maximum of 18 players. If you require all players to be displayed, you can hit the key defined with `Config.LBKey` to show the full leaderboard. Default is the `L` key.
 
 ## Commands
 Get current XP stats
