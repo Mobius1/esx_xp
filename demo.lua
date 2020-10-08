@@ -78,18 +78,13 @@ RegisterCommand('ESXP_RemoveFakePlayers', function(source, args)
     ESXP_ShowUI(true)
 end)
 
--- RegisterCommand('ESXP_Sort', function(source, args)
---     local order = args[1] or "rank"
+RegisterCommand('ESXP_Sort', function(source, args)
+    local order = args[1] or "rank"
 
---     ESXP_ShowUI() 
+    ESXP_SortLeaderboard(order)
 
---     -- Sort the leaderboard
---     SortLeaderboard(Players, order)
-
---     ESXP_ShowUI(true)
-
---     ESX.ShowNotification("~b~ESX_XP: ~w~Leaderboard ordered by ~g~" .. order)    
--- end)
+    ESX.ShowNotification("~b~ESX_XP: ~w~Leaderboard ordered by ~g~" .. order)    
+end)
 
 function AddFakePlayer()
     function maxVal(t, fn)

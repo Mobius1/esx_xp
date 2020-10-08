@@ -8,20 +8,24 @@ class Paginator {
         this.lastPage = 0;
     }
 
-    paginate() {
+    paginate(order) {
+        if (order === undefined) {
+            order = this.sortBy;
+        }
+
         const list = Object.values(this.list);
 
         this.pages = list.sort((a, b) => {
-                if (this.sortBy === "rank") {
+                if (order === "rank") {
                     if (a.rank < b.rank) {
                         return 1;
                     } else if (a.rank > b.rank) {
                         return -1;
                     }
-                } else if (this.sortBy === "name") {
-                    if (a.name > b.name) {
+                } else if (order === "name") {
+                    if (a.name.toLowerCase() > b.name.toLowerCase()) {
                         return 1;
-                    } else if (a.name < b.name) {
+                    } else if (a.name.toLowerCase() < b.name.toLowerCase()) {
                         return -1;
                     }
                 }

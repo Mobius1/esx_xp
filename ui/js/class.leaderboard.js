@@ -113,9 +113,13 @@ class Leaderboard {
         this.update();
     }
 
-    update() {
+    update(order) {
+        if ( order === undefined ) {
+            order = this.config.sortBy;
+        }
+
         this.paginator.list = this.players;
-        this.paginator.paginate();
+        this.paginator.paginate(order);
 
         this.list.innerHTML = "";
         for (const player of this.paginator.pages[this.paginator.currentPage - 1]) {

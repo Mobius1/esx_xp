@@ -259,7 +259,12 @@ window.onData = function (data) {
             if ( data.xpm_lb_next ) {
                 UIOpen();
                 leaderboard.nextPage();
-            }        
+            }  
+            
+            if ( data.xpm_lb_sort ) {
+                leaderboard.config.sortBy = data.xpm_lb_order;
+                leaderboard.update();
+            }
 
             // Update Leaderboard
             if (data.xpm_updateleaderboard) {

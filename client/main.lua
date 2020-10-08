@@ -364,12 +364,10 @@ function ESXP_TimeoutUI(update)
 end
 
 function ESXP_SortLeaderboard(type)
-    if type == nil then
-        type = "rank"
-    end
     SendNUIMessage({
-        xpm_sortleaderboard = type
-    })      
+        xpm_lb_sort = true,
+        xpm_lb_order = type or "rank"
+    })   
 end
 
 ------------------------------------------------------------
