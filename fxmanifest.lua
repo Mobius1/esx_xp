@@ -57,4 +57,4 @@ export 'ESXP_GetMaxRank'
 export 'ESXP_ShowUI'
 export 'ESXP_HideUI'
 export 'ESXP_TimeoutUI'
-export 'ESXP_SortLeaderboard`
+export 'ESXP_SortLeaderboard'
