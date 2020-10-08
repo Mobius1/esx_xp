@@ -3,90 +3,66 @@ class Leaderboard {
 
         const config = {
             showPing: false,
-            perPage: 18
+            perPage: 18,
+            sortBy: "rank"
         };
 
         this.config = Object.assign({}, config, options);
 
         this.container = document.getElementById("xpm_leaderboard");
         this.players = {};
-        this.paginator = new Paginator(this.players, this.config.perPage);
-		
+
+        this.paginator = new Paginator(this.config.perPage, this.config.sortBy);
+
         this.init();
     }
-	
+
     init() {
         this.inner = document.createElement("div");
         this.inner.classList.add("xpm-leaderboard--inner")
-		
+
         this.header = document.createElement("div");
         this.header.classList.add("xpm-leaderboard--header");
-			
+
         this.counter = document.createElement("div");
         this.counter.classList.add("xpm-leaderboard--counter");
-			
+
         this.pager = document.createElement("div");
-        this.pager.classList.add("xpm-leaderboard--pager");					
-		
+        this.pager.classList.add("xpm-leaderboard--pager");
+
         this.list = document.createElement("ul");
         this.list.classList.add("xpm-leaderboard--players");
-			
+
         this.header.appendChild(this.counter);
         this.header.appendChild(this.pager);
-		
+
         this.inner.appendChild(this.header);
         this.inner.appendChild(this.list);
     }
-	
+
     render() {
         this.container.appendChild(this.inner);
     }
-	
-    update() {
-        this.list.innerHTML = "";
-        for ( const player of this.paginator.pages[this.paginator.currentPage - 1] ) {
-            this.list.appendChild(this.players[player].row)
-        }
-        
-        this.counter.textContent = `Players: ${this.getPlayerCount()}`;
-        this.pager.textContent = `${this.paginator.currentPage} / ${this.paginator.totalPages}`
-    }
 
-    nextPage() {
-        if ( this.paginator.currentPage < this.paginator.lastPage ) {
-            this.paginator.currentPage++;
-        }
-        
-        this.update();
-    }
-
-    prevPage() {
-        if ( this.paginator.currentPage > 1 ) {
-            this.paginator.currentPage--;
-        }
-        
-        this.update();
-    }	
-	
     addPlayer(player) {
         const li = document.createElement("li");
         li.classList.add("xpm-leaderboard--player");
-		
+
         const info = document.createElement("div");
         info.classList.add("xpm-leaderboard--playerinfo");
-		
+
         const name = document.createElement("div");
-        name.classList.add("xpm-leaderboard--playername");	
-		
+        name.classList.add("xpm-leaderboard--playername");
+
         const rank = document.createElement("div");
         rank.classList.add("xpm-leaderboard--playerrank");
-		
+
         const num = document.createElement("div");
         num.classList.add("xpm-leaderboard--playerranknum");
-		
+
         name.textContent = player.name;
         num.textContent = player.rank;
-		
+
         const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
         svg.innerHTML = `<g>
                             <circle cx="552.13" cy="551.577" r="512" />
@@ -97,15 +73,15 @@ class Leaderboard {
                             <path d="M382.945,68.192c-50.181,119.716-81.656,291.957-81.656,483.384
         c0,191.427,31.476,363.666,81.655,483.382" />
                         </g>`;
-		
+
         svg.setAttribute("viewBox", "0 0 1104 1104");
-		
+
         rank.appendChild(svg);
         rank.appendChild(num);
-		
+
         info.appendChild(name);
 
-        if ( this.config.showPing ) {
+        if (this.config.showPing) {
             const ping = document.createElement("div");
             ping.classList.add("xpm-leaderboard--playerping");
 
@@ -116,42 +92,69 @@ class Leaderboard {
 
         li.appendChild(info);
         li.appendChild(rank);
-		
+
         this.list.appendChild(li);
-		
-        player.row = li;  
-		
+
+        player.row = li;
+
         this.players[player.id] = player;
         this.paginator.addItem(player);
-		
+
         this.counter.textContent = `Players: ${this.getPlayerCount()}`;
     }
 
     updatePlayers(players) {
-        this.list.innerHTML = "";
         this.players = {};
 
-        for ( const player of players ) {
-            this.addPlayer(player);         
+        for (const player in players) {
+            this.addPlayer(players[player]);
         }
 
         this.update();
     }
 
+    update() {
+        this.paginator.paginate();
+
+        this.list.innerHTML = "";
+        for (const player of this.paginator.pages[this.paginator.currentPage - 1]) {
+            this.list.appendChild(this.players[player.id].row)
+        }
+
+        this.counter.textContent = `Players: ${this.getPlayerCount()}`;
+        this.pager.textContent = `${this.paginator.currentPage} / ${this.paginator.totalPages}`
+    }
+
+    nextPage() {
+        if (this.paginator.currentPage < this.paginator.lastPage) {
+            this.paginator.currentPage++;
+        }
+
+        this.update();
+    }
+
+    prevPage() {
+        if (this.paginator.currentPage > 1) {
+            this.paginator.currentPage--;
+        }
+
+        this.update();
+    }    
+
     getPlayerCount() {
         return Object.keys(this.players).length;
     }
-	
+
     addPlayers(players) {
-        for ( const player of players ) {
-            if ( !(player.id in this.players) ) {
+        for (const player of players) {
+            if (!(player.id in this.players)) {
                 this.addPlayer(player);
             }
         }
     }
 
     removePlayer(player) {
-        if ( player.id in this.players ) {
+        if (player.id in this.players) {
             this.list.removeChild(this.players[player.id].row);
 
             delete this.players[player.id];
@@ -159,10 +162,10 @@ class Leaderboard {
     }
 
     removePlayers(players) {
-        for ( const id in players ) {
+        for (const id in players) {
             const player = players[id];
 
-            if ( player.id in this.players ) {
+            if (player.id in this.players) {
                 this.list.removeChild(this.players[player.id].row);
 
                 delete this.players[player.id];
@@ -171,9 +174,9 @@ class Leaderboard {
     }
 
     updateRank(id, rank) {
-        if ( id in this.players ) {
+        if (id in this.players) {
             this.players[id].rank = rank;
             this.players[id].row.querySelector(".xpm-leaderboard--playerranknum").textContent = rank;
         }
-    }    
+    }
 }

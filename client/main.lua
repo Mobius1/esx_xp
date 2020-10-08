@@ -59,10 +59,7 @@ AddEventHandler("esx_xp:init", function(_xp, _rank, players)
                 if v.current then
                     Player = v
                 end
-            end
-            
-            -- Sort the leaderboard
-            SortLeaderboard(players)            
+            end        
     
             Players = players                       
         end
@@ -131,9 +128,6 @@ if Config.Leaderboard.Enabled then
                 Player = v
             end            
         end
-
-        -- Sort the leaderboard
-        SortLeaderboard(Players)
 
         -- Update leaderboard
         SendNUIMessage({

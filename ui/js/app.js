@@ -71,7 +71,6 @@ function UIOpen() {
 
 function UITimeout() {
     UIOpen();
-    console.log("foo")
 
     displayTimer = window.setTimeout(() => {
         UIClose();
@@ -104,7 +103,8 @@ window.onData = function (data) {
         if ( data.players ) {
             leaderboard = new Leaderboard({
                 showPing: data.showPing,
-                perPage: globalConfig.Leaderboard.PerPage
+                perPage: globalConfig.Leaderboard.PerPage,
+                sortBy: globalConfig.Leaderboard.Order
             });
 
             leaderboard.render();
