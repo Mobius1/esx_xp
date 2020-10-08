@@ -151,6 +151,35 @@ Get max attainable rank
 exports.esx_xp:ESXP_GetMaxRank()
 ```
 
+### Utils
+Show the UI
+```lua
+ESXP_ShowUI()
+
+-- update the leaderboard at the same time
+
+ESXP_ShowUI(true)
+```
+
+Hide the UI
+```lua
+ESXP_HideUI()
+```
+
+Show the UI and hide after timeout
+```lua
+ESXP_TimeoutUI()
+```
+
+Sort the leaderboard
+```lua
+ESXP_SortLeaderboard("rank")
+
+-- or
+
+ESXP_SortLeaderboard("name")
+```
+
 
 ## Get player XP and Rank from other ESX resources
 If you want to access the players xp and / or rank in other `ESX` resources:
@@ -273,6 +302,11 @@ Add number of fake players to leaderboard
 Remove all fake players from leaderboard
 ```lua
 /ESXP_RemoveFakePlayers
+```
+
+Sort the leaderboard
+```lua
+/ESXP_SortLeaderboard order --[[ rank or name ]]
 ```
 
 ## FAQ

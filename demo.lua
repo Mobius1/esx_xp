@@ -78,7 +78,7 @@ RegisterCommand('ESXP_RemoveFakePlayers', function(source, args)
     ESXP_ShowUI(true)
 end)
 
-RegisterCommand('ESXP_Sort', function(source, args)
+RegisterCommand('ESXP_SortLeaderboard', function(source, args)
     local order = args[1] or "rank"
 
     ESXP_SortLeaderboard(order)
