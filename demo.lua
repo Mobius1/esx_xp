@@ -63,7 +63,7 @@ RegisterCommand('ESXP_AddFakePlayer', function(source, args)
 
     ESXP_ShowUI(true)
 
-    exports.FeedM:ShowNotification("~b~ESX_XP: ~g~" .. count .. " ~w~players added")      
+    ESX.ShowNotification("~b~ESX_XP: ~g~" .. count .. " ~w~players added")      
 end)
 
 RegisterCommand('ESXP_RemoveFakePlayers', function(source, args)
@@ -73,7 +73,7 @@ RegisterCommand('ESXP_RemoveFakePlayers', function(source, args)
         end
     end
 
-    exports.FeedM:ShowNotification("~b~ESX_XP: ~w~Fake players removed")    
+    ESX.ShowNotification("~b~ESX_XP: ~w~Fake players removed")    
 
     ESXP_ShowUI(true)  
 end)
@@ -92,7 +92,7 @@ RegisterCommand('ESXP_Sort', function(source, args)
         xpm_players = Players
     })
 
-    exports.FeedM:ShowNotification("~b~ESX_XP: ~w~Leaderboard ordered by ~g~" .. order)    
+    ESX.ShowNotification("~b~ESX_XP: ~w~Leaderboard ordered by ~g~" .. order)    
 end)
 
 function AddFakePlayer()
@@ -176,10 +176,4 @@ function AddFakePlayer()
         rank = rank,
         fake = true
     })
-end
-
-function ShowNotification(msg)
-    SetNotificationTextEntry('STRING')
-    AddTextComponentSubstringPlayerName(msg)
-    DrawNotification(false, true)
 end
