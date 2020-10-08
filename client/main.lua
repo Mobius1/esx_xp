@@ -354,8 +354,6 @@ end
 -- @return	void
 function ESXP_HideUI()
     UIActive = false
-
-    SetNuiFocus(false, false)
         
     SendNUIMessage({
         xpm_hide = true
@@ -369,8 +367,6 @@ function ESXP_ShowLeaderboard(update)
         TriggerServerEvent("esx_xp:getPlayerData")
     end
 
-    SetNuiFocus(true, true)
-    
     SendNUIMessage({
         xpm_lb_show = true
     })
@@ -378,8 +374,6 @@ end
 
 function ESXP_HideLeaderboard(update)
     LBActive = false
-
-    SetNuiFocus(false, false)
     
     SendNUIMessage({
         xpm_lb_hide = true
@@ -413,7 +407,7 @@ Citizen.CreateThread(function()
                 xpm_display = true
             })
             
-        elseif IsControlJustReleased(0, 7) then
+        elseif IsControlJustReleased(0, Config.LBKey) then
             if not LBActive then
                 TriggerServerEvent("esx_xp:getPlayerData")
 
@@ -473,9 +467,6 @@ end)
 
 RegisterNUICallback('xpm_lbchange', function(data)
     LBActive = false
-
-
-    SetNuiFocus(false)
 end)
 
 

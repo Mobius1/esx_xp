@@ -318,15 +318,6 @@ window.onData = function (data) {
     }    
 };
 
-window.addEventListener("keyup", event => {
-    if (event.keyCode === 76 ) {
-        if ( leaderboard ) {
-            leaderboard.container.classList.remove("active");
-
-            LBClose();
-        }
-    }
-});
 
 window.onload = function (e) {
     window.addEventListener('message', function (event) {
