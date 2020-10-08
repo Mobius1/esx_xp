@@ -9,6 +9,7 @@ class Leaderboard {
 
         this.container = document.getElementById("xpm_leaderboard");
         this.players = {};
+        this.full = false;
 		
         this.init();
     }
@@ -83,6 +84,8 @@ class Leaderboard {
         this.list.appendChild(li);
 		
         player.row = li;
+
+        player.row.classList.toggle("hidden", !this.full && this.getPlayerCount() > 18);        
 		
         this.players[player.id] = player;
 		
@@ -90,12 +93,11 @@ class Leaderboard {
     }
 
     updatePlayers(players) {
-
         this.list.innerHTML = "";
         this.players = {};
 
         for ( const player of players ) {
-            this.addPlayer(player);
+            this.addPlayer(player);         
         }
 
         this.header.textContent = `Players: ${this.getPlayerCount()}`;

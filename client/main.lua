@@ -4,6 +4,7 @@ Leaderboard = nil
 Players = {}
 Player = nil
 UIActive = true
+LBActive = false
 ESX = nil
 
 
@@ -36,6 +37,8 @@ end)
 
 RegisterNetEvent("esx_xp:init")
 AddEventHandler("esx_xp:init", function(_xp, _rank, players)
+
+    ESXP_HideLeaderboard()
 
     local Ranks = CheckRanks()
 
@@ -351,11 +354,38 @@ end
 -- @return	void
 function ESXP_HideUI()
     UIActive = false
+
+    SetNuiFocus(false, false)
         
     SendNUIMessage({
         xpm_hide = true
     })      
 end
+
+function ESXP_ShowLeaderboard(update)
+    LBActive = true
+
+    if update ~= nil then
+        TriggerServerEvent("esx_xp:getPlayerData")
+    end
+
+    SetNuiFocus(true, true)
+    
+    SendNUIMessage({
+        xpm_lb_show = true
+    })
+end
+
+function ESXP_HideLeaderboard(update)
+    LBActive = false
+
+    SetNuiFocus(false, false)
+    
+    SendNUIMessage({
+        xpm_lb_hide = true
+    })
+end
+
 
 function ESXP_SortLeaderboard(type)
     if type == nil then
@@ -383,7 +413,17 @@ Citizen.CreateThread(function()
                 xpm_display = true
             })
             
-        end
+        elseif IsControlJustReleased(0, 7) then
+            if not LBActive then
+                TriggerServerEvent("esx_xp:getPlayerData")
+
+                ESXP_ShowLeaderboard()
+            else
+                ESXP_HideLeaderboard()
+            end
+
+            
+        end        
         Citizen.Wait(1)
     end
 end)
@@ -429,6 +469,13 @@ end)
 
 RegisterNUICallback('xpm_uichange', function(data)
     UIActive = false
+end)
+
+RegisterNUICallback('xpm_lbchange', function(data)
+    LBActive = false
+
+
+    SetNuiFocus(false)
 end)
 
 

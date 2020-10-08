@@ -65,19 +65,22 @@ function UIOpen() {
     clearTimeout(displayTimer);
 
     container.classList.add("active");
+
     if ( leaderboard ) {
+        leaderboard.full = false;
+        leaderboard.container.classList.remove("full");
         leaderboard.container.classList.add("active");
-    }
+
+        let num = 1;
+        for ( const id in leaderboard.players ) {
+            leaderboard.players[id].row.classList.toggle("hidden", num > 18);
+
+            num++;
+        }        
+    }    
 
     displayTimer = setTimeout(() => {
         UIClose();
-
-        fetch(`https://${GetParentResourceName()}/xpm_uichange`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json; charset=UTF-8' },
-            body: JSON.stringify({})
-        }); 
-        
         displayTimer = false;
     }, globalConfig.Timeout);
 }
@@ -87,9 +90,39 @@ function UIClose() {
     displayTimer = false;
 
     container.classList.remove("active");
+
     if ( leaderboard ) {
         leaderboard.container.classList.remove("active");
+    }       
+
+    fetch(`https://${GetParentResourceName()}/xpm_uichange`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json; charset=UTF-8' },
+        body: JSON.stringify({})
+    });    
+}
+
+function LBOpen() {
+    if ( leaderboard ) {
+        leaderboard.full = true;
+        leaderboard.container.classList.add("active", "full");
+
+        for ( const id in leaderboard.players ) {
+            leaderboard.players[id].row.classList.remove("hidden");
+        }        
     }
+}
+
+function LBClose() {
+    if ( leaderboard ) {
+        leaderboard.container.classList.remove("active");
+
+        fetch(`https://${GetParentResourceName()}/xpm_lbchange`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json; charset=UTF-8' },
+            body: JSON.stringify({})
+        });         
+    }   
 }
 
 window.onData = function (data) {
@@ -109,7 +142,7 @@ window.onData = function (data) {
 
             leaderboard.render();
 
-            leaderboard.addPlayers(data.players); 
+            leaderboard.addPlayers(data.players);
         }
 
         const ranks = {};
@@ -226,9 +259,6 @@ window.onData = function (data) {
                 // hide the xp bar
                 displayTimer = setTimeout(() => {
                     container.classList.remove("active");
-                    if ( leaderboard ) {
-                        leaderboard.container.classList.remove("active");
-                    }
                 }, globalConfig.Timeout);
 
                 xpBar.classList.remove("xpm-remove");
@@ -262,12 +292,16 @@ window.onData = function (data) {
         }   
 
         if (data.xpm_show) {
-            UIOpen()
-        } 
-
-        if (data.xpm_hide) {
-            UIClose()
+            UIOpen();
+        } else if (data.xpm_hide) {
+            UIClose();
         }
+
+        if ( data.xpm_lb_show ) {
+            LBOpen();
+        } else if ( data.xpm_lb_hide ) {
+            LBClose();
+        }        
 
         if (data.xpm_removeplayer) {
             leaderboard.removePlayer(data.player);
@@ -283,6 +317,16 @@ window.onData = function (data) {
         } 
     }    
 };
+
+window.addEventListener("keyup", event => {
+    if (event.keyCode === 76 ) {
+        if ( leaderboard ) {
+            leaderboard.container.classList.remove("active");
+
+            LBClose();
+        }
+    }
+});
 
 window.onload = function (e) {
     window.addEventListener('message', function (event) {
