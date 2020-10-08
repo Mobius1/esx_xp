@@ -53,5 +53,8 @@ export 'ESXP_GetXPToNextRank'
 export 'ESXP_GetXPToRank'
 export 'ESXP_GetMaxXP'
 export 'ESXP_GetMaxRank'
+
 export 'ESXP_ShowUI'
 export 'ESXP_HideUI'
+export 'ESXP_TimeoutUI'
+export 'ESXP_SortLeaderboard`

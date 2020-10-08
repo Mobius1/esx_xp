@@ -489,6 +489,18 @@ exports('ESXP_GetMaxXP', ESXP_GetMaxXP)
 -- GET MAX RANK
 exports('ESXP_GetMaxRank', ESXP_GetMaxRank)
 
+-- SHOW UI
+exports('ESXP_ShowUI', ESXP_ShowUI)
+
+-- HIDE UI
+exports('ESXP_HideUI', ESXP_HideUI)
+
+-- TIMEOUT UI
+exports('ESXP_TimeoutUI', ESXP_TimeoutUI)
+
+-- SORT LEADERBOARD
+exports('ESXP_SortLeaderboard', ESXP_SortLeaderboard)
+
 
 ------------------------------------------------------------
 --                        COMMANDS                        --
