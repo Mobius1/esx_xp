@@ -123,7 +123,8 @@ class Leaderboard {
         this.paginator.paginate(order);
 
         this.list.innerHTML = "";
-        if ( this.paginator.totalPages > 1 && this.getPlayerCount() > 0  ) {
+
+        if ( this.getPlayerCount() > 0  ) {
             for (const player of this.paginator.pages[this.paginator.currentPage - 1]) {
                 this.list.appendChild(this.players[player.id].row)
             }
