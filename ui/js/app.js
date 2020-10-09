@@ -243,23 +243,23 @@ window.onData = function (data) {
     
         // Show XP bar
         if (data.xpm_display) {
-            UITimeout()
+            UITimeout();
         }   
 
         if (data.xpm_show) {
-            UIOpen();
+            UITimeout();
         } else if (data.xpm_hide) {
             UIClose();
         }
 
         if ( leaderboard ) {
             if ( data.xpm_lb_prev ) {
-                UIOpen();
+                UITimeout();
                 leaderboard.prevPage();
             }
 
             if ( data.xpm_lb_next ) {
-                UIOpen();
+                UITimeout();
                 leaderboard.nextPage();
             }  
             
