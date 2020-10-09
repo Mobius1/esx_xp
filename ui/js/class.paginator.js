@@ -4,8 +4,8 @@ class Paginator {
         this.perPage = perPage;
         this.sortBy = sortBy;
         this.currentPage = 1;
-        this.totalPages = 0;
-        this.lastPage = 0;
+        this.totalPages = 1;
+        this.lastPage = 1;
     }
 
     paginate(order) {
@@ -36,7 +36,8 @@ class Paginator {
                 return i % this.perPage === 0 ? list.slice(i, i + this.perPage) : null;
             }).filter(page => page);
 
-        this.totalPages = this.lastPage = this.pages.length;
+        this.totalPages = this.pages.length > 0 ? this.pages.length : 1;
+        this.lastPage   = this.pages.length > 0 ? this.pages.length : 1;
     }
 
     setPerPage(perPage) {

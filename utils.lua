@@ -86,7 +86,8 @@ function GetOnlinePlayers(_source, players)
         local name = GetPlayerName(playerId)
     
         for k, v in pairs(players) do
-            if name == v.name then
+            local identifier = GetPlayerIdentifier(playerId)
+            if identifier == v.identifier then
                 local Player = {
                     name = name,
                     id = playerId,
@@ -94,7 +95,7 @@ function GetOnlinePlayers(_source, players)
                     rank = v.rp_rank
                 }
 
-                if v.identifier == ESX.GetPlayerFromId(_source).identifier then
+                if identifier == v.identifier then
                     Player.current = true
                 end
                             

@@ -100,16 +100,18 @@ window.onData = function (data) {
             currentID = data.currentID
         }
 
-        if ( data.players ) {
+        if ( data.leaderboard ) {
             leaderboard = new Leaderboard({
-                showPing: data.showPing,
+                showPing: globalConfig.Leaderboard.ShowPing,
                 perPage: globalConfig.Leaderboard.PerPage,
                 sortBy: globalConfig.Leaderboard.Order
             });
 
             leaderboard.render();
 
-            leaderboard.addPlayers(data.players);
+            if ( data.players.length > 0 ) {
+                leaderboard.addPlayers(data.players);
+            }
         }
 
         const ranks = {};

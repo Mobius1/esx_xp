@@ -42,6 +42,7 @@ class Leaderboard {
 
     render() {
         this.container.appendChild(this.inner);
+        this.update();
     }
 
     addPlayer(player) {
@@ -122,28 +123,33 @@ class Leaderboard {
         this.paginator.paginate(order);
 
         this.list.innerHTML = "";
-        for (const player of this.paginator.pages[this.paginator.currentPage - 1]) {
-            this.list.appendChild(this.players[player.id].row)
+        if ( this.paginator.totalPages > 1 && this.getPlayerCount() > 0  ) {
+            for (const player of this.paginator.pages[this.paginator.currentPage - 1]) {
+                this.list.appendChild(this.players[player.id].row)
+            }
         }
 
         this.counter.textContent = `Players: ${this.getPlayerCount()}`;
-        this.pager.textContent = `${this.paginator.currentPage} / ${this.paginator.totalPages}`
+
+        if ( this.paginator.totalPages > 1 ) {
+            this.pager.textContent = `${this.paginator.currentPage} / ${this.paginator.totalPages}`;
+        }
     }
 
     nextPage() {
-        if (this.paginator.currentPage < this.paginator.lastPage) {
+        if (this.paginator.totalPages > 1 && this.paginator.currentPage < this.paginator.lastPage) {
             this.paginator.currentPage++;
-        }
 
-        this.update();
+            this.update();
+        }
     }
 
     prevPage() {
-        if (this.paginator.currentPage > 1) {
+        if (this.paginator.totalPages > 1 && this.paginator.currentPage > 1) {
             this.paginator.currentPage--;
-        }
 
-        this.update();
+            this.update();
+        }
     }    
 
     getPlayerCount() {

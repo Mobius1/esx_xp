@@ -52,8 +52,8 @@ AddEventHandler("esx_xp:init", function(_xp, _rank, players)
         }
     
         if Config.Leaderboard.Enabled and players then
+            data.leaderboard = true
             data.players = players
-            data.showPing = Config.Leaderboard.ShowPing
 
             for k, v in pairs(players) do
                 if v.current then
