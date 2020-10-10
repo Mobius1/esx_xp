@@ -5,6 +5,7 @@ Players = {}
 Player = nil
 UIActive = true
 ESX = nil
+Ready = false
 
 
 ------------------------------------------------------------
@@ -36,6 +37,13 @@ end)
 --                      MAIN EVENTS                       --
 ------------------------------------------------------------
 
+-- CHECK RESOURCE IS READY
+AddEventHandler('esx_xp:isReady', function(cb)
+    cb(Ready)
+end)
+
+
+-- INITIALISE RESOURCE
 RegisterNetEvent("esx_xp:init")
 AddEventHandler("esx_xp:init", function(_xp, _rank, players)
 
@@ -77,6 +85,9 @@ AddEventHandler("esx_xp:init", function(_xp, _rank, players)
         StatSetInt("MPPLY_GLOBALXP", CurrentXP, 1)
 
         -- Resource is ready to be used
+        Ready = true
+
+        -- Trigger event
         TriggerEvent("esx_xp:ready", {
             xPlayer = ESX.GetPlayerData(),
             xp = CurrentXP,
@@ -418,9 +429,10 @@ end)
 
 
 ------------------------------------------------------------
---                         MAIN                          --
+--                          MAIN                          --
 ------------------------------------------------------------
 
+-- UPDATE UI
 RegisterNetEvent("esx_xp:updateUI")
 AddEventHandler("esx_xp:updateUI", function(_xp)
     CurrentXP = tonumber(_xp)
@@ -455,12 +467,9 @@ RegisterNUICallback('xpm_rankchange', function(data)
     end
 end)
 
+-- UI CHANGE
 RegisterNUICallback('xpm_uichange', function(data)
     UIActive = false
-end)
-
-RegisterNUICallback('xpm_lbchange', function(data)
-    LBActive = false
 end)
 
 
