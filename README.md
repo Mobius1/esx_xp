@@ -202,6 +202,17 @@ local playerRank = xPlayer.get("rank")
 
 ## Client Event Listeners
 
+Wait for `esx_xp` to be ready for use
+```lua
+AddEventHandler("esx_xp:ready", function(data --[[ table ]])
+    local currentXP     = data.xp
+    local currentRank   = data.rank
+    local xPlayer       = data.player
+    
+    -- esx_xp is ready for use
+end)
+```
+
 Listen for rank change events. These can be used to reward / punish the player for changing rank.
 
 Listen for rank-up event
