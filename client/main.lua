@@ -11,22 +11,24 @@ ESX = nil
 --                          ESX                           --
 ------------------------------------------------------------
 
-Citizen.CreateThread(function()
-    -- Wait for ESX
-    while ESX == nil do
-        Citizen.Wait(10)
-        TriggerEvent("esx:getSharedObject", function(esx)
-            ESX = esx
-        end)
-    end
-    
-    -- Wait for ESX player
-    while not ESX.IsPlayerLoaded() do
-        Citizen.Wait(10)
-    end
-    
-    -- Initialise
-    TriggerServerEvent("esx_xp:ready")
+AddEventHandler("playerSpawned", function(spawn)
+    Citizen.CreateThread(function()
+        -- Wait for ESX
+        while ESX == nil do
+            Citizen.Wait(10)
+            TriggerEvent("esx:getSharedObject", function(esx)
+                ESX = esx
+            end)
+        end
+        
+        -- Wait for ESX player
+        while not ESX.IsPlayerLoaded() do
+            Citizen.Wait(10)
+        end
+        
+        -- Initialise
+        TriggerServerEvent("esx_xp:load")
+    end)	
 end)
 
 
@@ -73,6 +75,13 @@ AddEventHandler("esx_xp:init", function(_xp, _rank, players)
     
         -- Native stats
         StatSetInt("MPPLY_GLOBALXP", CurrentXP, 1)
+
+        -- Resource is ready to be used
+        TriggerEvent("esx_xp:ready", {
+            xPlayer = ESX.GetPlayerData(),
+            xp = CurrentXP,
+            rank = CurrentRank
+        })
     else
         TriggerEvent("esx_xp:print", _('err_lvls_check', #Ranks, 'Config.Ranks'))
         print(ESX.DumpTable(Ranks))

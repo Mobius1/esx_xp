@@ -4,8 +4,8 @@ ESX = nil
 
 TriggerEvent('esx:getSharedObject', function(obj) ESX = obj end)
 
-RegisterNetEvent("esx_xp:ready")
-AddEventHandler("esx_xp:ready", function()
+RegisterNetEvent("esx_xp:load")
+AddEventHandler("esx_xp:load", function()
     local _source = source
     local xPlayer = ESX.GetPlayerFromId(_source)
 
