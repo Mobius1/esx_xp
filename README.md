@@ -229,6 +229,28 @@ end)
 ```
 
 ## Client Triggers
+Wait for `esx_xp` to be ready:
+
+```lua
+TriggerEvent("esx_xp:isReady", cb)
+```
+
+Example:
+```lua
+ESXP = false
+
+Citizen.CreateThread(function()
+    while not ESXP do
+        TriggerEvent("esx_xp:isReady", function(ready)
+            ESXP = ready
+        end)
+        Citizen.Wait(10)
+    end
+    
+    -- Do stuff with esx_xp
+end)
+```
+
 ```lua
 -- SET INTITIAL XP
 TriggerEvent('esx_xp:SetInitial', xp)
