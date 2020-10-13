@@ -131,10 +131,7 @@ class Leaderboard {
         }
 
         this.counter.textContent = `Players: ${this.getPlayerCount()}`;
-
-        if ( this.paginator.totalPages > 1 ) {
-            this.pager.textContent = `${this.paginator.currentPage} / ${this.paginator.totalPages}`;
-        }
+        this.pager.textContent = this.paginator.totalPages > 1 ? `${this.paginator.currentPage} / ${this.paginator.totalPages}` : "";
     }
 
     nextPage() {

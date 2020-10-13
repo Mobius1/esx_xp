@@ -52,16 +52,12 @@ function fillSegments(pr, child) {
     }
 }
 
-function TriggerRankChange(rankUp, current, previous) {
+function TriggerRankChange(rank) {
     if ( leaderboard && currentID ) {
-        leaderboard.updateRank(currentID, current);
+        leaderboard.updateRank(currentID, rank);
     }
 
-    fetch(`https://${GetParentResourceName()}/xpm_rankchange`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json; charset=UTF-8' },
-        body: JSON.stringify({ rankUp, current, previous })
-    });
+    PostData("xpm_rankchange");
 }
 
 function UIOpen() {
@@ -83,11 +79,15 @@ function UIClose() {
 
     main.classList.remove("active");
 
-    fetch(`https://${GetParentResourceName()}/xpm_uichange`, {
+    PostData("xpm_uichange")
+}
+
+function PostData(type) {
+    fetch(`https://esx_xp/${type}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json; charset=UTF-8' },
         body: JSON.stringify({})
-    });   
+    }).catch(error => console.log('ESX_XP FETCH ERROR! ' + error.message)); 
 }
 
 window.onData = function (data) {
@@ -181,7 +181,7 @@ window.onData = function (data) {
             onRankChange: function (current, next, previous, add, max, rankUp) {
 
                 // Fire rank change to update client UI
-                TriggerRankChange(rankUp, current, previous)
+                TriggerRankChange(current)
 
                 // Remove old ranks
                 rankA.classList.remove(`xp-rank-${previous}`);

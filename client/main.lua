@@ -12,7 +12,7 @@ Ready = false
 --                          ESX                           --
 ------------------------------------------------------------
 
-AddEventHandler("playerSpawned", function(spawn)
+-- AddEventHandler("playerSpawned", function(spawn)
     Citizen.CreateThread(function()
         -- Wait for ESX
         while ESX == nil do
@@ -30,7 +30,7 @@ AddEventHandler("playerSpawned", function(spawn)
         -- Initialise
         TriggerServerEvent("esx_xp:load")
     end)	
-end)
+-- end)
 
 
 ------------------------------------------------------------

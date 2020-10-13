@@ -1,15 +1,11 @@
 -- Get Identifier
-function GetSteamIdentifier(id)
-    local identifier = false
-    
-    for k,v in ipairs(GetPlayerIdentifiers(id)) do
-        if string.match(v, 'steam:') then
-            identifier = v
-            break
+function GetPlayerLicense(id)
+    for _, v in pairs(GetPlayerIdentifiers(id)) do
+        if string.sub(v, 1, string.len("license:")) == "license:" then
+            return string.gsub(v, "license:", "")
         end
-    end
-
-    return identifier
+    end  
+    return false
 end
 
 -- Check XP is an integer
@@ -84,10 +80,12 @@ function GetOnlinePlayers(_source, players)
     local Active = {}
     for _, playerId in ipairs(GetPlayers()) do
         local name = GetPlayerName(playerId)
-    
+        local license = GetPlayerLicense(playerId)
+
         for k, v in pairs(players) do
-            local identifier = GetPlayerIdentifier(playerId)
-            if identifier == v.identifier then
+            v.license = string.gsub(v.license, "license:", "")
+            
+            if v.license == license then
                 local Player = {
                     name = name,
                     id = playerId,
@@ -95,7 +93,7 @@ function GetOnlinePlayers(_source, players)
                     rank = v.rp_rank
                 }
 
-                if identifier == v.identifier then
+                if GetPlayerLicense(_source) == v.license then
                     Player.current = true
                 end
                             
