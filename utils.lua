@@ -93,6 +93,7 @@ function GetOnlinePlayers(_source, players)
                     rank = v.rp_rank
                 }
 
+                -- Current player
                 if GetPlayerLicense(_source) == v.license then
                     Player.current = true
                 end

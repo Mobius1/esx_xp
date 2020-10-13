@@ -83,11 +83,15 @@ function UIClose() {
 }
 
 function PostData(type) {
-    fetch(`https://esx_xp/${type}`, {
+    fetch(`https://${GetParentResourceName()}/${type}`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json; charset=UTF-8' },
-        body: JSON.stringify({})
-    }).catch(error => console.log('ESX_XP FETCH ERROR! ' + error.message)); 
+        headers: {
+            'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: JSON.stringify({
+            currentID
+        })
+    }).then(resp => resp.json()).then(resp => console.log(resp));    
 }
 
 window.onData = function (data) {
