@@ -57,7 +57,7 @@ function TriggerRankChange(rank) {
         leaderboard.updateRank(currentID, rank);
     }
 
-    PostData("xpm_rankchange");
+    PostData("rankchange");
 }
 
 function UIOpen() {
@@ -79,19 +79,17 @@ function UIClose() {
 
     main.classList.remove("active");
 
-    PostData("xpm_uichange")
+    PostData("uichange");
 }
 
-function PostData(type) {
-    fetch(`https://${GetParentResourceName()}/${type}`, {
+function PostData(type = "", data = {}) {
+    fetch(`https://${GetParentResourceName()}/xpm_${type}`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json; charset=UTF-8',
         },
-        body: JSON.stringify({
-            currentID
-        })
-    }).then(resp => resp.json()).then(resp => console.log(resp));    
+        body: JSON.stringify(data)
+    }).then(resp => resp.json()).then(resp => resp).catch(error => console.log('ESX_XP FETCH ERROR! ' + error.message));    
 }
 
 window.onData = function (data) {
