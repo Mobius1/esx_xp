@@ -124,7 +124,7 @@ class Leaderboard {
 
         this.list.innerHTML = "";
 
-        if ( this.getPlayerCount() > 0  ) {
+        if ( this.getPlayerCount() > 0 && this.totalPages > 1 && this.paginator.pages.length  ) {
             for (const player of this.paginator.pages[this.paginator.currentPage - 1]) {
                 this.list.appendChild(this.players[player.id].row)
             }
