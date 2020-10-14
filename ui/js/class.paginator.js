@@ -37,7 +37,17 @@ class Paginator {
             }).filter(page => page);
 
         this.totalPages = this.pages.length > 0 ? this.pages.length : 1;
-        this.lastPage   = this.pages.length > 0 ? this.pages.length : 1;
+        this.lastPage = this.pages.length > 0 ? this.pages.length : 1;
+    }
+
+    getCurrentPage() {
+        return this.pages[this.currentPage - 1];
+    }
+
+    getPage(page) {
+        if (page >= 1 && page <= this.totalPages) {
+            return this.pages[page - 1];
+        }
     }
 
     setPerPage(perPage) {

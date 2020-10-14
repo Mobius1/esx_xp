@@ -115,7 +115,7 @@ class Leaderboard {
     }
 
     update(order) {
-        if ( order === undefined ) {
+        if (order === undefined) {
             order = this.config.sortBy;
         }
 
@@ -124,8 +124,8 @@ class Leaderboard {
 
         this.list.innerHTML = "";
 
-        if ( this.getPlayerCount() > 0 && this.paginator.totalPages > 1 && this.paginator.pages.length  ) {
-            for (const player of this.paginator.pages[this.paginator.currentPage - 1]) {
+        if (this.paginator.pages.length) {
+            for (const player of this.paginator.getCurrentPage()) {
                 this.list.appendChild(this.players[player.id].row)
             }
         }
@@ -148,7 +148,15 @@ class Leaderboard {
 
             this.update();
         }
-    }    
+    }
+
+    setPage(page) {
+        if (page >= 1 && page <= this.paginator.totalPages) {
+            this.paginator.currentPage = page;
+
+            this.update();
+        }
+    }
 
     getPlayerCount() {
         return Object.keys(this.players).length;
@@ -160,26 +168,33 @@ class Leaderboard {
                 this.addPlayer(player);
             }
         }
+
+        this.update();
     }
 
-    removePlayer(player) {
+    removePlayer(player, update = false) {
+        // Switch to first page to prevent errors
+        this.setPage(1);
+
         if (player.id in this.players) {
-            this.list.removeChild(this.players[player.id].row);
+            if (this.list.contains(this.players[player.id].row)) {
+                this.list.removeChild(this.players[player.id].row);
+            }
 
             delete this.players[player.id];
+
+            if (update) {
+                this.update();
+            }
         }
     }
 
     removePlayers(players) {
         for (const id in players) {
-            const player = players[id];
-
-            if (player.id in this.players) {
-                this.list.removeChild(this.players[player.id].row);
-
-                delete this.players[player.id];
-            }
+            this.removePlayer(players[id]);
         }
+
+        this.update();
     }
 
     updateRank(id, rank) {
