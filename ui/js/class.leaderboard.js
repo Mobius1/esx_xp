@@ -44,7 +44,7 @@ class Leaderboard {
         this.update();
     }
 
-    addPlayer(player) {
+    addPlayer(player, update = false) {
         const li = document.createElement("li");
         li.classList.add("xpm-leaderboard--player");
 
@@ -100,14 +100,22 @@ class Leaderboard {
         this.players[player.id] = player;
         this.paginator.addItem(player);
 
+        if ( update ) {
+            this.paginator.setList(this.players);
+            this.update();
+        }
+
         this.counter.textContent = `Players: ${this.getPlayerCount()}`;
     }
 
     updatePlayers(players) {
         this.players = {};
+        const count = Object.keys(players).length;
 
-        for (const player in players) {
-            this.addPlayer(players[player]);
+        let n = 1;
+        for (const id in players) {
+            this.addPlayer(players[id], n == count );
+            n++
         }
 
         this.update();
@@ -122,7 +130,7 @@ class Leaderboard {
         this.paginator.paginate(order);
 
         this.list.innerHTML = "";
-
+        
         if (this.paginator.pages.length) {
             for (const player of this.paginator.getCurrentPage()) {
                 this.list.appendChild(this.players[player.id].row);
