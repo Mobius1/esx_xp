@@ -15,7 +15,8 @@ class Paginator {
 
         const list = Object.values(this.list);
 
-        this.pages = list.sort((a, b) => {
+        this.pages = list
+            .sort((a, b) => {
                 if (order === "rank") {
                     if (a.rank < b.rank) {
                         return 1;
@@ -34,7 +35,8 @@ class Paginator {
             })
             .map((item, i) => {
                 return i % this.perPage === 0 ? list.slice(i, i + this.perPage) : null;
-            }).filter(page => page);
+            })
+            .filter((page) => page);
 
         this.totalPages = this.pages.length > 0 ? this.pages.length : 1;
         this.lastPage = this.pages.length > 0 ? this.pages.length : 1;
@@ -70,7 +72,7 @@ class Paginator {
 
     addItems(items) {
         for (id in items) {
-            this.addItem(item)
+            this.addItem(item);
         }
 
         this.paginate();

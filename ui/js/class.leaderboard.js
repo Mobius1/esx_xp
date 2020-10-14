@@ -1,6 +1,5 @@
 class Leaderboard {
     constructor(options) {
-
         const config = {
             showPing: false,
             perPage: 18,
@@ -19,7 +18,7 @@ class Leaderboard {
 
     init() {
         this.inner = document.createElement("div");
-        this.inner.classList.add("xpm-leaderboard--inner")
+        this.inner.classList.add("xpm-leaderboard--inner");
 
         this.header = document.createElement("div");
         this.header.classList.add("xpm-leaderboard--header");
@@ -126,16 +125,22 @@ class Leaderboard {
 
         if (this.paginator.pages.length) {
             for (const player of this.paginator.getCurrentPage()) {
-                this.list.appendChild(this.players[player.id].row)
+                this.list.appendChild(this.players[player.id].row);
             }
         }
 
         this.counter.textContent = `Players: ${this.getPlayerCount()}`;
-        this.pager.textContent = this.paginator.totalPages > 1 ? `${this.paginator.currentPage} / ${this.paginator.totalPages}` : "";
+        this.pager.textContent =
+            this.paginator.totalPages > 1 ?
+            `${this.paginator.currentPage} / ${this.paginator.totalPages}` :
+            "";
     }
 
     nextPage() {
-        if (this.paginator.totalPages > 1 && this.paginator.currentPage < this.paginator.lastPage) {
+        if (
+            this.paginator.totalPages > 1 &&
+            this.paginator.currentPage < this.paginator.lastPage
+        ) {
             this.paginator.currentPage++;
 
             this.update();
@@ -174,7 +179,9 @@ class Leaderboard {
 
     removePlayer(player, update = false) {
         // Switch to first page to prevent errors
-        this.setPage(1);
+        if (this.paginator.currentPage > 1) {
+            this.setPage(1);
+        }
 
         if (player.id in this.players) {
             if (this.list.contains(this.players[player.id].row)) {
@@ -200,7 +207,9 @@ class Leaderboard {
     updateRank(id, rank) {
         if (id in this.players) {
             this.players[id].rank = rank;
-            this.players[id].row.querySelector(".xpm-leaderboard--playerranknum").textContent = rank;
+            this.players[id].row.querySelector(
+                ".xpm-leaderboard--playerranknum"
+            ).textContent = rank;
         }
     }
 }
