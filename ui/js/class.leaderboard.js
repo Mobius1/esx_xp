@@ -119,7 +119,7 @@ class Leaderboard {
             order = this.config.sortBy;
         }
 
-        this.paginator.list = this.players;
+        this.paginator.setList(this.players);
         this.paginator.paginate(order);
 
         this.list.innerHTML = "";

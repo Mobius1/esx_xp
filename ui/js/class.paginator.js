@@ -40,6 +40,10 @@ class Paginator {
         this.lastPage = this.pages.length > 0 ? this.pages.length : 1;
     }
 
+    setList(items) {
+        this.list = items;
+    }
+
     getCurrentPage() {
         return this.pages[this.currentPage - 1];
     }
@@ -56,13 +60,17 @@ class Paginator {
         this.paginate();
     }
 
-    addItem(item) {
+    addItem(item, update = false) {
         this.list[item.id] = item;
+
+        if (update) {
+            this.paginate();
+        }
     }
 
     addItems(items) {
         for (id in items) {
-            this.list[id] = items[id];
+            this.addItem(item)
         }
 
         this.paginate();
