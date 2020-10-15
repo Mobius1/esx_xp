@@ -100,7 +100,7 @@ class Leaderboard {
         this.players[player.id] = player;
         this.paginator.addItem(player);
 
-        if ( update ) {
+        if (update) {
             this.paginator.setList(this.players);
             this.update();
         }
@@ -114,7 +114,7 @@ class Leaderboard {
 
         let n = 1;
         for (const id in players) {
-            this.addPlayer(players[id], n == count );
+            this.addPlayer(players[id], n == count);
             n++
         }
 
@@ -130,7 +130,7 @@ class Leaderboard {
         this.paginator.paginate(order);
 
         this.list.innerHTML = "";
-        
+
         if (this.paginator.pages.length) {
             for (const player of this.paginator.getCurrentPage()) {
                 this.list.appendChild(this.players[player.id].row);

@@ -40,6 +40,10 @@ class Paginator {
 
         this.totalPages = this.pages.length > 0 ? this.pages.length : 1;
         this.lastPage = this.pages.length > 0 ? this.pages.length : 1;
+
+        if ( this.totalPages < 2 ) {
+            this.currentPage = 1;
+        }        
     }
 
     setList(items) {
