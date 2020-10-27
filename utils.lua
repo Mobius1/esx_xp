@@ -1,8 +1,8 @@
 -- Get Identifier
 function GetPlayerLicense(id)
     for _, v in pairs(GetPlayerIdentifiers(id)) do
-        if string.sub(v, 1, string.len("license:")) == "license:" then
-            return string.gsub(v, "license:", "")
+        if string.sub(v, 1, string.len("license:")) == "license:" or string.sub(v, 1, string.len("steam:")) == "steam:" then
+            return v
         end
     end  
     return false
@@ -78,14 +78,21 @@ end
 
 function GetOnlinePlayers(_source, players)
     local Active = {}
+
     for _, playerId in ipairs(GetPlayers()) do
         local name = GetPlayerName(playerId)
-        local license = GetPlayerLicense(playerId)
+        local license = GetPlayerLicense(playerId, _source)
 
         for k, v in pairs(players) do
-            v.license = string.gsub(v.license, "license:", "")
-            
-            if v.license == license then
+            local identifier = nil
+
+            if v.license ~= nil then
+                identifier = v.license
+            elseif v.identifier ~= nil then
+                identifier = v.identifier
+            end
+
+            if identifier == license then
                 local Player = {
                     name = name,
                     id = playerId,
@@ -94,7 +101,7 @@ function GetOnlinePlayers(_source, players)
                 }
 
                 -- Current player
-                if GetPlayerLicense(_source) == v.license then
+                if GetPlayerLicense(_source) == identifier then
                     Player.current = true
                 end
                             
