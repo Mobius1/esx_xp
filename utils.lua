@@ -8,6 +8,39 @@ function GetPlayerLicense(id)
     return false
 end
 
+function GetOnlinePlayers(_source, players)
+    local Active = {}
+
+    for _, playerId in ipairs(GetPlayers()) do
+        local name = GetPlayerName(playerId)
+        local license = GetPlayerLicense(playerId)
+
+        for k, v in pairs(players) do
+            if license == v.license or license == v.identifier then
+                local Player = {
+                    name = name,
+                    id = playerId,
+                    xp = v.rp_xp,
+                    rank = v.rp_rank
+                }
+
+                -- Current player
+                if GetPlayerLicense(_source) == license then
+                    Player.current = true
+                end
+                            
+                if Config.Leaderboard.ShowPing then
+                    Player.ping = GetPlayerPing(playerId)
+                end
+    
+                table.insert(Active, Player)
+                break
+            end
+        end
+    end
+    return Active 
+end
+
 -- Check XP is an integer
 function IsInt(XPCheck)
     XPCheck = tonumber(XPCheck)
@@ -74,45 +107,4 @@ function PlayerIsActive(tab, val)
     end
 
     return false
-end
-
-function GetOnlinePlayers(_source, players)
-    local Active = {}
-
-    for _, playerId in ipairs(GetPlayers()) do
-        local name = GetPlayerName(playerId)
-        local license = GetPlayerLicense(playerId, _source)
-
-        for k, v in pairs(players) do
-            local identifier = nil
-
-            if v.license ~= nil then
-                identifier = v.license
-            elseif v.identifier ~= nil then
-                identifier = v.identifier
-            end
-
-            if identifier == license then
-                local Player = {
-                    name = name,
-                    id = playerId,
-                    xp = v.rp_xp,
-                    rank = v.rp_rank
-                }
-
-                -- Current player
-                if GetPlayerLicense(_source) == identifier then
-                    Player.current = true
-                end
-                            
-                if Config.Leaderboard.ShowPing then
-                    Player.ping = GetPlayerPing(playerId)
-                end
-    
-                table.insert(Active, Player)
-                break
-            end
-        end
-    end
-    return Active 
 end
