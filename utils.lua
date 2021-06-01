@@ -1,10 +1,17 @@
+ESX                       = nil
+
+TriggerEvent('esx:getSharedObject', function(obj)
+    ESX = obj
+end)
+
 -- Get Identifier
 function GetPlayerLicense(id)
-    for _, v in pairs(GetPlayerIdentifiers(id)) do
-        if string.sub(v, 1, string.len("license:")) == "license:" or string.sub(v, 1, string.len("steam:")) == "steam:" then
-            return v
-        end
-    end  
+xPlayer = ESX.GetPlayerFromId(id)
+    
+    if xPlayer and xPlayer ~= nil then
+        return xPlayer.identifier
+    end
+    
     return false
 end
 
@@ -16,7 +23,11 @@ function GetOnlinePlayers(_source, players)
         local license = GetPlayerLicense(playerId)
 
         for k, v in pairs(players) do
-            if license == v.license or license == v.identifier then
+            print(v.identifier .. "/" .. license)
+			print()
+			if license == v.license or license == v.identifier then
+			print("heyo!")
+			
                 local Player = {
                     name = name,
                     id = playerId,
