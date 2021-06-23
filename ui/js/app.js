@@ -52,12 +52,14 @@ function fillSegments(pr, child) {
     }
 }
 
-function TriggerRankChange(rank) {
+function TriggerRankChange(rank, prev, rankUp) {
     if ( leaderboard && currentID ) {
         leaderboard.updateRank(currentID, rank);
     }
 
-    PostData("rankchange");
+    PostData("rankchange", {
+        current: rank, previous: prev, rankUp: rankUp
+    });
 }
 
 function UIOpen() {
@@ -183,7 +185,7 @@ window.onData = function (data) {
             onRankChange: function (current, next, previous, add, max, rankUp) {
 
                 // Fire rank change to update client UI
-                TriggerRankChange(current)
+                TriggerRankChange(current, previous, rankUp)
 
                 // Remove old ranks
                 rankA.classList.remove(`xp-rank-${previous}`);

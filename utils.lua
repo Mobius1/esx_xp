@@ -1,57 +1,3 @@
-ESX                       = nil
-
-TriggerEvent('esx:getSharedObject', function(obj)
-    ESX = obj
-end)
-
--- Get Identifier
-function GetPlayerLicense(id)
-xPlayer = ESX.GetPlayerFromId(id)
-    
-    if xPlayer and xPlayer ~= nil then
-        return xPlayer.identifier
-    end
-    
-    return false
-end
-
-function GetOnlinePlayers(_source, players)
-    local Active = {}
-
-    for _, playerId in ipairs(GetPlayers()) do
-        local name = GetPlayerName(playerId)
-        local license = GetPlayerLicense(playerId)
-
-        for k, v in pairs(players) do
-            print(v.identifier .. "/" .. license)
-			print()
-			if license == v.license or license == v.identifier then
-			print("heyo!")
-			
-                local Player = {
-                    name = name,
-                    id = playerId,
-                    xp = v.rp_xp,
-                    rank = v.rp_rank
-                }
-
-                -- Current player
-                if GetPlayerLicense(_source) == license then
-                    Player.current = true
-                end
-                            
-                if Config.Leaderboard.ShowPing then
-                    Player.ping = GetPlayerPing(playerId)
-                end
-    
-                table.insert(Active, Player)
-                break
-            end
-        end
-    end
-    return Active 
-end
-
 -- Check XP is an integer
 function IsInt(XPCheck)
     XPCheck = tonumber(XPCheck)
@@ -119,3 +65,16 @@ function PlayerIsActive(tab, val)
 
     return false
 end
+
+function GetRankFromXP(_xp)
+    local len = #Config.Ranks
+    for rank = 1, len do
+        if rank < len then
+            if Config.Ranks[rank + 1] > tonumber(_xp) then
+                return rank
+            end
+        else
+            return rank
+        end
+    end
+end	

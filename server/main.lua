@@ -22,7 +22,7 @@ AddEventHandler("esx_xp:load", function()
                     CurrentRank = tonumber(result[1]["rp_rank"])  
 
                     xPlayer.set("xp", CurrentXP)
-                    xPlayer.set("rank", CurrentRank)                
+                    xPlayer.set("rank", CurrentRank)       
                     
                     if Config.Leaderboard.Enabled then
                         FetchActivePlayers(_source, CurrentXP, CurrentRank)
@@ -36,6 +36,50 @@ AddEventHandler("esx_xp:load", function()
         end)
     end
 end)
+
+-- Get Identifier
+function GetPlayerLicense(id)
+    local xPlayer = ESX.GetPlayerFromId(id)
+
+    if xPlayer and xPlayer ~= nil then
+        return xPlayer.identifier
+    end
+
+    return false
+end
+
+function GetOnlinePlayers(_source, players)
+    local Active = {}
+
+    for _, playerId in ipairs(GetPlayers()) do
+        local name = GetPlayerName(playerId)
+        local license = GetPlayerLicense(playerId)
+
+        for k, v in pairs(players) do
+            if license == v.license or license == v.identifier then
+                local Player = {
+                    name = name,
+                    id = playerId,
+                    xp = v.rp_xp,
+                    rank = v.rp_rank
+                }
+
+                -- Current player
+                if GetPlayerLicense(_source) == license then
+                    Player.current = true
+                end
+                            
+                if Config.Leaderboard.ShowPing then
+                    Player.ping = GetPlayerPing(playerId)
+                end
+    
+                table.insert(Active, Player)
+                break
+            end
+        end
+    end
+    return Active 
+end
 
 function FetchActivePlayers(_source, CurrentXP, CurrentRank)
     MySQL.Async.fetchAll('SELECT * FROM users', {}, function(players)
@@ -83,24 +127,24 @@ AddEventHandler("esx_xp:setXP", function(_xp, _rank)
     end
 end)
 
-function UpdatePlayer(source, xp)
-    local _source = source
-    local xPlayer = ESX.GetPlayerFromId(_source)
+function UpdatePlayer(xPlayer, xp)
+    if xPlayer ~= nil then
+        CurrentXP = LimitXP(tonumber(xp))
+        CurrentRank = GetRank(CurrentXP)
 
-    CurrentXP = tonumber(xp)
-    CurrentRank = GetRank(CurrentXP)
-
-    if xPlayer then
         MySQL.Async.execute('UPDATE users SET rp_xp = @xp, rp_rank = @rank WHERE identifier = @identifier', {
             ['@identifier'] = xPlayer.identifier,
             ['@xp'] = CurrentXP,
             ['@rank'] = CurrentRank
         }, function(result)
 
+            print(result)
+
             xPlayer.set("xp", CurrentXP)
             xPlayer.set("rank", CurrentRank)
 
-            TriggerClientEvent("esx_xp:update", _source, CurrentXP, CurrentRank)
+            -- Update the player's XP bar
+            xPlayer.triggerEvent("esx_xp:update", CurrentXP, CurrentRank)
         end)
     end
 end
@@ -119,22 +163,92 @@ end)
 --                        EVENTS                          --
 ------------------------------------------------------------
 
-AddEventHandler("esx_xp:setInitial", function(PlayerID, XPInit)
-    if IsInt(XPInit) then
-        UpdatePlayer(PlayerID, LimitXP(XPInit))
+RegisterNetEvent("esx_xp:setInitial")
+AddEventHandler("esx_xp:setInitial", function(playerId, XPInit)
+    local xPlayer = ESX.GetPlayerFromId(playerId)
+
+    if xPlayer ~= nil then
+        if IsInt(XPInit) then
+            UpdatePlayer(xPlayer, XPInit)
+        end
     end
 end)
 
-AddEventHandler("esx_xp:addXP", function(PlayerID, XPAdd)
-    if IsInt(XPAdd) then
-        local NewXP = CurrentXP + XPAdd
-        UpdatePlayer(PlayerID, LimitXP(NewXP))
+RegisterNetEvent("esx_xp:addXP")
+AddEventHandler("esx_xp:addXP", function(playerId, XPAdd)
+    local xPlayer = ESX.GetPlayerFromId(playerId)
+
+    if xPlayer ~= nil then
+        if IsInt(XPAdd) then
+            local NewXP = CurrentXP + XPAdd
+            UpdatePlayer(xPlayer, NewXP)
+        end
     end
 end)
 
-AddEventHandler("esx_xp:removeXP", function(PlayerID, XPRemove)
-    if IsInt(XPRemove) then
-        local NewXP = CurrentXP - XPRemove
-        UpdatePlayer(PlayerID, LimitXP(NewXP))
+RegisterNetEvent("esx_xp:removeXP")
+AddEventHandler("esx_xp:removeXP", function(playerId, XPRemove)
+    local xPlayer = ESX.GetPlayerFromId(playerId)
+
+    if xPlayer ~= nil then    
+        if IsInt(XPRemove) then
+            local NewXP = CurrentXP - XPRemove
+            UpdatePlayer(xPlayer, NewXP)
+        end
     end
 end)
+
+RegisterNetEvent("esx_xp:setRank")
+AddEventHandler("esx_xp:setRank", function(playerId, Rank)
+    local xPlayer = ESX.GetPlayerFromId(playerId)
+
+    -- print(Rank)
+
+    if xPlayer ~= nil then    
+        local GoalRank = tonumber(Rank)
+
+        if not GoalRank then
+            --
+        else
+            if Config.Ranks[GoalRank] ~= nil then
+                UpdatePlayer(xPlayer, tonumber(Config.Ranks[GoalRank]))
+            end
+        end
+    end
+end)
+
+
+------------------------------------------------------------
+--                    ADMIN COMMANDS                      --
+------------------------------------------------------------
+
+TriggerClientEvent('chat:addSuggestion', -1, '/esxp_give', 'Give XP to player', {
+    { name="playerID", help="The player to give XP to" },
+    { name="xp", help="The XP amount to give" },
+}) 
+
+RegisterCommand("esxp_give", function(source, args, rawCommand)
+    local xPlayer = ESX.GetPlayerFromId(tonumber(args[1]))
+    
+    if xPlayer ~= nil then
+        local xp = tonumber(xPlayer.get("xp")) + tonumber(args[2])
+
+        UpdatePlayer(xPlayer, xp)
+    end
+end, true)
+
+
+TriggerClientEvent('chat:addSuggestion', -1, '/esxp_take', 'Take XP from player', {
+    { name="playerID", help="The player to take XP from" },
+    { name="xp", help="The XP amount to take" },
+}) 
+
+RegisterCommand("esxp_take", function(source, args, rawCommand)
+    local xPlayer = ESX.GetPlayerFromId(tonumber(args[1]))
+
+    if xPlayer ~= nil then
+        local xp = tonumber(xPlayer.get("xp")) - tonumber(args[2])
+    
+        UpdatePlayer(xPlayer, xp)
+    end
+end, true)

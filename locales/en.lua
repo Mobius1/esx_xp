@@ -8,6 +8,10 @@ Locales["en"] = {
     ['err_lvls_check']  = "^1ESX_XP ERROR: ^7`You have an error in %s rank(s) in '%s'",
     ['err_lvl_check']   = "Rank %s: %s",
 
+    ['command_add']         = "Give XP to player",
+    ['command_playerid']    = "The ID of the player",
+    ['command_xp']          = "The XP amount to give",
+
     ['err_db_user']     = "^1ESX_XP ERROR: ^7`users` table missing from database. Did you import `es_extended.sql` from es_extended?",
     ['err_db_columns']  = "^1ESX_XP ERROR: ^7`rp_xp` / `rp_rank` columns missing from `users` table. Did you import `esx_xp.sql`?",
 }

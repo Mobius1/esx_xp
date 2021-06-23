@@ -7,6 +7,25 @@ UIActive = true
 ESX = nil
 Ready = false
 
+Citizen.CreateThread(function()
+    -- Wait for ESX
+    while ESX == nil do
+        Citizen.Wait(10)
+        TriggerEvent("esx:getSharedObject", function(esx)
+            ESX = esx
+        end)
+    end
+        
+    -- Wait for ESX player
+    while not ESX.IsPlayerLoaded() do
+        Citizen.Wait(10)
+    end
+
+    if not Ready then
+        TriggerServerEvent("esx_xp:load")
+    end    
+end)	
+
 
 ------------------------------------------------------------
 --                          ESX                           --
@@ -14,22 +33,10 @@ Ready = false
 
 AddEventHandler("playerSpawned", function(spawn)
     Citizen.CreateThread(function()
-        -- Wait for ESX
-        while ESX == nil do
-            Citizen.Wait(10)
-            TriggerEvent("esx:getSharedObject", function(esx)
-                ESX = esx
-            end)
+        if not Ready then
+            TriggerServerEvent("esx_xp:load")
         end
-        
-        -- Wait for ESX player
-        while not ESX.IsPlayerLoaded() do
-            Citizen.Wait(10)
-        end
-        
-        -- Initialise
-        TriggerServerEvent("esx_xp:load")
-    end)	
+    end)
 end)
 
 
@@ -169,6 +176,7 @@ end)
 ------------------------------------------------------------
 --                       FUNCTIONS                        --
 ------------------------------------------------------------
+
 
 ------------
 -- UpdateXP.
@@ -459,17 +467,29 @@ RegisterNetEvent("esx_xp:SetRank")
 AddEventHandler('esx_xp:SetRank', ESXP_SetRank)
 
 -- RANK CHANGE NUI CALLBACK
-RegisterNUICallback('xpm_rankchange', function(data)
+RegisterNUICallback('xpm_rankchange', function(data, cb)
     if data.rankUp then
         TriggerEvent("esx_xp:rankUp", data.current, data.previous)
     else
         TriggerEvent("esx_xp:rankDown", data.current, data.previous)
     end
+
+    cb(data)
+end)
+
+AddEventHandler("esx_xp:rankUp", function(newRank)
+    ESX.ShowNotification("Rank Up: " .. newRank)
+end)
+
+AddEventHandler("esx_xp:rankDown", function(newRank)
+    ESX.ShowNotification("Rank Down: " .. newRank)
 end)
 
 -- UI CHANGE
-RegisterNUICallback('xpm_uichange', function(data)
+RegisterNUICallback('xpm_uichange', function(data, cb)
     UIActive = false
+
+    cb(data)
 end)
 
 
