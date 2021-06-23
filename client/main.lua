@@ -477,14 +477,6 @@ RegisterNUICallback('xpm_rankchange', function(data, cb)
     cb(data)
 end)
 
-AddEventHandler("esx_xp:rankUp", function(newRank)
-    ESX.ShowNotification("Rank Up: " .. newRank)
-end)
-
-AddEventHandler("esx_xp:rankDown", function(newRank)
-    ESX.ShowNotification("Rank Down: " .. newRank)
-end)
-
 -- UI CHANGE
 RegisterNUICallback('xpm_uichange', function(data, cb)
     UIActive = false
