@@ -410,7 +410,8 @@ Citizen.CreateThread(function()
             if UIActive then
                 TriggerServerEvent("esx_xp:getPlayerData")
                 SendNUIMessage({
-                    xpm_show = true
+                    xpm_show = true,
+                    xbm_lb = Config.Leaderboard
                 })                 
             else
                 SendNUIMessage({

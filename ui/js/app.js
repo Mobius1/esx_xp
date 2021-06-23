@@ -7,6 +7,7 @@ const xpBar = container.querySelector(".xpm-progress");
 const barA = container.querySelector(".xpm-indicator--bar");
 const bar = container.querySelector(".xpm-progress--bar");
 const counter = container.querySelector(".xpm-data");
+const lb_container = document.getElementById("xpm_leaderboard");
 
 // UI
 let globalConfig = false;
@@ -62,13 +63,18 @@ function TriggerRankChange(rank, prev, rankUp) {
     });
 }
 
-function UIOpen() {
+function UIOpen(show_lb) {
     main.classList.add("active");
+
+    if ( show_lb ) {
+        main.classList.add("show-leaderboard");
+    }    
+
     window.clearTimeout(displayTimer);
 }
 
-function UITimeout() {
-    UIOpen();
+function UITimeout(show_lb) {
+    UIOpen(show_lb);
 
     displayTimer = window.setTimeout(() => {
         UIClose();
@@ -79,7 +85,7 @@ function UIClose() {
     window.clearTimeout(displayTimer);
     displayTimer = false;
 
-    main.classList.remove("active");
+    main.classList.remove("active", "show-leaderboard");
 
     PostData("uichange");
 }
@@ -251,7 +257,7 @@ window.onData = function (data) {
         }   
 
         if (data.xpm_show) {
-            UITimeout();
+            UITimeout(data.xbm_lb);
         } else if (data.xpm_hide) {
             UIClose();
         }

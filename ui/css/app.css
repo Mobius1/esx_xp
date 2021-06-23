@@ -13,7 +13,7 @@ body {
     transition: opacity 1000ms;
 }
 
-#xpm_main.active {
+#xpm_main.active, #xpm_main.active.show-leaderboard  #xpm_leaderboard {
     opacity: 1;
     -webkit-transition: opacity 250ms;
     transition: opacity 250ms;
@@ -268,7 +268,10 @@ body {
     width: 20%;
     font-family: "ChaletComprime";
     color: #fff;
-    font-size: 25px; 
+    font-size: 25px;
+    opacity: 0;
+    -webkit-transition: opacity 1000ms;
+    transition: opacity 1000ms;
 }
 
 .xpm-leaderboard--header {

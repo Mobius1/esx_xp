@@ -9,7 +9,7 @@ Config.BarSegments  = 10    -- Sets the number of segments the XP bar has. Nativ
 Config.UIKey        = 20    -- The key that toggles the UI - default is "Z"
 
 Config.Leaderboard = {
-    Enabled     = false,    -- Enable / Disable the leaderboard
+    Enabled     = true,    -- Enable / Disable the leaderboard
     ShowPing    = true,     -- Show player pings on the leaderboard
     Order       = "rank",   -- Order the player list by "name", "rank" or "id"
     PerPage     = 12        -- Max players to show per page
