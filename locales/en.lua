@@ -2,6 +2,8 @@ Locales["en"] = {
     ['err_xp_update']       = "^1ESX_XP ERROR: ^7`Invalid XP (%s) passed to '%s'",
     ['err_lvl_update']      = "^1ESX_XP ERROR: ^7`Invalid Rank (%s) passed to '%s'",
     ['err_lvls_check']      = "^1ESX_XP ERROR: ^7`You have an error in %s rank(s) in '%s'",
+    ['err_type_check']      = "^1ESX_XP ERROR: ^7`%s should be of the type: `%s`",
+    ['err_id_check']        = "^1ESX_XP ERROR: ^7`Invalid playerId",
     ['err_lvl_check']       = "Rank %s: %s",
     ['err_invalid_player']  = "Invalid playerId",
     ['err_invalid_rank']    = "Invalid Rank (Minimum Rank = 1, Maximum Rank = %s)",

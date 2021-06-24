@@ -1,43 +1,7 @@
-CurrentXP = 0
-CurrentRank = 0
 ESX = nil
 
 TriggerEvent('esx:getSharedObject', function(obj) ESX = obj end)
 
-RegisterNetEvent("esx_xp:load")
-AddEventHandler("esx_xp:load", function()
-    local _source = source
-    local xPlayer = ESX.GetPlayerFromId(_source)
-
-    if xPlayer then
-        MySQL.Async.fetchAll('SELECT * FROM users WHERE identifier = @identifier', {
-            ['@identifier'] = xPlayer.identifier
-        }, function(result)
-            if #result > 0 then
-
-                if result[1]["rp_xp"] == nil or result[1]["rp_rank"] == nil then
-                    TriggerClientEvent("esx_xp:print", _source, _("err_db_columns"))
-                else
-                    CurrentXP = tonumber(result[1]["rp_xp"])
-                    CurrentRank = tonumber(result[1]["rp_rank"])  
-
-                    xPlayer.set("xp", CurrentXP)
-                    xPlayer.set("rank", CurrentRank)       
-                    
-                    if Config.Leaderboard.Enabled then
-                        FetchActivePlayers(_source, CurrentXP, CurrentRank)
-                    else
-                        TriggerClientEvent("esx_xp:init", _source, CurrentXP, CurrentRank, false)
-                    end
-                end
-            else
-                TriggerClientEvent("esx_xp:print", _source, _("err_db_user"))
-            end
-        end)
-    end
-end)
-
--- Get Identifier
 function GetPlayerLicense(id)
     local xPlayer = ESX.GetPlayerFromId(id)
 
@@ -89,50 +53,26 @@ function FetchActivePlayers(_source, CurrentXP, CurrentRank)
     end)
 end
 
-function GetRank(_xp)
-    local len = #Config.Ranks
-    for rank = 1, len do
-        if rank < len then
-            if Config.Ranks[rank + 1].XP > tonumber(_xp) then
-                return rank
-            end
-        else
-            return rank
-        end
-    end
-end	
-
-RegisterNetEvent("esx_xp:setXP")
-AddEventHandler("esx_xp:setXP", function(_xp, _rank)
-    local _source = source
-    local xPlayer = ESX.GetPlayerFromId(_source)
-
-    _xp = tonumber(_xp)
-    _rank = tonumber(_rank)
-
-    if xPlayer then
-        MySQL.Async.execute('UPDATE users SET rp_xp = @xp, rp_rank = @rank  WHERE identifier = @identifier', {
-            ['@identifier'] = xPlayer.identifier,
-            ['@xp'] = _xp,
-            ['@rank'] = _rank
-        }, function(result)
-            CurrentXP = tonumber(_xp)
-            CurrentRank = tonumber(_rank)
-
-            xPlayer.set("xp", CurrentXP)
-            xPlayer.set("rank", CurrentRank)
-
-            TriggerClientEvent("esx_xp:update", _source, CurrentXP, CurrentRank)
-        end)
-    end
-end)
-
+------
+-- UpdatePlayer
+--
+-- @param playerId          - The player's id
+-- @param xp                - The XP value to set
+--
+-- Updates the given users XP
+------
 function UpdatePlayer(playerId, xp)
     local xPlayer = ESX.GetPlayerFromId(playerId)
 
+    if xp == nil or not IsInt(xp) then
+        TriggerClientEvent("esx_xp:print", playerId, _("err_type_check", "XP", "integer"))
+
+        return
+    end
+
     if xPlayer ~= nil then
         local goalXP = LimitXP(tonumber(xp))
-        local goalRank = GetRank(goalXP)
+        local goalRank = GetRankFromXP(goalXP)
 
         MySQL.Async.execute('UPDATE users SET rp_xp = @xp, rp_rank = @rank WHERE identifier = @identifier', {
             ['@identifier'] = xPlayer.identifier,
@@ -145,11 +85,54 @@ function UpdatePlayer(playerId, xp)
             -- Update the player's XP bar
             xPlayer.triggerEvent("esx_xp:update", goalXP, goalRank)
         end)
-    else
-        --
     end
 end
 
+
+------------------------------------------------------------
+--                        EVENTS                          --
+------------------------------------------------------------
+
+RegisterNetEvent("esx_xp:load")
+AddEventHandler("esx_xp:load", function()
+    local _source = source
+    local xPlayer = ESX.GetPlayerFromId(_source)
+
+    if xPlayer then
+        MySQL.Async.fetchAll('SELECT * FROM users WHERE identifier = @identifier', {
+            ['@identifier'] = xPlayer.identifier
+        }, function(result)
+            if #result > 0 then
+
+                if result[1]["rp_xp"] == nil or result[1]["rp_rank"] == nil then
+                    TriggerClientEvent("esx_xp:print", _source, _("err_db_columns"))
+                else
+                    local CurrentXP = tonumber(result[1]["rp_xp"])
+                    local CurrentRank = tonumber(result[1]["rp_rank"])  
+
+                    xPlayer.set("xp", CurrentXP)
+                    xPlayer.set("rank", CurrentRank)       
+                    
+                    if Config.Leaderboard.Enabled then
+                        FetchActivePlayers(_source, CurrentXP, CurrentRank)
+                    else
+                        TriggerClientEvent("esx_xp:init", _source, CurrentXP, CurrentRank, false)
+                    end
+                end
+            else
+                TriggerClientEvent("esx_xp:print", _source, _("err_db_user"))
+            end
+        end)
+    end
+end)
+
+-- Set the current player XP
+RegisterNetEvent("esx_xp:setXP")
+AddEventHandler("esx_xp:setXP", function(xp)
+    UpdatePlayer(source, xp)
+end)
+
+-- Fetch Players Data
 RegisterNetEvent("esx_xp:getPlayerData")
 AddEventHandler("esx_xp:getPlayerData", function()
     local _source = source
@@ -159,10 +142,6 @@ AddEventHandler("esx_xp:getPlayerData", function()
         end
     end) 
 end)
-
-------------------------------------------------------------
---                        EVENTS                          --
-------------------------------------------------------------
 
 RegisterNetEvent("esx_xp:setInitial")
 AddEventHandler("esx_xp:setInitial", function(playerId, XPInit)
@@ -175,9 +154,11 @@ RegisterNetEvent("esx_xp:addXP")
 AddEventHandler("esx_xp:addXP", function(playerId, XPAdd)
     local xPlayer = ESX.GetPlayerFromId(playerId)
 
-    if IsInt(XPAdd) then
-        local NewXP = tonumber(xPlayer.get("xp")) + XPAdd
-        UpdatePlayer(playerId, NewXP)
+    if xPlayer ~= nil then
+        if IsInt(XPAdd) then
+            local NewXP = tonumber(xPlayer.get("xp")) + XPAdd
+            UpdatePlayer(playerId, NewXP)
+        end
     end
 end)
 
@@ -185,9 +166,11 @@ RegisterNetEvent("esx_xp:removeXP")
 AddEventHandler("esx_xp:removeXP", function(playerId, XPRemove) 
     local xPlayer = ESX.GetPlayerFromId(playerId)
 
-    if IsInt(XPRemove) then
-        local NewXP = tonumber(xPlayer.get("xp")) - XPRemove
-        UpdatePlayer(playerId, NewXP)
+    if xPlayer ~= nil then
+        if IsInt(XPRemove) then
+            local NewXP = tonumber(xPlayer.get("xp")) - XPRemove
+            UpdatePlayer(playerId, NewXP)
+        end
     end
 end)
 
