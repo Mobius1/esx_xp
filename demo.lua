@@ -61,7 +61,11 @@ RegisterCommand('ESXP_AddFakePlayer', function(source, args)
         AddFakePlayer()
     end    
 
-    ESXP_ShowUI(true)
+    TriggerServerEvent("esx_xp:getPlayerData")
+    SendNUIMessage({
+        xpm_show = true,
+        xbm_lb = Config.Leaderboard
+    })
 
     ESX.ShowNotification("~b~ESX_XP: ~g~" .. count .. " ~w~players added")      
 end)
@@ -75,13 +79,23 @@ RegisterCommand('ESXP_RemoveFakePlayers', function(source, args)
 
     ESX.ShowNotification("~b~ESX_XP: ~w~Fake players removed")    
 
-    ESXP_ShowUI(true)
+    TriggerServerEvent("esx_xp:getPlayerData")
+    SendNUIMessage({
+        xpm_show = true,
+        xbm_lb = Config.Leaderboard
+    })
 end)
 
 RegisterCommand('ESXP_SortLeaderboard', function(source, args)
     local order = args[1] or "rank"
 
     ESXP_SortLeaderboard(order)
+
+    TriggerServerEvent("esx_xp:getPlayerData")
+    SendNUIMessage({
+        xpm_show = true,
+        xbm_lb = Config.Leaderboard
+    })    
 
     ESX.ShowNotification("~b~ESX_XP: ~w~Leaderboard ordered by ~g~" .. order)    
 end)

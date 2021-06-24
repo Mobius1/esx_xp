@@ -127,7 +127,7 @@ window.onData = function (data) {
         const ranks = {};
 
         for ( let i = 0; i < data.xpm_config.Ranks.length; i++ ) {
-            ranks[i+1] = data.xpm_config.Ranks[i];
+            ranks[i+1] = data.xpm_config.Ranks[i].XP;
         }
 
         // Class rankbar

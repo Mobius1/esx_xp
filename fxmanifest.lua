@@ -13,6 +13,7 @@ server_scripts {
     '@es_extended/locale.lua',
     'locales/en.lua',
     'config.lua',
+    'ranks.lua',
     'utils.lua',
     'server/main.lua'
 }
@@ -21,7 +22,10 @@ client_scripts {
     '@es_extended/locale.lua',
     'locales/en.lua',
     'config.lua',
+    'ranks.lua',
     'utils.lua',
+    'client/functions.lua',    
+    'client/events.lua',
     'client/main.lua',
     'demo.lua', -- remove if not required
 }

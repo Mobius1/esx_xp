@@ -9,7 +9,7 @@ end
 
 -- Prevent XP from going over / under limits
 function LimitXP(XPCheck)
-    local Max = tonumber(Config.Ranks[#Config.Ranks])
+    local Max = tonumber(Config.Ranks[#Config.Ranks].XP)
 
     if XPCheck > Max then
         XPCheck = Max
@@ -25,7 +25,7 @@ function CheckRanks()
     local InValid = {}
 
     for i = 1, Limit do
-        local RankXP = Config.Ranks[i]
+        local RankXP = Config.Ranks[i].XP
 
         if not IsInt(RankXP) then
             table.insert(InValid, _('err_lvl_check', i,  RankXP))
@@ -70,11 +70,29 @@ function GetRankFromXP(_xp)
     local len = #Config.Ranks
     for rank = 1, len do
         if rank < len then
-            if Config.Ranks[rank + 1] > tonumber(_xp) then
+            if Config.Ranks[rank + 1].XP > tonumber(_xp) then
                 return rank
             end
         else
             return rank
         end
     end
-end	
+end
+
+function CloneTable(object)
+    local lookup_table = {}
+    local function copy(object) 
+        if type(object) ~= "table" then
+            return object
+        elseif lookup_table[object] then
+            return lookup_table[object]
+        end
+        local new_table = {}
+        lookup_table[object] = new_table
+        for key, value in pairs(object) do
+            new_table[copy(key)] = copy(value)
+        end
+        return setmetatable(new_table, getmetatable(object))
+    end
+    return copy(object)
+end

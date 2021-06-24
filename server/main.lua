@@ -93,7 +93,7 @@ function GetRank(_xp)
     local len = #Config.Ranks
     for rank = 1, len do
         if rank < len then
-            if Config.Ranks[rank + 1] > tonumber(_xp) then
+            if Config.Ranks[rank + 1].XP > tonumber(_xp) then
                 return rank
             end
         else
@@ -137,9 +137,6 @@ function UpdatePlayer(xPlayer, xp)
             ['@xp'] = CurrentXP,
             ['@rank'] = CurrentRank
         }, function(result)
-
-            print(result)
-
             xPlayer.set("xp", CurrentXP)
             xPlayer.set("rank", CurrentRank)
 
@@ -211,7 +208,7 @@ AddEventHandler("esx_xp:setRank", function(playerId, Rank)
             --
         else
             if Config.Ranks[GoalRank] ~= nil then
-                UpdatePlayer(xPlayer, tonumber(Config.Ranks[GoalRank]))
+                UpdatePlayer(xPlayer, tonumber(Config.Ranks[GoalRank].XP))
             end
         end
     end
@@ -222,33 +219,98 @@ end)
 --                    ADMIN COMMANDS                      --
 ------------------------------------------------------------
 
-TriggerClientEvent('chat:addSuggestion', -1, '/esxp_give', 'Give XP to player', {
-    { name="playerID", help="The player to give XP to" },
-    { name="xp", help="The XP amount to give" },
+function DisplayError(playerId, message)
+    TriggerClientEvent('chat:addMessage', playerId, {
+        color = { 255, 0, 0 },
+        args = { "esx_xp", message }
+    })    
+end
+
+TriggerClientEvent('chat:addSuggestion', -1, '/esxp_give', _('cmd_give_desc'), {
+    { name = "playerId",    help = _('cmd_playerid') },
+    { name = "xp",          help = _('cmd_xp_amount') }
 }) 
 
 RegisterCommand("esxp_give", function(source, args, rawCommand)
     local xPlayer = ESX.GetPlayerFromId(tonumber(args[1]))
     
-    if xPlayer ~= nil then
-        local xp = tonumber(xPlayer.get("xp")) + tonumber(args[2])
-
-        UpdatePlayer(xPlayer, xp)
+    if xPlayer == nil then
+        return DisplayError(source, _('err_invalid_player'))
     end
+
+    local xp = tonumber(args[2])
+
+    if not xp then
+        return DisplayError(source, _('err_invalid_type', "XP", "number"))
+    end
+
+    UpdatePlayer(xPlayer, tonumber(xPlayer.get("xp")) + xp)
 end, true)
 
 
-TriggerClientEvent('chat:addSuggestion', -1, '/esxp_take', 'Take XP from player', {
-    { name="playerID", help="The player to take XP from" },
-    { name="xp", help="The XP amount to take" },
+TriggerClientEvent('chat:addSuggestion', -1, '/esxp_take', _('cmd_take_desc'), {
+    { name = "playerId",    help = _('cmd_playerid') },
+    { name = "xp",          help = _('cmd_xp_amount') }
 }) 
 
 RegisterCommand("esxp_take", function(source, args, rawCommand)
     local xPlayer = ESX.GetPlayerFromId(tonumber(args[1]))
 
-    if xPlayer ~= nil then
-        local xp = tonumber(xPlayer.get("xp")) - tonumber(args[2])
-    
-        UpdatePlayer(xPlayer, xp)
+    if xPlayer == nil then
+        return DisplayError(source, _('err_invalid_player'))
     end
+
+    local xp = tonumber(args[2])
+
+    if not xp then
+        return DisplayError(source, _('err_invalid_type', "XP", "number"))
+    end    
+    
+    UpdatePlayer(xPlayer, tonumber(xPlayer.get("xp")) - xp)
+end, true)
+
+TriggerClientEvent('chat:addSuggestion', -1, '/esxp_set', _('cmd_set_desc'), {
+    { name = "playerId",    help = _('cmd_playerid') },
+    { name = "xp",          help = _('cmd_xp_amount') }
+}) 
+
+RegisterCommand("esxp_set", function(source, args, rawCommand)
+    if xPlayer == nil then
+        return DisplayError(source, _('err_invalid_player'))
+    end
+
+    local xp = tonumber(args[2])
+
+    if not xp then
+        return DisplayError(source, _('err_invalid_type', "XP", "number"))
+    end  
+
+    UpdatePlayer(xPlayer, xp)
+end, true)
+
+TriggerClientEvent('chat:addSuggestion', -1, '/esxp_rank', _('cmd_rank_desc'), {
+    { name = "playerId",    help = _('cmd_playerid') },
+    { name = "rank",        help = _('cmd_rank_amount') }
+}) 
+
+RegisterCommand("esxp_rank", function(source, args, rawCommand)
+    local xPlayer = ESX.GetPlayerFromId(tonumber(args[1]))
+
+    if xPlayer == nil then
+        return DisplayError(source, _('err_invalid_player'))
+    end
+
+    local goalRank = tonumber(args[2])
+
+    if not goalRank then
+        return DisplayError(source, _('err_invalid_type', "Rank", "number"))
+    end
+
+    if goalRank < 1 or goalRank > #Config.Ranks then
+        return DisplayError(source, _('err_invalid_rank', #Config.Ranks))
+    end
+
+    local xp = Config.Ranks[goalRank].XP
+
+    UpdatePlayer(xPlayer, xp)
 end, true)
