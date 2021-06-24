@@ -194,3 +194,23 @@ AddEventHandler("esx_xp:print", function(message)
     print(message)
     print(s)           
 end)
+
+TriggerEvent('chat:addSuggestion', '/esxp_give', _('cmd_give_desc'), {
+    { name = "playerId",    help = _('cmd_playerid') },
+    { name = "xp",          help = _('cmd_xp_amount') }
+})
+
+TriggerEvent('chat:addSuggestion', '/esxp_take', _('cmd_take_desc'), {
+    { name = "playerId",    help = _('cmd_playerid') },
+    { name = "xp",          help = _('cmd_xp_amount') }
+}) 
+
+TriggerEvent('chat:addSuggestion', '/esxp_set', _('cmd_set_desc'), {
+    { name = "playerId",    help = _('cmd_playerid') },
+    { name = "xp",          help = _('cmd_xp_amount') }
+})
+
+TriggerEvent('chat:addSuggestion', '/esxp_rank', _('cmd_rank_desc'), {
+    { name = "playerId",    help = _('cmd_playerid') },
+    { name = "rank",        help = _('cmd_rank_amount') }
+}) 

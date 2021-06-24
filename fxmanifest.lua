@@ -24,9 +24,9 @@ client_scripts {
     'config.lua',
     'ranks.lua',
     'utils.lua',
+    'client/main.lua',
     'client/functions.lua',    
     'client/events.lua',
-    'client/main.lua',
     'demo.lua', -- remove if not required
 }
 

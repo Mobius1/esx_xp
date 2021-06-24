@@ -127,22 +127,26 @@ AddEventHandler("esx_xp:setXP", function(_xp, _rank)
     end
 end)
 
-function UpdatePlayer(xPlayer, xp)
+function UpdatePlayer(playerId, xp)
+    local xPlayer = ESX.GetPlayerFromId(playerId)
+
     if xPlayer ~= nil then
-        CurrentXP = LimitXP(tonumber(xp))
-        CurrentRank = GetRank(CurrentXP)
+        local goalXP = LimitXP(tonumber(xp))
+        local goalRank = GetRank(goalXP)
 
         MySQL.Async.execute('UPDATE users SET rp_xp = @xp, rp_rank = @rank WHERE identifier = @identifier', {
             ['@identifier'] = xPlayer.identifier,
-            ['@xp'] = CurrentXP,
-            ['@rank'] = CurrentRank
+            ['@xp'] = goalXP,
+            ['@rank'] = goalRank
         }, function(result)
-            xPlayer.set("xp", CurrentXP)
-            xPlayer.set("rank", CurrentRank)
+            xPlayer.set("xp", goalXP)
+            xPlayer.set("rank", goalRank)
 
             -- Update the player's XP bar
-            xPlayer.triggerEvent("esx_xp:update", CurrentXP, CurrentRank)
+            xPlayer.triggerEvent("esx_xp:update", goalXP, goalRank)
         end)
+    else
+        --
     end
 end
 
@@ -162,12 +166,8 @@ end)
 
 RegisterNetEvent("esx_xp:setInitial")
 AddEventHandler("esx_xp:setInitial", function(playerId, XPInit)
-    local xPlayer = ESX.GetPlayerFromId(playerId)
-
-    if xPlayer ~= nil then
-        if IsInt(XPInit) then
-            UpdatePlayer(xPlayer, XPInit)
-        end
+    if IsInt(XPInit) then
+        UpdatePlayer(playerId, XPInit)
     end
 end)
 
@@ -175,41 +175,31 @@ RegisterNetEvent("esx_xp:addXP")
 AddEventHandler("esx_xp:addXP", function(playerId, XPAdd)
     local xPlayer = ESX.GetPlayerFromId(playerId)
 
-    if xPlayer ~= nil then
-        if IsInt(XPAdd) then
-            local NewXP = CurrentXP + XPAdd
-            UpdatePlayer(xPlayer, NewXP)
-        end
+    if IsInt(XPAdd) then
+        local NewXP = tonumber(xPlayer.get("xp")) + XPAdd
+        UpdatePlayer(playerId, NewXP)
     end
 end)
 
 RegisterNetEvent("esx_xp:removeXP")
-AddEventHandler("esx_xp:removeXP", function(playerId, XPRemove)
+AddEventHandler("esx_xp:removeXP", function(playerId, XPRemove) 
     local xPlayer = ESX.GetPlayerFromId(playerId)
 
-    if xPlayer ~= nil then    
-        if IsInt(XPRemove) then
-            local NewXP = CurrentXP - XPRemove
-            UpdatePlayer(xPlayer, NewXP)
-        end
+    if IsInt(XPRemove) then
+        local NewXP = tonumber(xPlayer.get("xp")) - XPRemove
+        UpdatePlayer(playerId, NewXP)
     end
 end)
 
 RegisterNetEvent("esx_xp:setRank")
 AddEventHandler("esx_xp:setRank", function(playerId, Rank)
-    local xPlayer = ESX.GetPlayerFromId(playerId)
+    local GoalRank = tonumber(Rank)
 
-    -- print(Rank)
-
-    if xPlayer ~= nil then    
-        local GoalRank = tonumber(Rank)
-
-        if not GoalRank then
-            --
-        else
-            if Config.Ranks[GoalRank] ~= nil then
-                UpdatePlayer(xPlayer, tonumber(Config.Ranks[GoalRank].XP))
-            end
+    if not GoalRank then
+        --
+    else
+        if Config.Ranks[GoalRank] ~= nil then
+            UpdatePlayer(playerId, tonumber(Config.Ranks[GoalRank].XP))
         end
     end
 end)
@@ -225,14 +215,11 @@ function DisplayError(playerId, message)
         args = { "esx_xp", message }
     })    
 end
-
-TriggerClientEvent('chat:addSuggestion', -1, '/esxp_give', _('cmd_give_desc'), {
-    { name = "playerId",    help = _('cmd_playerid') },
-    { name = "xp",          help = _('cmd_xp_amount') }
-}) 
+ 
 
 RegisterCommand("esxp_give", function(source, args, rawCommand)
-    local xPlayer = ESX.GetPlayerFromId(tonumber(args[1]))
+    local playerId = tonumber(args[1])
+    local xPlayer = ESX.GetPlayerFromId(playerId)
     
     if xPlayer == nil then
         return DisplayError(source, _('err_invalid_player'))
@@ -241,21 +228,16 @@ RegisterCommand("esxp_give", function(source, args, rawCommand)
     local xp = tonumber(args[2])
 
     if not xp then
-        return DisplayError(source, _('err_invalid_type', "XP", "number"))
+        return DisplayError(source, _('err_invalid_type', "XP", 'integer'))
     end
 
-    UpdatePlayer(xPlayer, tonumber(xPlayer.get("xp")) + xp)
+    UpdatePlayer(playerId, tonumber(xPlayer.get("xp")) + xp)
 end, true)
-
-
-TriggerClientEvent('chat:addSuggestion', -1, '/esxp_take', _('cmd_take_desc'), {
-    { name = "playerId",    help = _('cmd_playerid') },
-    { name = "xp",          help = _('cmd_xp_amount') }
-}) 
 
 RegisterCommand("esxp_take", function(source, args, rawCommand)
-    local xPlayer = ESX.GetPlayerFromId(tonumber(args[1]))
-
+    local playerId = tonumber(args[1])
+    local xPlayer = ESX.GetPlayerFromId(playerId)
+    
     if xPlayer == nil then
         return DisplayError(source, _('err_invalid_player'))
     end
@@ -263,18 +245,16 @@ RegisterCommand("esxp_take", function(source, args, rawCommand)
     local xp = tonumber(args[2])
 
     if not xp then
-        return DisplayError(source, _('err_invalid_type', "XP", "number"))
+        return DisplayError(source, _('err_invalid_type', "XP", 'integer'))
     end    
     
-    UpdatePlayer(xPlayer, tonumber(xPlayer.get("xp")) - xp)
-end, true)
-
-TriggerClientEvent('chat:addSuggestion', -1, '/esxp_set', _('cmd_set_desc'), {
-    { name = "playerId",    help = _('cmd_playerid') },
-    { name = "xp",          help = _('cmd_xp_amount') }
-}) 
+    UpdatePlayer(playerId, tonumber(xPlayer.get("xp")) - xp)
+end, true) 
 
 RegisterCommand("esxp_set", function(source, args, rawCommand)
+    local playerId = tonumber(args[1])
+    local xPlayer = ESX.GetPlayerFromId(playerId)
+    
     if xPlayer == nil then
         return DisplayError(source, _('err_invalid_player'))
     end
@@ -282,20 +262,16 @@ RegisterCommand("esxp_set", function(source, args, rawCommand)
     local xp = tonumber(args[2])
 
     if not xp then
-        return DisplayError(source, _('err_invalid_type', "XP", "number"))
+        return DisplayError(source, _('err_invalid_type', "XP", 'integer'))
     end  
 
-    UpdatePlayer(xPlayer, xp)
+    UpdatePlayer(playerId, xp)
 end, true)
 
-TriggerClientEvent('chat:addSuggestion', -1, '/esxp_rank', _('cmd_rank_desc'), {
-    { name = "playerId",    help = _('cmd_playerid') },
-    { name = "rank",        help = _('cmd_rank_amount') }
-}) 
-
 RegisterCommand("esxp_rank", function(source, args, rawCommand)
-    local xPlayer = ESX.GetPlayerFromId(tonumber(args[1]))
-
+    local playerId = tonumber(args[1])
+    local xPlayer = ESX.GetPlayerFromId(playerId)
+    
     if xPlayer == nil then
         return DisplayError(source, _('err_invalid_player'))
     end
@@ -303,7 +279,7 @@ RegisterCommand("esxp_rank", function(source, args, rawCommand)
     local goalRank = tonumber(args[2])
 
     if not goalRank then
-        return DisplayError(source, _('err_invalid_type', "Rank", "number"))
+        return DisplayError(source, _('err_invalid_type', "Rank", 'integer'))
     end
 
     if goalRank < 1 or goalRank > #Config.Ranks then
@@ -312,5 +288,5 @@ RegisterCommand("esxp_rank", function(source, args, rawCommand)
 
     local xp = Config.Ranks[goalRank].XP
 
-    UpdatePlayer(xPlayer, xp)
+    UpdatePlayer(playerId, xp)
 end, true)
