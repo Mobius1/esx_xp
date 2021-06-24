@@ -12,7 +12,15 @@ function GetPlayerLicense(id)
     return false
 end
 
-function GetOnlinePlayers(_source, players)
+------
+-- GetOnlinePlayers
+--
+-- @param playerId          - The player's id
+-- @param players           - The list of players pulled from the DB
+--
+-- Fetches the online players from the list pulled form the DB
+------
+function GetOnlinePlayers(playerId, players)
     local Active = {}
 
     for _, playerId in ipairs(GetPlayers()) do
@@ -29,7 +37,7 @@ function GetOnlinePlayers(_source, players)
                 }
 
                 -- Current player
-                if GetPlayerLicense(_source) == license then
+                if GetPlayerLicense(playerId) == license then
                     Player.current = true
                 end
                             
@@ -42,13 +50,23 @@ function GetOnlinePlayers(_source, players)
             end
         end
     end
+
     return Active 
 end
 
-function FetchActivePlayers(_source, CurrentXP, CurrentRank)
+------
+-- UpdatePlayer
+--
+-- @param playerId          - The player's id
+-- @param xp                - The player's current XP
+-- @param rank              - The player's current rank
+--
+-- Fetches active players and initialises for current player
+------
+function FetchActivePlayers(playerId, xp, rank)
     MySQL.Async.fetchAll('SELECT * FROM users', {}, function(players)
         if #players > 0 then
-            TriggerClientEvent("esx_xp:init", _source, CurrentXP, CurrentRank, GetOnlinePlayers(_source, players))
+            TriggerClientEvent("esx_xp:init", playerId, xp, rank, GetOnlinePlayers(playerId, players))
         end
     end)
 end
@@ -59,7 +77,7 @@ end
 -- @param playerId          - The player's id
 -- @param xp                - The XP value to set
 --
--- Updates the given users XP
+-- Updates the given user's XP
 ------
 function UpdatePlayer(playerId, xp)
     local xPlayer = ESX.GetPlayerFromId(playerId)
@@ -98,7 +116,7 @@ AddEventHandler("esx_xp:load", function()
     local _source = source
     local xPlayer = ESX.GetPlayerFromId(_source)
 
-    if xPlayer then
+    if xPlayer ~= nil then
         MySQL.Async.fetchAll('SELECT * FROM users WHERE identifier = @identifier', {
             ['@identifier'] = xPlayer.identifier
         }, function(result)
