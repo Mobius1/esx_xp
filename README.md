@@ -290,58 +290,6 @@ AddEventHandler("esx_xp:rankDown", function(newRank --[[ integer ]], previousRan
 end)
 ```
 
-## Client Triggers
-Wait for `esx_xp` to be ready:
-
-```lua
-TriggerEvent("esx_xp:isReady", cb)
-```
-
-Example:
-```lua
-ESXP = false
-
-Citizen.CreateThread(function()
-    while not ESXP do
-        TriggerEvent("esx_xp:isReady", function(ready)
-            ESXP = ready
-        end)
-        Citizen.Wait(10)
-    end
-    
-    -- Do stuff with esx_xp
-end)
-```
-
-```lua
--- SET INTITIAL XP
-TriggerEvent('esx_xp:SetInitial', xp)
-
--- ADD XP
-TriggerEvent('esx_xp:Add', xp)
-
--- REMOVE XP
-TriggerEvent('esx_xp:Remove', xp)
-
--- SET RANK
-TriggerEvent('esx_xp:SetRank', rank)
-```
-
-## Server Triggers
-```lua
--- SET INTITIAL XP
-TriggerClientEvent('esx_xp:SetInitial', source, xp)
-
--- ADD XP
-TriggerClientEvent('esx_xp:Add', source, xp)
-
--- REMOVE XP
-TriggerClientEvent('esx_xp:Remove', source, xp)
-
--- SET RANK
-TriggerClientEvent('esx_xp:SetRank', source, rank)
-```
-
 ## UI
 The UI can be toggled with the `Z` key by default. The UI will fade out after the interval defined by `Config.Timeout` or you can close it immediately with the `Z` key.
 
@@ -403,6 +351,22 @@ Sort the leaderboard
 ```lua
 /ESXP_SortLeaderboard order --[[ rank or name ]]
 ```
+
+## Admin Commands
+
+This require you to set ace permissions, i.e `add_ace group.admin command.esxp_give allow`
+
+Give XP to player:
+`/esxp_give [playerId] [xp]`
+
+Take XP from player
+`/esxp_take [playerId] [xp]`
+
+Set player's XP
+`/esxp_set [playerId] [xp]`
+
+Set player's rank
+`/esxp_rank [playerId] [rank]`
 
 ## FAQ
 
