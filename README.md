@@ -1,8 +1,6 @@
 # esx_xp
 Adds an XP ranking system like the one found in GTA:O. Work in progress.
 
-This is the ESX version of my framework agnostic [XpM](https://github.com/Mobius1/XpM) package.
-
 ## Features
 * Designed to emulate the native GTA:O system
 * Saves and loads players XP / rank
@@ -78,13 +76,36 @@ Config.Timeout      = 5000  -- Sets the interval in ms that the XP bar is shown 
 Config.BarSegments  = 10    -- Sets the number of segments the XP bar has. Native GTA:O is 10
 Config.UIKey        = 20    -- The key that toggles the UI - default is "Z"
 
-Config.Ranks        = {}    -- XP ranks. Must be a table of integers with the first element being 0.
-
 Config.Leaderboard = {
     Enabled     = true,     -- Enable the leaderboard
     ShowPing    = true,     -- Show player pings on the leaderboard
     Order       = "rank",   -- Order the player list by "name", "rank" or "id"
     PerPage     = 12        -- Max players to show per page    
+}
+```
+
+The `ranks.lua` file contains the ranks / XP / callbacks. Each rank must have the `XP` key with the required XP to reach the rank as the value.
+
+You can pass an optional callback using the `Action` key:
+
+```lua
+Config.Ranks = {
+    { XP = 0 }, -- Rank 1
+    {           -- Rank 2
+        XP = 800,
+        Action = function(xPlayer, rankUp, prevRank)
+        
+            -- Function is called when the player hits this rank
+
+            -- xPlayer: table       - The player's ESX player data
+            -- rankUp: boolean      - whether the player reached or dropped to this rank
+            -- prevRank: number     - the player's previous rank
+
+        end
+    },
+    { XP = 2100 }, -- Rank 3
+    { XP = 3800 }, -- Rank 4
+    ...
 }
 ```
 
