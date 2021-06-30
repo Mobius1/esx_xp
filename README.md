@@ -14,6 +14,7 @@ Adds an XP ranking system like the one found in GTA:O. Work in progress.
 * [Requirements](#requirements)
 * [Download & Installation](#download---installation)
 * [Upgrading to 1.0.0](#upgrading-to-100)
+* [Upgrading to 1.3.0](#upgrading-to-130)
 * [Configuration](#configuration)
 * [Functions](#functions)
     + [Setters](#setters)
@@ -63,6 +64,46 @@ You can find an interactive demo [here](https://codepen.io/Mobius1/full/yLeMwzO)
 
 ## Upgrading to 1.0.0
 * Rename the `rp_level` column in the `users` table to `rp_rank`
+
+## Upgrading to 1.3.0
+As of `1.3.0` the ranks are now stored as nested tables instead of the previous 1D array of XP values and have been moved to `ranks.lua`.
+
+
+Old structure
+```lua
+Config.Ranks = {
+    0,
+    800,
+    2100,
+    3800,
+    6100,
+    ...
+}
+```
+
+New structure
+```lua
+Config.Ranks = {
+    { XP = 0 },
+    { XP = 800 },
+    { XP = 2100 },
+    { XP = 3800 },
+    { XP = 6100 },
+    ...
+}
+```
+
+If you have your own script accessing the ranks table, you'll need to update it, e.g.
+
+Old method:
+```lua
+local rank4XP = Config.Ranks[4]
+```
+
+New method:
+```lua
+local rank4XP = Config.Ranks[4].XP
+```
 
 ## Configuration
 
