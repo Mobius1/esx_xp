@@ -1,6 +1,9 @@
 # esx_xp
 Adds an XP ranking system like the one found in GTA:O. Work in progress.
 
+# Update
+I've abandoned work on this resource in favour of [xperience](https://github.com/Mobius1/xperience). It offers the same functionality, but is framework agnostic. It also integrates into both `ESX` and `QBCore`.
+
 ## Features
 * Designed to emulate the native GTA:O system
 * Saves and loads players XP / rank
